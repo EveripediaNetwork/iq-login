@@ -1,41 +1,41 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-  "organizeImports": {
-    "enabled": false
-  },
-  "files": {
-    "ignore": ["**/node_modules", "dist", "yarn.lock", ".vscode/"]
-  },
-  "formatter": {
-    "enabled": true,
-    "formatWithErrors": false,
-    "indentStyle": "space",
-    "lineWidth": 80
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "correctness": {
-        "noUnusedVariables": "error"
-      },
-      "performance": {
-        "noDelete": "off"
-      },
-      "style": {
-        "noNonNullAssertion": "off",
-        "useShorthandArrayType": "error"
-      },
-      "suspicious": {
-        "noArrayIndexKey": "off",
-        "noExplicitAny": "off"
-      }
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "semicolons": "asNeeded"
-    }
-  }
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"files": {
+		"ignore": ["**/node_modules", "dist", "pnpm-lock.yaml", ".vscode/"]
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "space",
+		"lineWidth": 80
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedVariables": "error"
+			},
+			"performance": {
+				"noDelete": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off",
+				"useShorthandArrayType": "error"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off",
+				"noExplicitAny": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "asNeeded"
+		}
+	}
 }

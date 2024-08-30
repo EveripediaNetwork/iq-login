@@ -38,8 +38,8 @@ Thumbs.db
 # Ignore built ts files
 dist/**/*
 
-# ignore yarn.lock
-yarn.lock
+# ignore pnpm-lock.yaml
+pnpm-lock.yaml
 package-lock.json
 
 # ignore .vscode folder
