@@ -38,9 +38,5 @@ Thumbs.db
 # Ignore built ts files
 dist/**/*
 
-# ignore pnpm-lock.yaml
-pnpm-lock.yaml
-package-lock.json
-
 # ignore .vscode folder
 .vscode/
