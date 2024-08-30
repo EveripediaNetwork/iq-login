@@ -1,1 +1,5 @@
-export * from './lib/add'
+export * from './components/CustomAvatar'
+export * from './components/RainbowKitClientProvider'
+export * from './lib/data/iqTestnet'
+export * from './lib/data/rainbowKitTheme'
+export * from './lib/integrations/web3-auth-connector'
