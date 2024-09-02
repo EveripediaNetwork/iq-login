@@ -12,10 +12,17 @@ To install the package, run:
 pnpm install @everipedia/iq-login
 ```
 
-
 ## 🛠️ Setup
 
-1. Add the package to your Tailwind CSS configuration:
+1. Setup Environment Variables
+
+```bash
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=YOUR_PROJECT_ID
+NEXT_PUBLIC_IS_PRODUCTION=true/false
+NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID=YOUR_CLIENT_ID
+```
+
+2. Add the package to your Tailwind CSS configuration:
 ```ts
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
@@ -30,7 +37,8 @@ const config: Config = {
 
 export default config;
 ```
-2. Wrap your application with the RainbowKitClientProvider in your layout file:
+
+3. Wrap your application with the RainbowKitClientProvider in your layout file:
 
 ```typescript
 // app/layout.tsx
@@ -51,8 +59,7 @@ export default function RootLayout({
 }
 ```
 
-
-3. Add login page to your application.
+4. Add login page to your application.
 ```ts
 import { Login } from '@everipedia/iq-login';
 
@@ -101,7 +108,7 @@ function MyComponent() {
 }
 ```
 
-
 ## 🎨 Styling
+
 The package is designed to work with Tailwind CSS and Shad-cn Theme. Make sure to add the shad-cn theme to your project.
 You can learn more about it here: https://ui.shadcn.com/themes
