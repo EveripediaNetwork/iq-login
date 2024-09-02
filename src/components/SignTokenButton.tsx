@@ -1,3 +1,5 @@
+'use client'
+
 import { useAccount } from 'wagmi'
 import { useEffect } from 'react'
 import { useAuth } from '../lib/hooks/useAuth'
@@ -7,7 +9,7 @@ interface SignTokenButtonProps {
   handleTokenPass?: (token: string) => Promise<void>
 }
 
-const SignTokenButton = ({
+export const SignTokenButton = ({
   handleRedirect,
   handleTokenPass,
 }: SignTokenButtonProps) => {
@@ -44,5 +46,3 @@ const SignTokenButton = ({
     </button>
   )
 }
-
-export default SignTokenButton

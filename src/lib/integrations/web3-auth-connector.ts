@@ -8,15 +8,14 @@ import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider'
 import { Web3Auth } from '@web3auth/modal'
 import { WalletServicesPlugin } from '@web3auth/wallet-services-plugin'
 import { Web3AuthConnector } from '@web3auth/web3auth-wagmi-connector'
-import { env } from 'node:process'
 import type { Chain } from 'viem'
 import { createConnector } from 'wagmi'
 
-if (!env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID) {
+if (!process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID) {
   throw new Error('NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID is not set')
 }
 
-const clientId = env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID
+const clientId = process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID
 
 export const rainbowWeb3AuthConnector = ({
   chain,

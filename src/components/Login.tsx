@@ -1,5 +1,7 @@
+'use client'
+
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import SignTokenButton from './SignTokenButton'
+import { SignTokenButton } from './SignTokenButton'
 
 interface LoginProps {
   title: string
@@ -7,7 +9,7 @@ interface LoginProps {
   handleRedirect: () => void
 }
 
-const Login = ({ title, description, handleRedirect }: LoginProps) => {
+export const Login = ({ title, description, handleRedirect }: LoginProps) => {
   return (
     <div className="grid min-h-[calc(100vh-250px)] place-items-center py-4 md:p-4">
       <div className="max-w-xl text-center">
@@ -29,5 +31,3 @@ const Login = ({ title, description, handleRedirect }: LoginProps) => {
     </div>
   )
 }
-
-export default Login

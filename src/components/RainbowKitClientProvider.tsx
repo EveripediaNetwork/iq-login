@@ -1,4 +1,5 @@
 'use client'
+
 import type React from 'react'
 import { iqTestnet } from '../lib/data/iqTestnet'
 import { iqWikiTheme } from '../lib/data/rainbowKitTheme'
@@ -13,28 +14,27 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { cookieToInitialState, WagmiProvider } from 'wagmi'
 import { polygon } from 'wagmi/chains'
 import { CustomAvatar } from './CustomAvatar'
-import { env } from 'node:process'
 
-if (!env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
+if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
   throw new Error('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set')
 }
-if (!env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
+if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
   throw new Error('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set')
 }
-if (!env.NEXT_PUBLIC_IS_PRODUCTION) {
+if (!process.env.NEXT_PUBLIC_IS_PRODUCTION) {
   console.log('NEXT_PUBLIC_IS_PRODUCTION is not set')
 }
 
-const chain = env.NEXT_PUBLIC_IS_PRODUCTION ? polygon : iqTestnet
+const chain = process.env.NEXT_PUBLIC_IS_PRODUCTION ? polygon : iqTestnet
 
 export const defaultConfig = getDefaultConfig({
   appName: 'IQ.Wiki AI Editor',
-  projectId: env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
   chains: [chain],
   wallets: [
     ...getDefaultWallets({
       appName: 'IQ.Wiki AI Editor',
-      projectId: env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
     }).wallets,
     {
       groupName: 'More',
@@ -47,7 +47,7 @@ export const defaultConfig = getDefaultConfig({
 
 const queryClient = new QueryClient()
 
-function RainbowKitClientProvider({
+export function RainbowKitClientProvider({
   children,
   cookie,
 }: Readonly<React.PropsWithChildren> & { cookie?: string }) {
@@ -62,5 +62,3 @@ function RainbowKitClientProvider({
     </WagmiProvider>
   )
 }
-
-export default RainbowKitClientProvider
