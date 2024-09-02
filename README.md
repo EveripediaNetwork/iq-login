@@ -42,7 +42,7 @@ export default config;
 
 ```tsx
 // app/layout.tsx
-import { RainbowKitClientProvider } from "@everipedia/iq-login";
+import { IqLoginProvider } from "@everipedia/iq-login";
 
 export default function RootLayout({
   children,
@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RainbowKitClientProvider>{children}</RainbowKitClientProvider>
+        <IqLoginProvider>{children}</IqLoginProvider>
       </body>
     </html>
   );
