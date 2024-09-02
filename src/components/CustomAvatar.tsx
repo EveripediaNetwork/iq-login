@@ -1,4 +1,3 @@
-import React from 'react'
 import BoringAvatar from 'boring-avatars'
 import type { AvatarComponent } from '@rainbow-me/rainbowkit'
 

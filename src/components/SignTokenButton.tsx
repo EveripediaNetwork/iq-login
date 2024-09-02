@@ -2,13 +2,15 @@ import { useAccount } from 'wagmi'
 import { useEffect } from 'react'
 import { useAuth } from '../lib/hooks/useAuth'
 
+interface SignTokenButtonProps {
+  handleRedirect: () => void
+  handleTokenPass?: (token: string) => Promise<void>
+}
+
 const SignTokenButton = ({
   handleRedirect,
   handleTokenPass,
-}: {
-  handleRedirect: () => void
-  handleTokenPass?: (token: string) => Promise<void>
-}) => {
+}: SignTokenButtonProps) => {
   const { isConnected } = useAccount()
   const { token, loading, reSignToken, error } = useAuth()
 
