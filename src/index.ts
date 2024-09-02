@@ -12,3 +12,6 @@ export { iqWikiTheme } from './lib/data/rainbowKitTheme'
 
 // Integrations
 export { rainbowWeb3AuthConnector } from './lib/integrations/web3-auth-connector'
+
+// Hooks
+export { useAuth } from './lib/hooks/useAuth'
