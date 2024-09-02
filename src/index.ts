@@ -2,7 +2,7 @@
 
 // Components
 export { CustomAvatar } from './components/CustomAvatar'
-export { RainbowKitClientProvider } from './components/RainbowKitClientProvider'
+export { IqLoginProvider } from './components/IqLoginProvider'
 export { Login } from './components/Login'
 export { SignTokenButton } from './components/SignTokenButton'
 

@@ -45,7 +45,7 @@ export const defaultConfig = getDefaultConfig({
 
 const queryClient = new QueryClient()
 
-export function RainbowKitClientProvider({
+export function IqLoginProvider({
   children,
   cookie,
 }: Readonly<React.PropsWithChildren> & { cookie?: string }) {
