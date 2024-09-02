@@ -9,7 +9,7 @@
 To install the package, run:
 
 ```bash
-pnpm install @everipedia/iq-login
+pnpm install @everipedia/iq-login wagmi@2.12.4 viem@2.x
 ```
 
 ## 🛠️ Setup
