@@ -1,5 +1,3 @@
-'use client'
-
 import BoringAvatar from 'boring-avatars'
 import type { AvatarComponent } from '@rainbow-me/rainbowkit'
 

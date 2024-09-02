@@ -1,5 +1,3 @@
-'use client'
-
 import type React from 'react'
 import { iqTestnet } from '../lib/data/iqTestnet'
 import { iqWikiTheme } from '../lib/data/rainbowKitTheme'
@@ -55,9 +53,7 @@ export function RainbowKitClientProvider({
   return (
     <WagmiProvider config={defaultConfig} initialState={initialStates}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider avatar={CustomAvatar} theme={iqWikiTheme}>
-          {children}
-        </RainbowKitProvider>
+        <RainbowKitProvider theme={iqWikiTheme}>{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
