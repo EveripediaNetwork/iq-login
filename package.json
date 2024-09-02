@@ -1,64 +1,64 @@
 {
-	"name": "@everipedia/iq-login",
-	"version": "2.1.0",
-	"description": "Auth library for IQ apps",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"type": "module",
-	"repository": "https://github.com/EveripediaNetwork/iq-login",
-	"license": "MIT",
-	"keywords": ["wagmi", "IQ"],
-	"scripts": {
-		"build": "tsc -p tsconfig.json && tsc-esm-fix --target='dist' --ext='.js'",
-		"format": "biome format . --write",
-		"lint": "biome check .",
-		"lint:fix": "pnpm lint --write",
-		"watch:build": "tsc -p tsconfig.json -w",
-		"release": "pnpm build && changeset publish"
-	},
-	"engines": {
-		"node": ">=10"
-	},
-	"dependencies": {
-		"@changesets/cli": "^2.24.0",
-		"@everipedia/web3-signer": "^0.0.13",
-		"@rainbow-me/rainbowkit": "^2.1.4",
-		"@tanstack/react-query": "^5.53.1",
-		"@types/react": "^18.3.5",
-		"@web3auth/base": "^8.12.4",
-		"@web3auth/ethereum-provider": "^8.12.4",
-		"@web3auth/modal": "^8.12.6",
-		"@web3auth/wallet-services-plugin": "^8.12.5",
-		"@web3auth/web3auth-wagmi-connector": "^6.0.0",
-		"boring-avatars": "^1.10.2",
-		"cookies-next": "^4.2.1",
-		"react": "^18.3.1",
-		"tsc-esm-fix": "^2.20.10",
-		"vitest": "^2.0.5",
-		"zod": "^3.23.8",
-		"zustand": "^4.5.5"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.8.3",
-		"@types/node": "^20.11.24",
-		"changeset": "^0.2.6",
-		"typescript": "^5.0.4",
-		"viem": "2.x",
-		"wagmi": "^2.12.4"
-	},
-	"peerDependencies": {
-		"viem": "2.x",
-		"wagmi": "^2.12.4"
-	},
-	"files": [
-		"dist",
-		"!**/*.test.*",
-		"!**/*.json",
-		"CHANGELOG.md",
-		"LICENSE",
-		"README.md"
-	],
-	"publishConfig": {
-		"access": "public"
-	}
+  "name": "@everipedia/iq-login",
+  "version": "3.0.0",
+  "description": "Auth library for IQ apps",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "repository": "https://github.com/EveripediaNetwork/iq-login",
+  "license": "MIT",
+  "keywords": ["wagmi", "IQ"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsc-esm-fix --target='dist' --ext='.js'",
+    "format": "biome format . --write",
+    "lint": "biome check .",
+    "lint:fix": "pnpm lint --write",
+    "watch:build": "tsc -p tsconfig.json -w",
+    "release": "pnpm build && changeset publish"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.24.0",
+    "@everipedia/web3-signer": "^0.0.13",
+    "@rainbow-me/rainbowkit": "^2.1.4",
+    "@tanstack/react-query": "^5.53.1",
+    "@types/react": "^18.3.5",
+    "@web3auth/base": "^8.12.4",
+    "@web3auth/ethereum-provider": "^8.12.4",
+    "@web3auth/modal": "^8.12.6",
+    "@web3auth/wallet-services-plugin": "^8.12.5",
+    "@web3auth/web3auth-wagmi-connector": "^6.0.0",
+    "boring-avatars": "^1.10.2",
+    "cookies-next": "^4.2.1",
+    "react": "^18.3.1",
+    "tsc-esm-fix": "^2.20.10",
+    "vitest": "^2.0.5",
+    "zod": "^3.23.8",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/node": "^20.11.24",
+    "changeset": "^0.2.6",
+    "typescript": "^5.0.4",
+    "viem": "2.x",
+    "wagmi": "^2.12.4"
+  },
+  "peerDependencies": {
+    "viem": "2.x",
+    "wagmi": "^2.12.4"
+  },
+  "files": [
+    "dist",
+    "!**/*.test.*",
+    "!**/*.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
