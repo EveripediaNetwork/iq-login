@@ -2,7 +2,7 @@
 
 ## 🌟 Introduction
 
-@everipedia/iq-login is a package that provides easy integration of IQ.wiki login functionality into your Next.js applications. It allows users to authenticate using their IQ.wiki credentials seamlessly.
+@everipedia/iq-login is a package that provides easy integration of IQ.wiki login functionality into your Next.js applications. It allows users to authenticate using their crypto wallet and web3auth with rainbow kit seamlessly.
 
 ## 📦 Installation
 
