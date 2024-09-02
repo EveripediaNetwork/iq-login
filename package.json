@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.24.0",
+    "@everipedia/web3-signer": "^0.0.13",
     "@rainbow-me/rainbowkit": "^2.1.4",
     "@tanstack/react-query": "^5.53.1",
     "@types/react": "^18.3.5",
@@ -33,12 +34,14 @@
     "@web3auth/wallet-services-plugin": "^8.12.5",
     "@web3auth/web3auth-wagmi-connector": "^6.0.0",
     "boring-avatars": "^1.10.2",
+    "cookies-next": "^4.2.1",
     "react": "^18.3.1",
     "tsc-esm-fix": "^2.20.10",
     "viem": "2.x",
     "vitest": "^2.0.5",
     "wagmi": "^2.12.4",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
