@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.1.6
+
+### Patch Changes
+
+- ca6006b: fixes formating
+
 ## 3.1.5
 
 ### Patch Changes
