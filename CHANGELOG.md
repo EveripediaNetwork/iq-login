@@ -4,6 +4,13 @@
 
 ### Patch Changes
 
+- 991505e: Fixes destructure to @web3auth/web3auth-wagmi-connector
+- 0d5e5b3: Removes format rules
+
+## 3.1.5
+
+### Patch Changes
+
 - 3454344: removes named imports for web3auth packages
 
 ## 3.1.4
