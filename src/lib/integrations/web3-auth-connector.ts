@@ -1,9 +1,5 @@
 import type { Wallet } from '@rainbow-me/rainbowkit'
-import {
-  CHAIN_NAMESPACES,
-  WALLET_ADAPTERS,
-  WEB3AUTH_NETWORK,
-} from '@web3auth/base'
+import { WALLET_ADAPTERS } from '@web3auth/base'
 import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider'
 import { Web3Auth } from '@web3auth/modal'
 import { WalletServicesPlugin } from '@web3auth/wallet-services-plugin'
@@ -23,7 +19,7 @@ export const rainbowWeb3AuthConnector = ({
   const name = 'Web3 Auth'
 
   const chainConfig = {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainNamespace: 'eip155' as const,
     chainId: `0x${chain.id.toString(16)}`,
     rpcTarget: chain.rpcUrls.default.http[0],
     displayName: chain.name,
@@ -54,7 +50,7 @@ export const rainbowWeb3AuthConnector = ({
         onPrimary: '#ffffff',
       },
     },
-    web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+    web3AuthNetwork: 'sapphire_mainnet' as const,
     enableLogging: true,
   })
 
