@@ -9,7 +9,7 @@
 To install the package, run:
 
 ```bash
-pnpm install @everipedia/iq-login wagmi@2.12.4 viem@2.x
+pnpm install @everipedia/iq-login wagmi@2.12.4 viem@2.x @rainbow-me/rainbowkit@2.1.4
 ```
 
 ## 🛠️ Setup
@@ -59,9 +59,10 @@ export default function RootLayout({
 }
 ```
 
-4. Add login page to your application.
+4. Add login page to your application. Note: You need to import rainbowkit styles in your application.
 ```tsx
 import { Login } from '@everipedia/iq-login';
+import "@rainbow-me/rainbowkit/styles.css";
 
 // In your component or page
 const LoginPage = () => {
