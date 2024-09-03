@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.1.4
+
+### Patch Changes
+
+- 2190e85: changes name of export from eth-provider web3auth
+
 ## 3.1.3
 
 ### Patch Changes
