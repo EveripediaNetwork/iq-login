@@ -3,7 +3,7 @@ import basePackage from "@web3auth/base";
 import ethProviderPackage from "@web3auth/ethereum-provider";
 import modalPackage from "@web3auth/modal";
 import walletServicesPluginPackage from "@web3auth/wallet-services-plugin";
-import web3AuthWagmiConnectorPackage from "@web3auth/web3auth-wagmi-connector";
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import type { Chain } from "viem";
 import { createConnector } from "wagmi";
 
@@ -11,7 +11,6 @@ const { WALLET_ADAPTERS } = basePackage;
 const { EthereumPrivateKeyProvider } = ethProviderPackage;
 const { Web3Auth } = modalPackage;
 const { WalletServicesPlugin } = walletServicesPluginPackage;
-const { Web3AuthConnector } = web3AuthWagmiConnectorPackage;
 
 if (!process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID) {
 	throw new Error("NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID is not set");
