@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.1.3
+
+### Patch Changes
+
+- 5a3dbc0: Fixes for pages router
+
 ## 3.1.2
 
 ### Patch Changes
