@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.1.7
+
+### Patch Changes
+
+- 92b7aec: removes tags from package json
+
 ## 3.1.6
 
 ### Patch Changes
