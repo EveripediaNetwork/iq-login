@@ -4,7 +4,7 @@ import {
 	CHAIN_NAMESPACES,
 	WEB3AUTH_NETWORK,
 } from "@web3auth/base";
-import ethereumProvider from "@web3auth/ethereum-provider";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
@@ -32,7 +32,7 @@ export const rainbowWeb3AuthConnector = ({
 		blockExplorerUrl: chain.blockExplorers?.default.url[0] as string,
 	};
 
-	const privateKeyProvider = new ethereumProvider.EthereumPrivateKeyProvider({
+	const privateKeyProvider = new EthereumPrivateKeyProvider({
 		config: { chainConfig },
 	});
 
