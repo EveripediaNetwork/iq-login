@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.1.5
+
+### Patch Changes
+
+- 3454344: removes named imports for web3auth packages
+
 ## 3.1.4
 
 ### Patch Changes
