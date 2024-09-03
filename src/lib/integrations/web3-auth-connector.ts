@@ -1,16 +1,15 @@
 import type { Wallet } from "@rainbow-me/rainbowkit";
-import basePackage from "@web3auth/base";
-import ethProviderPackage from "@web3auth/ethereum-provider";
-import modalPackage from "@web3auth/modal";
-import walletServicesPluginPackage from "@web3auth/wallet-services-plugin";
+import {
+	WALLET_ADAPTERS,
+	CHAIN_NAMESPACES,
+	WEB3AUTH_NETWORK,
+} from "@web3auth/base";
+import ethereumProvider from "@web3auth/ethereum-provider";
+import { Web3Auth } from "@web3auth/modal";
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import type { Chain } from "viem";
 import { createConnector } from "wagmi";
-
-const { WALLET_ADAPTERS } = basePackage;
-const { EthereumPrivateKeyProvider } = ethProviderPackage;
-const { Web3Auth } = modalPackage;
-const { WalletServicesPlugin } = walletServicesPluginPackage;
 
 if (!process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID) {
 	throw new Error("NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID is not set");
@@ -24,7 +23,7 @@ export const rainbowWeb3AuthConnector = ({
 	const name = "Web3 Auth";
 
 	const chainConfig = {
-		chainNamespace: "eip155" as const,
+		chainNamespace: CHAIN_NAMESPACES.EIP155,
 		chainId: `0x${chain.id.toString(16)}`,
 		rpcTarget: chain.rpcUrls.default.http[0],
 		displayName: chain.name,
@@ -33,7 +32,7 @@ export const rainbowWeb3AuthConnector = ({
 		blockExplorerUrl: chain.blockExplorers?.default.url[0] as string,
 	};
 
-	const privateKeyProvider = new EthereumPrivateKeyProvider({
+	const privateKeyProvider = new ethereumProvider.EthereumPrivateKeyProvider({
 		config: { chainConfig },
 	});
 
@@ -55,7 +54,7 @@ export const rainbowWeb3AuthConnector = ({
 				onPrimary: "#ffffff",
 			},
 		},
-		web3AuthNetwork: "sapphire_mainnet" as const,
+		web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 		enableLogging: true,
 	});
 
