@@ -1,5 +1,16 @@
 # @everipedia/iq-login
 
+## 3.2.0
+
+### Minor Changes
+
+- 811615b: Moves bundling to be done with tsup
+
+### Patch Changes
+
+- b5659ed: updated imports pear deps and docs
+- 619ba08: reverts web3 import structure
+
 ## 3.1.7
 
 ### Patch Changes
