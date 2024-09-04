@@ -18,14 +18,6 @@ export const rainbowWeb3AuthConnector = ({
 }: { chain: Chain }): Wallet => {
 	const name = "Web3 Auth";
 
-	console.log({
-		Web3AuthBase,
-		Web3AuthEthereumProvider,
-		Web3AuthModal,
-		Web3AuthWalletServicesPlugin,
-		Web3AuthWagmiConnector,
-	});
-
 	const chainConfig = {
 		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
 		chainId: `0x${chain.id.toString(16)}`,
