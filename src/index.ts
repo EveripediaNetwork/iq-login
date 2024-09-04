@@ -1,5 +1,3 @@
-"use client";
-
 // Components
 export { CustomAvatar } from "./components/CustomAvatar";
 export { IqLoginProvider } from "./components/IqLoginProvider";

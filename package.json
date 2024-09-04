@@ -8,11 +8,11 @@
 	"repository": "https://github.com/EveripediaNetwork/iq-login",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc -p tsconfig.json && tsc-esm-fix --target='dist' --ext='.js'",
 		"format": "biome format . --write",
 		"lint": "biome check .",
 		"lint:fix": "pnpm lint --write",
-		"watch:build": "tsc -p tsconfig.json -w",
+		"build": "tsup src/index.ts --format esm,cjs --dts",
+		"watch:build": "tsup src/index.ts --format esm,cjs --dts --watch",
 		"release": "pnpm build && changeset publish"
 	},
 	"engines": {
@@ -28,30 +28,30 @@
 		"@web3auth/web3auth-wagmi-connector": "^6.0.0",
 		"boring-avatars": "^1.10.2",
 		"cookies-next": "^4.2.1",
-		"tsc-esm-fix": "^2.20.10",
 		"vitest": "^2.0.5",
 		"zod": "^3.23.8",
 		"zustand": "^4.5.5"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3",
+		"@rainbow-me/rainbowkit": "^2.1.4",
+		"@tanstack/react-query": "^5.53.1",
 		"@types/node": "^20.11.24",
+		"@types/react": "^18.3.5",
 		"changeset": "^0.2.6",
+		"react": "^18.3.1",
+		"tsup": "^8.2.4",
 		"typescript": "^5.0.4",
 		"viem": "2.x",
-		"wagmi": "^2.12.4",
-		"@types/react": "^18.3.5",
-		"react": "^18.3.1",
-		"@tanstack/react-query": "^5.53.1",
-		"@rainbow-me/rainbowkit": "^2.1.4"
+		"wagmi": "^2.12.4"
 	},
 	"peerDependencies": {
-		"viem": "2.x",
-		"wagmi": "^2.12.4",
+		"@rainbow-me/rainbowkit": "^2.1.4",
+		"@tanstack/react-query": "^5.53.1",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
-		"@tanstack/react-query": "^5.53.1",
-		"@rainbow-me/rainbowkit": "^2.1.4"
+		"viem": "2.x",
+		"wagmi": "^2.12.4"
 	},
 	"files": [
 		"dist",

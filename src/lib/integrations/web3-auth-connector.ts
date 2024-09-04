@@ -1,13 +1,9 @@
 import type { Wallet } from "@rainbow-me/rainbowkit";
-import {
-	WALLET_ADAPTERS,
-	CHAIN_NAMESPACES,
-	WEB3AUTH_NETWORK,
-} from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth } from "@web3auth/modal";
-import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
-import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import * as Web3AuthBase from "@web3auth/base";
+import * as Web3AuthEthereumProvider from "@web3auth/ethereum-provider";
+import * as Web3AuthModal from "@web3auth/modal";
+import * as Web3AuthWalletServicesPlugin from "@web3auth/wallet-services-plugin";
+import * as Web3AuthWagmiConnector from "@web3auth/web3auth-wagmi-connector";
 import type { Chain } from "viem";
 import { createConnector } from "wagmi";
 
@@ -22,8 +18,16 @@ export const rainbowWeb3AuthConnector = ({
 }: { chain: Chain }): Wallet => {
 	const name = "Web3 Auth";
 
+	console.log({
+		Web3AuthBase,
+		Web3AuthEthereumProvider,
+		Web3AuthModal,
+		Web3AuthWalletServicesPlugin,
+		Web3AuthWagmiConnector,
+	});
+
 	const chainConfig = {
-		chainNamespace: CHAIN_NAMESPACES.EIP155,
+		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
 		chainId: `0x${chain.id.toString(16)}`,
 		rpcTarget: chain.rpcUrls.default.http[0],
 		displayName: chain.name,
@@ -32,11 +36,12 @@ export const rainbowWeb3AuthConnector = ({
 		blockExplorerUrl: chain.blockExplorers?.default.url[0] as string,
 	};
 
-	const privateKeyProvider = new EthereumPrivateKeyProvider({
-		config: { chainConfig },
-	});
+	const privateKeyProvider =
+		new Web3AuthEthereumProvider.EthereumPrivateKeyProvider({
+			config: { chainConfig },
+		});
 
-	const web3AuthInstance = new Web3Auth({
+	const web3AuthInstance = new Web3AuthModal.Web3Auth({
 		clientId,
 		chainConfig,
 		privateKeyProvider,
@@ -54,22 +59,23 @@ export const rainbowWeb3AuthConnector = ({
 				onPrimary: "#ffffff",
 			},
 		},
-		web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+		web3AuthNetwork: Web3AuthBase.WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 		enableLogging: true,
 	});
 
-	const walletServicesPlugin = new WalletServicesPlugin({
-		walletInitOptions: {
-			whiteLabel: {
-				showWidgetButton: true,
+	const walletServicesPlugin =
+		new Web3AuthWalletServicesPlugin.WalletServicesPlugin({
+			walletInitOptions: {
+				whiteLabel: {
+					showWidgetButton: true,
+				},
 			},
-		},
-	});
+		});
 
 	web3AuthInstance.addPlugin(walletServicesPlugin);
 
 	const modalConfig = {
-		[WALLET_ADAPTERS.OPENLOGIN]: {
+		[Web3AuthBase.WALLET_ADAPTERS.OPENLOGIN]: {
 			label: "openlogin",
 			showOnModal: true,
 		},
@@ -82,7 +88,7 @@ export const rainbowWeb3AuthConnector = ({
 		iconBackground: "#0364ff",
 
 		createConnector: (walletDetails) => {
-			const web3AuthConnector = Web3AuthConnector({
+			const web3AuthConnector = Web3AuthWagmiConnector.Web3AuthConnector({
 				web3AuthInstance,
 				modalConfig,
 			});

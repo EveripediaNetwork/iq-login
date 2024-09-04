@@ -112,3 +112,17 @@ function MyComponent() {
 
 The package is designed to work with Tailwind CSS and Shad-cn Theme. Make sure to add the shad-cn theme to your project.
 You can learn more about it here: https://ui.shadcn.com/themes
+
+# 📝 Usage on Pages router
+
+Make sure to add the package in transpilePackages in your next.config.js file.
+
+```tsx
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  transpilePackages: ["@everipedia/iq-login"]
+};
+
+export default nextConfig;
+``` 
