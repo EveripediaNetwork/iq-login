@@ -21,6 +21,7 @@
 	"dependencies": {
 		"@changesets/cli": "^2.24.0",
 		"@everipedia/web3-signer": "^0.0.13",
+		"@wagmi/core": "^2.13.4",
 		"@web3auth/base": "^8.12.4",
 		"@web3auth/ethereum-provider": "^8.12.4",
 		"@web3auth/modal": "^8.12.6",

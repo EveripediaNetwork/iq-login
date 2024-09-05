@@ -14,6 +14,9 @@ importers:
       '@everipedia/web3-signer':
         specifier: ^0.0.13
         version: 0.0.13(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8)
+      '@wagmi/core':
+        specifier: ^2.13.4
+        version: 2.13.4(@tanstack/query-core@5.53.1)(@types/react@18.3.5)(react@18.3.1)(typescript@5.5.4)(viem@2.21.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.23.8))
       '@web3auth/base':
         specifier: ^8.12.4
         version: 8.12.4(@babel/runtime@7.25.6)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
