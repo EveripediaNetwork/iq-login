@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.2.1
+
+### Patch Changes
+
+- ecd46c2: Removes redundant console logs
+
 ## 3.2.0
 
 ### Minor Changes
