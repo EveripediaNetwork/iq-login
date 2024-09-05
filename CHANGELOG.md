@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.2.2
+
+### Patch Changes
+
+- 58a9a69: Adds structural sharing to react query client
+
 ## 3.2.1
 
 ### Patch Changes
