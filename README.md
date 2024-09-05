@@ -120,7 +120,7 @@ function MyComponent() {
 The package is designed to work with Tailwind CSS and Shad-cn Theme. Make sure to add the shad-cn theme to your project.
 You can learn more about it here: https://ui.shadcn.com/themes
 
-# 📝 Usage on Pages router
+## 📝 Usage on Pages router
 
 1. Add the package in transpilePackages in your next.config.js file.
 
@@ -139,5 +139,6 @@ export default nextConfig;
 
 ```tsx
 // _app.tsx
+
 import "@rainbow-me/rainbowkit/styles.css";
 ```
