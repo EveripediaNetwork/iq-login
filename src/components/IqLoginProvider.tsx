@@ -10,6 +10,7 @@ import { polygon } from "wagmi/chains";
 import { iqTestnet } from "../lib/data/iqTestnet";
 import { iqWikiTheme } from "../lib/data/rainbowKitTheme";
 import { rainbowWeb3AuthConnector } from "../lib/integrations/web3-auth-connector";
+import { structuralSharing } from "@wagmi/core/query";
 
 if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
 	throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set");
@@ -45,6 +46,7 @@ function makeQueryClient() {
 				// With SSR, we usually want to set some default staleTime
 				// above 0 to avoid refetching immediately on the client
 				staleTime: 60 * 1000,
+				structuralSharing,
 			},
 		},
 	});
