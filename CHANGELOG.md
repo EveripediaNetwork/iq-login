@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.2.3
+
+### Patch Changes
+
+- 55a2eae: Fixes login always uses polygon chain
+
 ## 3.2.2
 
 ### Patch Changes
