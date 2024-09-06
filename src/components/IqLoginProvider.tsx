@@ -19,7 +19,8 @@ if (!process.env.NEXT_PUBLIC_IS_PRODUCTION) {
 	console.log("NEXT_PUBLIC_IS_PRODUCTION is not set");
 }
 
-const chain = process.env.NEXT_PUBLIC_IS_PRODUCTION ? polygon : iqTestnet;
+const chain =
+	process.env.NEXT_PUBLIC_IS_PRODUCTION === "true" ? polygon : iqTestnet;
 
 export const defaultConfig = getDefaultConfig({
 	appName: "IQ.Wiki AI Editor",
