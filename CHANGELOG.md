@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.2.4
+
+### Patch Changes
+
+- a1d6f15: Removes wallet services plugin which is giving error of plan
+
 ## 3.2.3
 
 ### Patch Changes
