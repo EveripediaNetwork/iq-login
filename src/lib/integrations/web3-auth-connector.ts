@@ -2,7 +2,6 @@ import type { Wallet } from "@rainbow-me/rainbowkit";
 import * as Web3AuthBase from "@web3auth/base";
 import * as Web3AuthEthereumProvider from "@web3auth/ethereum-provider";
 import * as Web3AuthModal from "@web3auth/modal";
-import * as Web3AuthWalletServicesPlugin from "@web3auth/wallet-services-plugin";
 import * as Web3AuthWagmiConnector from "@web3auth/web3auth-wagmi-connector";
 import type { Chain } from "viem";
 import { createConnector } from "wagmi";
@@ -54,17 +53,6 @@ export const rainbowWeb3AuthConnector = ({
 		web3AuthNetwork: Web3AuthBase.WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 		enableLogging: true,
 	});
-
-	const walletServicesPlugin =
-		new Web3AuthWalletServicesPlugin.WalletServicesPlugin({
-			walletInitOptions: {
-				whiteLabel: {
-					showWidgetButton: true,
-				},
-			},
-		});
-
-	web3AuthInstance.addPlugin(walletServicesPlugin);
 
 	const modalConfig = {
 		[Web3AuthBase.WALLET_ADAPTERS.OPENLOGIN]: {
