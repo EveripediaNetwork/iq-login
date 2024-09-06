@@ -9,8 +9,12 @@ import { cookieToInitialState, WagmiProvider } from "wagmi";
 import { polygon } from "wagmi/chains";
 import { iqTestnet } from "../lib/data/iqTestnet";
 import { iqWikiTheme } from "../lib/data/rainbowKitTheme";
-import { rainbowWeb3AuthConnector } from "../lib/integrations/web3-auth-connector";
+import {
+	rainbowWeb3AuthConnector,
+	createWeb3AuthInstance,
+} from "../lib/integrations/web3-auth-connector";
 import { structuralSharing } from "@wagmi/core/query";
+import { Web3AuthProvider } from "./Web3AuthProvider";
 
 if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
 	throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set");
@@ -21,6 +25,7 @@ if (!process.env.NEXT_PUBLIC_IS_PRODUCTION) {
 
 const chain =
 	process.env.NEXT_PUBLIC_IS_PRODUCTION === "true" ? polygon : iqTestnet;
+const web3AuthInstance = createWeb3AuthInstance(chain);
 
 export const defaultConfig = getDefaultConfig({
 	appName: "IQ.Wiki AI Editor",
@@ -33,7 +38,7 @@ export const defaultConfig = getDefaultConfig({
 		}).wallets,
 		{
 			groupName: "More",
-			wallets: [() => rainbowWeb3AuthConnector({ chain })],
+			wallets: [() => rainbowWeb3AuthConnector({ web3AuthInstance })],
 		},
 	],
 	multiInjectedProviderDiscovery: false,
@@ -72,17 +77,17 @@ export function IqLoginProvider({
 	children,
 	cookie,
 }: Readonly<React.PropsWithChildren> & { cookie?: string }) {
-	// NOTE: Avoid useState when initializing the query client if you don't
-	//       have a suspense boundary between this and the code that may
-	//       suspend because React will throw away the client on the initial
-	//       render if it suspends and there is no boundary
 	const queryClient = getQueryClient();
-
 	const initialStates = cookieToInitialState(defaultConfig, cookie);
+
 	return (
 		<QueryClientProvider client={queryClient}>
 			<WagmiProvider config={defaultConfig} initialState={initialStates}>
-				<RainbowKitProvider theme={iqWikiTheme}>{children}</RainbowKitProvider>
+				<RainbowKitProvider theme={iqWikiTheme}>
+					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
+						{children}
+					</Web3AuthProvider>
+				</RainbowKitProvider>
 			</WagmiProvider>
 		</QueryClientProvider>
 	);
