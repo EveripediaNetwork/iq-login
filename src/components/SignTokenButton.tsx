@@ -1,4 +1,4 @@
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { useEffect } from "react";
 import { useAuth } from "../lib/hooks/useAuth";
 
