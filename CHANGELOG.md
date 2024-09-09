@@ -1,5 +1,12 @@
 # @everipedia/iq-login
 
+## 3.2.6
+
+### Patch Changes
+
+- 47f596d: Adds logout function in useAuth
+- 6306002: Changes USER_TOKEN name to x-auth-token for existing compatibility
+
 ## 3.2.5
 
 ### Patch Changes
