@@ -93,7 +93,7 @@ It can be used to re-sign token, get the current token, and check if the user is
 import { useAuth } from '@everipedia/iq-login';
 
 function MyComponent() {
-  const { token, loading, reSignToken, error } = useAuth();
+  const { token, loading, reSignToken, error, logout } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -109,7 +109,8 @@ function MyComponent() {
 
   return (
     <div>
-      <button onClick={() => reSignToken(true)}>Sign In</button>
+      <button onClick={reSignToken}>Re-Sign Token</button>
+      {token && <button onClick={logout}>Logout</button>}
     </div>
   );
 }
