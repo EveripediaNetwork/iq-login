@@ -12,7 +12,7 @@ export const SignTokenButton = ({
 	handleTokenPass,
 }: SignTokenButtonProps) => {
 	const { isConnected } = useAccount();
-	const { token, loading, reSignToken, error } = useAuth();
+	const { token, signToken, loading, error } = useAuth();
 
 	useEffect(() => {
 		const handleEffect = async () => {
@@ -37,7 +37,7 @@ export const SignTokenButton = ({
 			type="button"
 			disabled={!isConnected}
 			className="w-[146px] justify-center rounded-[4px] px-[14px] py-[8px] text-[16px] font-bold shadow-sm duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-500 dark:disabled:text-gray-400"
-			onClick={() => reSignToken(true)}
+			onClick={signToken}
 			aria-label="Sign Token"
 		>
 			Sign Token
