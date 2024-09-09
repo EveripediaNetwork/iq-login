@@ -87,6 +87,9 @@ export default LoginPage;
 The package provides a custom hook called useAuth that can be used to get the current user's information.
 It can be used to re-sign token, get the current token, and check if the user is authenticated.
 
+> Note: This hook automatically calls signToken on mount. it prompts the user to sign the token if the token is not signed and the user is connected.
+
+
 ```tsx
 // components/my-component.tsx
 
