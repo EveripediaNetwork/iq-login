@@ -1,5 +1,13 @@
 # @everipedia/iq-login
 
+## 3.2.5
+
+### Patch Changes
+
+- 853a177: Returns the user from web3auth hook
+- 875aa23: fixes useAuth not returning user data
+- f1a6adc: Adds web3auth user data from useAuth hook
+
 ## 3.2.4
 
 ### Patch Changes
