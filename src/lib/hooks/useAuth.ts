@@ -16,7 +16,7 @@ export const useTokenStore = create<{
 	setToken: (token) => set({ token }),
 }));
 
-const USER_TOKEN = "USER_TOKEN";
+const USER_TOKEN = "x-auth-token";
 
 export const useAuth = () => {
 	const { token, setToken } = useTokenStore((state) => state);
