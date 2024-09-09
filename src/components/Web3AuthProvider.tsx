@@ -14,14 +14,13 @@ export function Web3AuthProvider({
 	const [user, setUser] = useState<Partial<UserInfo> | null>(null);
 
 	useEffect(() => {
-		const checkLoggedInUser = async () => {
-			if (web3AuthInstance.connected) {
-				const user = await web3AuthInstance.getUserInfo();
-				setUser(user);
-			}
-		};
+		web3AuthInstance.on("connected", async () => {
+			setUser(await web3AuthInstance.getUserInfo());
+		});
 
-		checkLoggedInUser();
+		web3AuthInstance.on("disconnected", () => {
+			setUser(null);
+		});
 	}, [web3AuthInstance]);
 
 	return (
