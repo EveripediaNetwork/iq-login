@@ -16,3 +16,7 @@ export { rainbowWeb3AuthConnector } from "./lib/integrations/web3-auth-connector
 
 // Hooks
 export { useAuth } from "./lib/hooks/useAuth";
+
+// Helpers
+
+export { getAuth } from "./lib/getAuth";
