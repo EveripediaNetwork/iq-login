@@ -8,6 +8,9 @@ export { SignTokenButton } from "./components/SignTokenButton";
 export { iqTestnet } from "./lib/data/iqTestnet";
 export { iqWikiTheme } from "./lib/data/rainbowKitTheme";
 
+// Constants
+export { AUTH_TOKEN_KEY } from "./lib/constants";
+
 // Integrations
 export { rainbowWeb3AuthConnector } from "./lib/integrations/web3-auth-connector";
 

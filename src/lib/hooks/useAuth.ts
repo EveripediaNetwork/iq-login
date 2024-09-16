@@ -7,7 +7,7 @@ import type { UserInfo } from "@web3auth/base";
 import { useMutation } from "@tanstack/react-query";
 import type { GetWalletClientReturnType } from "@wagmi/core";
 import { useEffect } from "react";
-import { cookiesEnum } from "../constants";
+import { AUTH_TOKEN_KEY } from "../constants";
 
 export const useTokenStore = create<{
 	token: string | null;
@@ -25,7 +25,7 @@ export const useAuth = () => {
 	const disconnectMutation = useDisconnect({
 		mutation: {
 			onSuccess: () => {
-				deleteCookie(cookiesEnum.Enum["x-auth-token"]);
+				deleteCookie(AUTH_TOKEN_KEY);
 				setToken(null);
 			},
 		},
@@ -81,20 +81,20 @@ async function generateNewToken(walletClient?: GetWalletClientReturnType) {
 			expires_in: "1y",
 		},
 	);
-	setCookie(cookiesEnum.Enum["x-auth-token"], freshToken, {
+	setCookie(AUTH_TOKEN_KEY, freshToken, {
 		maxAge: 60 * 60 * 24 * 365,
 	});
 	return freshToken;
 }
 
 async function fetchStoredToken() {
-	const storedToken = getCookie(cookiesEnum.Enum["x-auth-token"]) as string;
+	const storedToken = getCookie(AUTH_TOKEN_KEY) as string;
 	if (storedToken) {
 		const { address, body } = await verify(storedToken);
 		if (address && body) {
 			return storedToken;
 		}
 	}
-	deleteCookie(cookiesEnum.Enum["x-auth-token"]);
+	deleteCookie(AUTH_TOKEN_KEY);
 	return null;
 }

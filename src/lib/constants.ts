@@ -1,3 +1,1 @@
-import { z } from "zod";
-
-export const cookiesEnum = z.enum(["x-auth-token"]);
+export const AUTH_TOKEN_KEY = "x-auth-token";
