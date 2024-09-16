@@ -9,9 +9,14 @@ export const getAuth = async () => {
 	let address: string | null = null;
 
 	if (token) {
-		const result = await verify(token);
-		address = result.address;
-		isValid = !!(address && result.body);
+		try {
+			const result = await verify(token);
+			address = result.address;
+			isValid = !!(address && result.body);
+		} catch (error) {
+			console.error("Error verifying token:", error);
+			isValid = false;
+		}
 	}
 
 	if (!isValid) {
