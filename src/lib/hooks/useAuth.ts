@@ -7,6 +7,7 @@ import type { UserInfo } from "@web3auth/base";
 import { useMutation } from "@tanstack/react-query";
 import type { GetWalletClientReturnType } from "@wagmi/core";
 import { useEffect } from "react";
+import { AUTH_TOKEN_KEY } from "../constants";
 
 export const useTokenStore = create<{
 	token: string | null;
@@ -16,8 +17,6 @@ export const useTokenStore = create<{
 	setToken: (token) => set({ token }),
 }));
 
-const USER_TOKEN = "x-auth-token";
-
 export const useAuth = () => {
 	const { token, setToken } = useTokenStore((state) => state);
 	const { data: walletClient } = useWalletClient();
@@ -26,7 +25,7 @@ export const useAuth = () => {
 	const disconnectMutation = useDisconnect({
 		mutation: {
 			onSuccess: () => {
-				deleteCookie(USER_TOKEN);
+				deleteCookie(AUTH_TOKEN_KEY);
 				setToken(null);
 			},
 		},
@@ -82,18 +81,20 @@ async function generateNewToken(walletClient?: GetWalletClientReturnType) {
 			expires_in: "1y",
 		},
 	);
-	setCookie(USER_TOKEN, freshToken, { maxAge: 60 * 60 * 24 * 365 });
+	setCookie(AUTH_TOKEN_KEY, freshToken, {
+		maxAge: 60 * 60 * 24 * 365,
+	});
 	return freshToken;
 }
 
 async function fetchStoredToken() {
-	const storedToken = getCookie(USER_TOKEN) as string;
+	const storedToken = getCookie(AUTH_TOKEN_KEY) as string;
 	if (storedToken) {
 		const { address, body } = await verify(storedToken);
 		if (address && body) {
 			return storedToken;
 		}
 	}
-	deleteCookie(USER_TOKEN);
+	deleteCookie(AUTH_TOKEN_KEY);
 	return null;
 }

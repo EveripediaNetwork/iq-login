@@ -39,7 +39,7 @@ const config: Config = {
 };
 
 export default config;
-```
+
 
 3. Wrap your application with the RainbowKitClientProvider in your layout file:
 
@@ -117,6 +117,28 @@ function MyComponent() {
     </div>
   );
 }
+```
+
+
+## 🔑 Authentication Helper
+
+The package includes a `getAuth` function that can be used to retrieve the authentication token and address. Here's how you can use it:
+
+```tsx
+import { getAuth } from '@everipedia/iq-login';
+
+const { token, address } = await getAuth();
+
+if (token && address) {
+  console.log('User is authenticated');
+  console.log('Token:', token);
+  console.log('Address:', address);
+} else {
+  console.log('User is not authenticated');
+}
+
+
+This function retrieves the authentication token from cookies and verifies it. If the token is valid, it returns both the token and the associated address.
 ```
 
 ## 🎨 Styling
