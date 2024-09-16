@@ -1,3 +1,5 @@
+"use server";
+
 import { getCookie, deleteCookie } from "cookies-next";
 import { verify } from "@everipedia/web3-signer";
 import { AUTH_TOKEN_KEY } from "./constants";
