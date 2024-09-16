@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.2.8
+
+### Patch Changes
+
+- 0d1e77c: export get auth
+
 ## 3.2.7
 
 ### Patch Changes
