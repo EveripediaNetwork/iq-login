@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.2.7
+
+### Patch Changes
+
+- 50dab00: Adds get auth utility function
+
 ## 3.2.6
 
 ### Patch Changes
