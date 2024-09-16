@@ -16,7 +16,6 @@ export const getAuth = async () => {
 			isValid = !!(address && result.body);
 		} catch (error) {
 			console.error("Error verifying token:", error);
-			isValid = false;
 		}
 	}
 
