@@ -1,11 +1,10 @@
-"use server";
-
+import { cookies } from "next/headers";
 import { getCookie, deleteCookie } from "cookies-next";
 import { verify } from "@everipedia/web3-signer";
 import { AUTH_TOKEN_KEY } from "./constants";
 
 export const getAuth = async () => {
-	const token = getCookie(AUTH_TOKEN_KEY) as string | undefined;
+	const token = getCookie(AUTH_TOKEN_KEY, { cookies }) as string | undefined;
 	let address: string | null = null;
 
 	if (token) {
