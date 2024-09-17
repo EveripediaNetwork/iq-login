@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.3.1
+
+### Patch Changes
+
+- 491bc8f: adds cookies from next/header
+
 ## 3.3.0
 
 ### Minor Changes
