@@ -11,8 +11,8 @@
 		"format": "biome format . --write",
 		"lint": "biome check .",
 		"lint:fix": "pnpm lint --write",
-		"build": "tsup src/index.ts --format esm,cjs --dts",
-		"watch:build": "tsup src/index.ts --format esm,cjs --dts --watch",
+		"build": "tsup",
+		"watch:build": "tsup --watch",
 		"release": "pnpm build && changeset publish"
 	},
 	"engines": {

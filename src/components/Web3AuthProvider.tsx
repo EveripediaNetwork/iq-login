@@ -10,7 +10,10 @@ const Web3AuthContext = createContext<{
 export function Web3AuthProvider({
 	children,
 	web3AuthInstance,
-}: { children: React.ReactNode; web3AuthInstance: Web3Auth }) {
+}: {
+	children: React.ReactNode;
+	web3AuthInstance: Web3Auth;
+}) {
 	const [user, setUser] = useState<Partial<UserInfo> | null>(null);
 
 	useEffect(() => {
