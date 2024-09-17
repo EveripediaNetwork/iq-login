@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.3.0
+
+### Minor Changes
+
+- bd3d888: Removes use client directive in index.ts
+
 ## 3.2.9
 
 ### Patch Changes
