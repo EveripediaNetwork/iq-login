@@ -12,7 +12,7 @@ interface LoginProps {
 export const Login = ({ title, description, handleRedirect }: LoginProps) => {
 	return (
 		<div className="grid min-h-[calc(100vh-250px)] place-items-center py-4 md:p-4">
-			<div className="max-w-xl text-center">
+			<div className="max-w-xl w-full text-center">
 				<h1 className="mb-4 text-4xl font-bold">{title}</h1>
 				<p className="mb-8 text-lg text-gray-500 dark:text-alpha-900">
 					{description}
