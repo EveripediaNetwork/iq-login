@@ -1,5 +1,12 @@
 # @everipedia/iq-login
 
+## 3.5.0
+
+### Minor Changes
+
+- bb94a85: Adds getCookie without passing cookies from next headers
+- fc643c5: better imports
+
 ## 3.4.2
 
 ### Patch Changes
