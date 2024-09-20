@@ -76,7 +76,10 @@ function getQueryClient() {
 export function IqLoginProvider({
 	children,
 	cookie,
-}: Readonly<React.PropsWithChildren> & { cookie?: string }) {
+}: {
+	children: React.ReactNode;
+	cookie?: string;
+}) {
 	const queryClient = getQueryClient();
 	const initialStates = cookieToInitialState(defaultConfig, cookie);
 
