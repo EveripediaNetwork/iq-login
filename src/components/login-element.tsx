@@ -27,7 +27,7 @@ export const Login = ({
 				</div>
 				<div className="flex flex-col items-center border-t p-4">
 					<h2 className="mb-4 text-xl">{signTokenText}</h2>
-					<SignToken Button handleRedirect={() => handleRedirect?.()} />
+					<SignTokenButton handleRedirect={() => handleRedirect?.()} />
 				</div>
 			</div>
 		</div>
