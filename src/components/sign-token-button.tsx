@@ -1,6 +1,6 @@
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
-import { useAuth } from "../lib/hooks/useAuth";
+import { useAuth } from "../lib/hooks/use-auth";
 
 interface SignTokenButtonProps {
 	handleRedirect: () => void;

@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { SignTokenButton } from "./SignTokenButton";
+import { SignTokenButton } from "./sign-token-button";
 
 interface LoginProps {
 	title?: string;
@@ -27,7 +27,7 @@ export const Login = ({
 				</div>
 				<div className="flex flex-col items-center border-t p-4">
 					<h2 className="mb-4 text-xl">{signTokenText}</h2>
-					<SignTokenButton handleRedirect={() => handleRedirect?.()} />
+					<SignToken Button handleRedirect={() => handleRedirect?.()} />
 				</div>
 			</div>
 		</div>

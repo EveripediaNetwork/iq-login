@@ -2,7 +2,7 @@ import { useDisconnect, useWalletClient } from "wagmi";
 import { sign, verify } from "@everipedia/web3-signer";
 import { create } from "zustand";
 import { getCookie, deleteCookie, setCookie } from "cookies-next";
-import { useWeb3Auth } from "../../components/Web3AuthProvider";
+import { useWeb3Auth } from "../../components/web3-auth-provider";
 import type { UserInfo } from "@web3auth/base";
 import { useMutation } from "@tanstack/react-query";
 import type { GetWalletClientReturnType } from "@wagmi/core";
