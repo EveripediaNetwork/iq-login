@@ -25,7 +25,7 @@ export const SignTokenButton = ({
 	}, [handleRedirect, handleTokenPass, isConnected, token]);
 
 	return token && isConnected ? (
-		<p className="w-full max-w-md rounded-[4px] bg-white dark:bg-[#2D3748] border-[1px] dark:border-gray-600 px-[14px] py-[8px] text-center text-[16px] font-bold text-gray-800 dark:text-alpha-900">
+		<p className="w-full max-w-md rounded-md bg-background border border-border px-3.5 py-2 text-center text-base font-bold text-foreground">
 			{error
 				? "Something went wrong. Please try again."
 				: loading
@@ -36,7 +36,7 @@ export const SignTokenButton = ({
 		<button
 			type="button"
 			disabled={!isConnected}
-			className="w-[146px] justify-center rounded-[4px] px-[14px] py-[8px] text-[16px] font-bold shadow-sm duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-500 dark:disabled:text-gray-400"
+			className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4"
 			onClick={signToken}
 			aria-label="Sign Token"
 		>
