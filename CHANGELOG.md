@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.4.1
+
+### Patch Changes
+
+- 2430a51: Updates sign token styles
+
 ## 3.4.0
 
 ### Minor Changes
