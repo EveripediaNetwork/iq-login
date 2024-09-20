@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.4.2
+
+### Patch Changes
+
+- 6383e8a: updates sign token button width
+
 ## 3.4.1
 
 ### Patch Changes
