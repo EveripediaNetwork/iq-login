@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 3.4.0
+
+### Minor Changes
+
+- 50d7fc2: Updates login component to use shadcn
+
 ## 3.3.1
 
 ### Patch Changes
