@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { SignTokenButton } from "./SignTokenButton";
+import { SignTokenButton } from "./sign-token-button";
 
 interface LoginProps {
 	title?: string;

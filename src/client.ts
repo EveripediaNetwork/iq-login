@@ -1,24 +1,19 @@
 "use client";
 
-/*
- * CLIENT EXPORTS
- */
-
+// ===============
 // Components
-export { CustomAvatar } from "./components/CustomAvatar";
-export { IqLoginProvider } from "./components/IqLoginProvider";
-export { Login } from "./components/Login";
-export { SignTokenButton } from "./components/SignTokenButton";
+// ===============
+export { CustomAvatar } from "./components/custom-avatar";
+export { IqLoginProvider } from "./components/iq-login-provider";
+export { Login } from "./components/login-element";
+export { SignTokenButton } from "./components/sign-token-button";
 
-// Data
-export { iqTestnet } from "./lib/data/iqTestnet";
-export { iqWikiTheme } from "./lib/data/rainbowKitTheme";
-
-// Constants
-export { AUTH_TOKEN_KEY } from "./lib/constants";
-
+// ===============
 // Integrations
+// ===============
 export { rainbowWeb3AuthConnector } from "./lib/integrations/web3-auth-connector";
 
+// ===============
 // Hooks
-export { useAuth } from "./lib/hooks/useAuth";
+// ===============
+export { useAuth } from "./lib/hooks/use-auth";

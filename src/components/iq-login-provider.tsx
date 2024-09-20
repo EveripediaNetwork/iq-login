@@ -7,14 +7,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type React from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 import { polygon } from "wagmi/chains";
-import { iqTestnet } from "../lib/data/iqTestnet";
-import { iqWikiTheme } from "../lib/data/rainbowKitTheme";
+import { iqTestnet } from "../lib/data/iq-testnet";
+import { iqWikiTheme } from "../lib/data/rainbow-kit-theme";
 import {
 	rainbowWeb3AuthConnector,
 	createWeb3AuthInstance,
 } from "../lib/integrations/web3-auth-connector";
 import { structuralSharing } from "@wagmi/core/query";
-import { Web3AuthProvider } from "./Web3AuthProvider";
+import { Web3AuthProvider } from "./web3-auth-provider";
 
 if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
 	throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set");
@@ -76,7 +76,10 @@ function getQueryClient() {
 export function IqLoginProvider({
 	children,
 	cookie,
-}: Readonly<React.PropsWithChildren> & { cookie?: string }) {
+}: {
+	children: React.ReactNode;
+	cookie?: string;
+}) {
 	const queryClient = getQueryClient();
 	const initialStates = cookieToInitialState(defaultConfig, cookie);
 
