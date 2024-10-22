@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 4.0.0
+
+### Major Changes
+
+- 2f72652: Supports next 15
+
 ## 3.5.0
 
 ### Minor Changes
