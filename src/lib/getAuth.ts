@@ -9,7 +9,7 @@ export const getAuth = async () => {
 	const token =
 		typeof window !== "undefined"
 			? (getCookie(AUTH_TOKEN_KEY) as string | undefined)
-			: (getCookie(AUTH_TOKEN_KEY, { cookies }) as string | undefined);
+			: (await cookies()).get(AUTH_TOKEN_KEY)?.value;
 	let address: string | null = null;
 
 	if (token) {
