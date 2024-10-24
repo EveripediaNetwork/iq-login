@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 5.0.0
+
+### Major Changes
+
+- 3441950: Updates web3auth libraries
+
 ## 4.0.0
 
 ### Major Changes
