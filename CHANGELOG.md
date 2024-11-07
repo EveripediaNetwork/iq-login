@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 5.1.0
+
+### Minor Changes
+
+- 03c9be1: Make login component responsive
+
 ## 5.0.0
 
 ### Major Changes
