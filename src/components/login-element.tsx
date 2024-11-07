@@ -18,15 +18,17 @@ export const Login = ({
 }: LoginProps) => {
 	return (
 		<div className="max-w-xl w-full text-center">
-			<h1 className="mb-4 text-4xl font-bold">{title}</h1>
-			<p className="mb-8 text-lg text-muted-foreground">{description}</p>
-			<div className="mt-8 rounded-md border bg-card text-card-foreground">
-				<div className="flex flex-col items-center p-4">
-					<h2 className="mb-4 text-xl">{connectText}</h2>
+			<h1 className="mb-2 md:mb-4 text-2xl md:text-3xl xl:text-4xl font-semibold xl:font-bold">
+				{title}
+			</h1>
+			<p className="md:text-lg text-muted-foreground">{description}</p>
+			<div className="mt-4 md:mt-8 rounded-md border bg-card text-card-foreground">
+				<div className="flex flex-col items-center p-2 md:p-4">
+					<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{connectText}</h2>
 					<ConnectButton showBalance />
 				</div>
-				<div className="flex flex-col items-center border-t p-4">
-					<h2 className="mb-4 text-xl">{signTokenText}</h2>
+				<div className="flex flex-col items-center border-t p-2 md:p-4">
+					<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{signTokenText}</h2>
 					<SignTokenButton handleRedirect={() => handleRedirect?.()} />
 				</div>
 			</div>
