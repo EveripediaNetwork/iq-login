@@ -6,12 +6,6 @@ import * as Web3AuthWagmiConnector from "@web3auth/web3auth-wagmi-connector";
 import type { Chain } from "viem";
 import { createConnector } from "wagmi";
 
-if (!process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID) {
-	throw new Error("NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID is not set");
-}
-
-const clientId = process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID;
-
 /**
  * Creates a RainbowKit wallet adapter for the Web3Auth integration.
  *
@@ -57,7 +51,7 @@ export const rainbowWeb3AuthConnector = ({
  * @param chain - The chain configuration to use for the Web3Auth instance.
  * @returns - A new Web3Auth instance with the specified configuration.
  */
-export function createWeb3AuthInstance(chain: Chain) {
+export function createWeb3AuthInstance(chain: Chain, clientId: string) {
 	const chainConfig = {
 		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
 		chainId: `0x${chain.id.toString(16)}`,
