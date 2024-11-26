@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 5.1.1
+
+### Patch Changes
+
+- 412aa0a: Updates web3 auth name to iq.wiki rather than iq wiki ai editor
+
 ## 5.1.0
 
 ### Minor Changes
