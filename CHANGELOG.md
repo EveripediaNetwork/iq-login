@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 5.2.0
+
+### Minor Changes
+
+- 316319f: Removes default wallets and retained only metamask and web3auth
+
 ## 5.1.1
 
 ### Patch Changes
