@@ -14,17 +14,7 @@ pnpm install @everipedia/iq-login wagmi@2.12.4 viem@2.x @rainbow-me/rainbowkit@2
 
 ## 🛠️ Setup
 
-1. Setup Environment Variables
-
-```bash
-# .env
-
-NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=YOUR_PROJECT_ID
-NEXT_PUBLIC_IS_PRODUCTION=true/false
-NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID=YOUR_CLIENT_ID
-```
-
-2. Add the package to your Tailwind CSS configuration:
+1. Add the package to your Tailwind CSS configuration:
 ```tsx
 // tailwind.config.ts
 
@@ -41,12 +31,13 @@ const config: Config = {
 export default config;
 
 
-3. Wrap your application with the RainbowKitClientProvider in your layout file:
+2. Wrap your application with the RainbowKitClientProvider in your layout file:
 
 ```tsx
 // app/layout.tsx
 
 import { RainbowKitClientProvider } from "@everipedia/iq-login";
+import { polygon } from 'wagmi/chains';
 
 export default function RootLayout({
   children,
@@ -56,14 +47,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RainbowKitClientProvider>{children}</RainbowKitClientProvider>
+        <IqLoginProvider 
+          chain={polygon} // Required: Specify the chain to use
+          web3AuthProjectId="YOUR_PROJECT_ID" // Required: Web3Auth Project ID
+        >
+          {children}
+        </IqLoginProvider>
       </body>
     </html>
   );
 }
 ```
 
-4. Add login page to your application. Note: You need to import rainbowkit styles in your application.
+3. Add login page to your application. Note: You need to import rainbowkit styles in your application.
 ```tsx
 // app/login/page.tsx
 
