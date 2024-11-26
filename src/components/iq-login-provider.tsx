@@ -1,8 +1,4 @@
-import {
-	getDefaultConfig,
-	getDefaultWallets,
-	RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type React from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
@@ -15,6 +11,7 @@ import {
 } from "../lib/integrations/web3-auth-connector";
 import { structuralSharing } from "@wagmi/core/query";
 import { Web3AuthProvider } from "./web3-auth-provider";
+import { metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 
 if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
 	throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID is not set");
@@ -32,13 +29,12 @@ export const defaultConfig = getDefaultConfig({
 	projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 	chains: [chain],
 	wallets: [
-		...getDefaultWallets({
-			appName: "IQ.wiki",
-			projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
-		}).wallets,
 		{
-			groupName: "More",
-			wallets: [() => rainbowWeb3AuthConnector({ web3AuthInstance })],
+			groupName: "Recommended",
+			wallets: [
+				() => rainbowWeb3AuthConnector({ web3AuthInstance }),
+				metaMaskWallet,
+			],
 		},
 	],
 	multiInjectedProviderDiscovery: false,
