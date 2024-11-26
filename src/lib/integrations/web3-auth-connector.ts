@@ -25,7 +25,7 @@ export const rainbowWeb3AuthConnector = ({
 	web3AuthInstance: Web3AuthModal.Web3Auth;
 }): Wallet => {
 	const modalConfig = {
-		[Web3AuthBase.WALLET_ADAPTERS.AUTH]: {
+		[Web3AuthBase.WALLET_ADAPTERS.OPENLOGIN]: {
 			label: "openlogin",
 			showOnModal: true,
 		},
