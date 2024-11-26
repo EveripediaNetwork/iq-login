@@ -28,12 +28,12 @@ const chain =
 const web3AuthInstance = createWeb3AuthInstance(chain);
 
 export const defaultConfig = getDefaultConfig({
-	appName: "IQ.Wiki AI Editor",
+	appName: "IQ.wiki",
 	projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 	chains: [chain],
 	wallets: [
 		...getDefaultWallets({
-			appName: "IQ.Wiki AI Editor",
+			appName: "IQ.wiki",
 			projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 		}).wallets,
 		{

@@ -74,7 +74,7 @@ export function createWeb3AuthInstance(chain: Chain) {
 		});
 
 	const uiConfig: Web3AuthModal.Web3AuthOptions["uiConfig"] = {
-		appName: "IQ.Wiki AI Editor",
+		appName: "IQ.wiki",
 		loginMethodsOrder: ["google", "discord", "twitter"],
 		defaultLanguage: "en",
 		modalZIndex: "2147483647",
