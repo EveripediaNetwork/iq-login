@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 6.0.1
+
+### Patch Changes
+
+- 2328e85: fix-fix-wallet-adapters-openlogin-to-auth
+
 ## 6.0.0
 
 ### Major Changes
