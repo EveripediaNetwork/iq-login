@@ -10,7 +10,11 @@ import {
 	rainbowWeb3AuthConnector,
 } from "../lib/integrations/web3-auth-connector";
 import { Web3AuthProvider } from "./web3-auth-provider";
-import { metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
+import {
+	coinbaseWallet,
+	metaMaskWallet,
+	rainbowWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 
 interface IqLoginProviderProps {
 	children: React.ReactNode;
@@ -41,6 +45,10 @@ export function IqLoginProvider({
 					() => rainbowWeb3AuthConnector({ web3AuthInstance }),
 					metaMaskWallet,
 				],
+			},
+			{
+				groupName: "Popular",
+				wallets: [coinbaseWallet, rainbowWallet],
 			},
 		],
 		multiInjectedProviderDiscovery: false,
