@@ -1,5 +1,12 @@
 # @everipedia/iq-login
 
+## 6.1.0
+
+### Minor Changes
+
+- c600863: Adds popular wallet section
+- 5f4e76a: Adds popular wallet section
+
 ## 6.0.1
 
 ### Patch Changes
