@@ -1,8 +1,4 @@
-import {
-	getDefaultConfig,
-	getDefaultWallets,
-	RainbowKitProvider,
-} from "@rainbow-me/rainbowkit";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
@@ -14,6 +10,7 @@ import {
 	rainbowWeb3AuthConnector,
 } from "../lib/integrations/web3-auth-connector";
 import { Web3AuthProvider } from "./web3-auth-provider";
+import { metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 
 interface IqLoginProviderProps {
 	children: React.ReactNode;
@@ -38,13 +35,12 @@ export function IqLoginProvider({
 		projectId: walletConnectProjectId,
 		chains: [chain],
 		wallets: [
-			...getDefaultWallets({
-				appName: "IQ.wiki",
-				projectId: walletConnectProjectId,
-			}).wallets,
 			{
-				groupName: "More",
-				wallets: [() => rainbowWeb3AuthConnector({ web3AuthInstance })],
+				groupName: "Recommended",
+				wallets: [
+					() => rainbowWeb3AuthConnector({ web3AuthInstance }),
+					metaMaskWallet,
+				],
 			},
 		],
 		multiInjectedProviderDiscovery: false,
