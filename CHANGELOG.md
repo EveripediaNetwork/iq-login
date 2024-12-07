@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 6.1.1
+
+### Patch Changes
+
+- b56c3ab: Adds ability to add project name from outside
+
 ## 6.1.0
 
 ### Minor Changes
