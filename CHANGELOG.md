@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 6.1.2
+
+### Patch Changes
+
+- 4a94747: changes group name
+
 ## 6.1.1
 
 ### Patch Changes
