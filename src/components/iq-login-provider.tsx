@@ -45,7 +45,7 @@ export function IqLoginProvider({
 		chains: [chain],
 		wallets: [
 			{
-				groupName: "Recommended",
+				groupName: "Login with Social",
 				wallets: [
 					() => rainbowWeb3AuthConnector({ web3AuthInstance }),
 					metaMaskWallet,
