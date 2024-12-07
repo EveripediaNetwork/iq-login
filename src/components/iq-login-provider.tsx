@@ -15,6 +15,7 @@ import {
 	metaMaskWallet,
 	rainbowWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import { createContext } from "react";
 
 interface IqLoginProviderProps {
 	children: React.ReactNode;
@@ -22,7 +23,10 @@ interface IqLoginProviderProps {
 	chain: Chain;
 	walletConnectProjectId: string;
 	web3AuthProjectId: string;
+	projectName: string;
 }
+
+export const ProjectContext = createContext<string>("");
 
 export function IqLoginProvider({
 	children,
@@ -30,12 +34,13 @@ export function IqLoginProvider({
 	chain,
 	walletConnectProjectId,
 	web3AuthProjectId,
+	projectName,
 }: IqLoginProviderProps) {
 	const queryClient = getQueryClient();
 	const web3AuthInstance = createWeb3AuthInstance(chain, web3AuthProjectId);
 
 	const config = getDefaultConfig({
-		appName: "IQ.wiki",
+		appName: projectName,
 		projectId: walletConnectProjectId,
 		chains: [chain],
 		wallets: [
@@ -58,15 +63,17 @@ export function IqLoginProvider({
 	const initialStates = cookieToInitialState(config, cookie);
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<WagmiProvider config={config} initialState={initialStates}>
-				<RainbowKitProvider theme={iqWikiTheme}>
-					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
-						{children}
-					</Web3AuthProvider>
-				</RainbowKitProvider>
-			</WagmiProvider>
-		</QueryClientProvider>
+		<ProjectContext.Provider value={projectName}>
+			<QueryClientProvider client={queryClient}>
+				<WagmiProvider config={config} initialState={initialStates}>
+					<RainbowKitProvider theme={iqWikiTheme}>
+						<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
+							{children}
+						</Web3AuthProvider>
+					</RainbowKitProvider>
+				</WagmiProvider>
+			</QueryClientProvider>
+		</ProjectContext.Provider>
 	);
 }
 
