@@ -2,7 +2,12 @@ import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
-import { cookieToInitialState, WagmiProvider } from "wagmi";
+import {
+	cookieStorage,
+	cookieToInitialState,
+	createStorage,
+	WagmiProvider,
+} from "wagmi";
 import type { Chain } from "wagmi/chains";
 import { iqWikiTheme } from "../lib/data/rainbow-kit-theme";
 import {
@@ -57,6 +62,9 @@ export function IqLoginProvider({
 			},
 		],
 		multiInjectedProviderDiscovery: false,
+		storage: createStorage({
+			storage: cookieStorage,
+		}),
 		ssr: true,
 	});
 
