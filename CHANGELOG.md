@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 6.1.3
+
+### Patch Changes
+
+- 3feaf3d: adds storage cookie storage
+
 ## 6.1.2
 
 ### Patch Changes
