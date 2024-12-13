@@ -31,25 +31,28 @@ const config: Config = {
 export default config;
 
 
-2. Wrap your application with the RainbowKitClientProvider in your layout file:
+2. Wrap your application with the IqLoginProvider in your layout file:
 
 ```tsx
 // app/layout.tsx
 
 import { RainbowKitClientProvider } from "@everipedia/iq-login";
 import { polygon } from 'wagmi/chains';
+import { headers } from "next/headers";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookie = (await headers()).get("cookie") || "";
   return (
     <html lang="en">
       <body>
         <IqLoginProvider 
           chain={polygon} // Required: Specify the chain to use
           web3AuthProjectId="YOUR_PROJECT_ID" // Required: Web3Auth Project ID
+          cookie={cookie}
         >
           {children}
         </IqLoginProvider>
