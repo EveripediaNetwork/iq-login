@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 6.1.4
+
+### Patch Changes
+
+- fa91092: Adds storage key to createStorage for wagmi config
+
 ## 6.1.3
 
 ### Patch Changes
