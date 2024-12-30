@@ -63,6 +63,7 @@ export function IqLoginProvider({
 		],
 		multiInjectedProviderDiscovery: false,
 		storage: createStorage({
+			key: `wagmi-store-${projectName}`,
 			storage: cookieStorage,
 		}),
 		ssr: true,
