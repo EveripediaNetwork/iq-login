@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 6.2.0
+
+### Minor Changes
+
+- 03c569b: Update dependencies
+
 ## 6.1.4
 
 ### Patch Changes
