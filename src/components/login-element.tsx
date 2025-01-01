@@ -26,19 +26,27 @@ export const Login = ({
 				{title}
 			</h1>
 			<p className="md:text-lg text-muted-foreground">{description}</p>
-			<div className="mt-4 md:mt-8 rounded-md border bg-card text-card-foreground">
-				<div className="flex flex-col items-center p-2 md:p-4">
-					<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{connectText}</h2>
+			<div className="mt-4 md:mt-8 rounded-md border bg-card text-card-foreground divide-y">
+				<div className="flex flex-col items-center p-4 md:p-6">
+					<h2 className="mb-4 text-lg md:text-xl font-medium flex items-center gap-2">
+						<span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">
+							1
+						</span>
+						{connectText}
+					</h2>
 					<div className="flex flex-col gap-2 w-full max-w-xs">
 						{isConnected ? (
 							<div className="flex flex-col gap-2">
-								<p className="text-sm text-muted-foreground">
-									Connected: {address}
-								</p>
+								<div className="p-3 bg-muted rounded-md">
+									<p className="text-sm font-medium">Connected Wallet</p>
+									<p className="text-xs text-muted-foreground break-all">
+										{address}
+									</p>
+								</div>
 								<button
 									type="button"
 									onClick={() => disconnect()}
-									className="w-full px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90"
+									className="w-full px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 transition-colors"
 								>
 									Disconnect
 								</button>
@@ -49,8 +57,7 @@ export const Login = ({
 									type="button"
 									key={connector.uid}
 									onClick={() => connect({ connector })}
-									className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
-									disabled={!connector.ready || isPending}
+									className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 transition-colors"
 								>
 									Connect with {connector.name}
 								</button>
@@ -58,12 +65,17 @@ export const Login = ({
 						)}
 					</div>
 				</div>
-				{isConnected && (
-					<div className="flex flex-col items-center border-t p-2 md:p-4">
-						<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{signTokenText}</h2>
-						<SignTokenButton handleRedirect={handleRedirect ?? (() => {})} />
-					</div>
-				)}
+				<div
+					className={`flex flex-col items-center p-4 md:p-6 ${!isConnected ? "opacity-50" : ""}`}
+				>
+					<h2 className="mb-4 text-lg md:text-xl font-medium flex items-center gap-2">
+						<span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">
+							2
+						</span>
+						{signTokenText}
+					</h2>
+					<SignTokenButton handleRedirect={handleRedirect ?? (() => {})} />
+				</div>
 			</div>
 		</div>
 	);
