@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.2
+
+### Patch Changes
+
+- c83c186: enable ssr in create config
+
 ## 7.0.1
 
 ### Patch Changes
