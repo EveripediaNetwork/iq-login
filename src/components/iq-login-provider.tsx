@@ -10,17 +10,15 @@ import {
 	http,
 } from "wagmi";
 import { fraxtal, type Chain } from "wagmi/chains";
-import { createWeb3AuthInstance } from "../lib/integrations/web3-auth-connector";
 import { Web3AuthProvider } from "./web3-auth-provider";
 import { injected, metaMask } from "wagmi/connectors";
 import { createContext } from "react";
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { web3AuthInstance } from "../lib/integrations/web3-auth-connector";
 
 interface IqLoginProviderProps {
 	children: React.ReactNode;
 	cookie?: string;
-	chain: Chain;
-	walletConnectProjectId: string;
-	web3AuthProjectId: string;
 	projectName: string;
 }
 
@@ -34,7 +32,7 @@ const config = createConfig({
 		[fraxtal.id]: http(),
 	},
 
-	connectors: [injected(), metaMask()],
+	connectors: [Web3AuthConnector({ web3AuthInstance }), injected(), metaMask()],
 	storage: createStorage({
 		storage: cookieStorage,
 	}),
@@ -45,31 +43,8 @@ const config = createConfig({
 export function IqLoginProvider({
 	children,
 	cookie,
-	chain,
-	web3AuthProjectId,
 	projectName,
 }: IqLoginProviderProps) {
-	const web3AuthInstance = createWeb3AuthInstance(chain, web3AuthProjectId);
-
-	// const config = createConfig({
-	// 	chains: [chain],
-	// 	transports: {
-	// 		[chain.id]: http(),
-	// 	},
-
-	// 	connectors: [
-	// 		Web3AuthConnector({ web3AuthInstance }),
-	// 		injected(),
-	// 		metaMask(),
-	// 	],
-	// 	storage: createStorage({
-	// 		key: `wagmi-store-${projectName}`,
-	// 		storage: cookieStorage,
-	// 	}),
-	// 	ssr: true,
-	// 	multiInjectedProviderDiscovery: false,
-	// });
-
 	const initialStates = cookieToInitialState(config, cookie);
 
 	return (
