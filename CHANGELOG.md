@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.3
+
+### Patch Changes
+
+- 4b631b0: Updates provider query client
+
 ## 7.0.2
 
 ### Patch Changes
