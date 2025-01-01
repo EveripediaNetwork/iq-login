@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.7
+
+### Patch Changes
+
+- 41f67df: Fixes chains
+
 ## 7.0.6
 
 ### Patch Changes
