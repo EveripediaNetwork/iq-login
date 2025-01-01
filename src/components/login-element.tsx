@@ -16,7 +16,7 @@ export const Login = ({
 	signTokenText = "Step 2: Authenticate your wallet",
 	handleRedirect,
 }: LoginProps) => {
-	const { connect, connectors, isPending } = useConnect();
+	const { connect, connectors } = useConnect();
 	const { address, isConnected } = useAccount();
 	const { disconnect } = useDisconnect();
 
