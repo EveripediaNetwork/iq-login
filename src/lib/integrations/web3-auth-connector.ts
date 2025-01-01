@@ -1,7 +1,7 @@
 import * as Web3AuthBase from "@web3auth/base";
 import * as Web3AuthEthereumProvider from "@web3auth/ethereum-provider";
 import * as Web3AuthModal from "@web3auth/modal";
-import { type Chain, fraxtal, mainnet } from "viem/chains";
+import { type Chain, fraxtal, mainnet, polygon } from "viem/chains";
 import { iqTestnet } from "../data/iq-testnet";
 
 const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) as number;
@@ -17,7 +17,7 @@ if (!web3AuthClientId) {
 	);
 }
 
-let chain: Chain;
+export let chain: Chain;
 switch (chainId) {
 	case 1:
 		chain = mainnet;
@@ -25,9 +25,13 @@ switch (chainId) {
 	case 252:
 		chain = fraxtal;
 		break;
+	case 137:
+		chain = polygon;
+		break;
 	case 313_377:
 		chain = iqTestnet;
 		break;
+
 	default:
 		chain = mainnet;
 }
