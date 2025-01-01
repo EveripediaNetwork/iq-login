@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
 import {
 	cookieStorage,
@@ -27,6 +26,8 @@ interface IqLoginProviderProps {
 
 export const ProjectContext = createContext<string>("");
 
+const queryClient = new QueryClient();
+
 export function IqLoginProvider({
 	children,
 	cookie,
@@ -34,7 +35,6 @@ export function IqLoginProvider({
 	web3AuthProjectId,
 	projectName,
 }: IqLoginProviderProps) {
-	const queryClient = getQueryClient();
 	const web3AuthInstance = createWeb3AuthInstance(chain, web3AuthProjectId);
 
 	const config = createConfig({
@@ -42,6 +42,7 @@ export function IqLoginProvider({
 		transports: {
 			[chain.id]: http(),
 		},
+
 		connectors: [
 			Web3AuthConnector({ web3AuthInstance }),
 			injected(),
@@ -59,34 +60,13 @@ export function IqLoginProvider({
 
 	return (
 		<ProjectContext.Provider value={projectName}>
-			<QueryClientProvider client={queryClient}>
-				<WagmiProvider config={config} initialState={initialStates}>
+			<WagmiProvider config={config} initialState={initialStates}>
+				<QueryClientProvider client={queryClient}>
 					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
 						{children}
 					</Web3AuthProvider>
-				</WagmiProvider>
-			</QueryClientProvider>
+				</QueryClientProvider>
+			</WagmiProvider>
 		</ProjectContext.Provider>
 	);
-}
-
-function makeQueryClient() {
-	return new QueryClient({
-		defaultOptions: {
-			queries: {
-				staleTime: 60 * 1000,
-				structuralSharing,
-			},
-		},
-	});
-}
-
-let browserQueryClient: QueryClient | undefined = undefined;
-
-function getQueryClient() {
-	if (typeof window === "undefined") {
-		return makeQueryClient();
-	}
-	if (!browserQueryClient) browserQueryClient = makeQueryClient();
-	return browserQueryClient;
 }
