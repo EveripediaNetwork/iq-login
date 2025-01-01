@@ -13,7 +13,7 @@ import {
 import type { Chain } from "wagmi/chains";
 import { createWeb3AuthInstance } from "../lib/integrations/web3-auth-connector";
 import { Web3AuthProvider } from "./web3-auth-provider";
-import { injected } from "wagmi/connectors";
+import { injected, metaMask } from "wagmi/connectors";
 import { createContext } from "react";
 
 interface IqLoginProviderProps {
@@ -42,7 +42,11 @@ export function IqLoginProvider({
 		transports: {
 			[chain.id]: http(),
 		},
-		connectors: [Web3AuthConnector({ web3AuthInstance }), injected()],
+		connectors: [
+			Web3AuthConnector({ web3AuthInstance }),
+			injected(),
+			metaMask(),
+		],
 		storage: createStorage({
 			key: `wagmi-store-${projectName}`,
 			storage: cookieStorage,
