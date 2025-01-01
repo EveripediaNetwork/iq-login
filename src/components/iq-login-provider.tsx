@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import type React from "react";
 import {
 	cookieStorage,
@@ -9,12 +8,14 @@ import {
 	createConfig,
 	http,
 } from "wagmi";
-import { fraxtal, type Chain } from "wagmi/chains";
 import { Web3AuthProvider } from "./web3-auth-provider";
 import { injected, metaMask } from "wagmi/connectors";
 import { createContext } from "react";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { web3AuthInstance } from "../lib/integrations/web3-auth-connector";
+import {
+	chain,
+	web3AuthInstance,
+} from "../lib/integrations/web3-auth-connector";
 
 interface IqLoginProviderProps {
 	children: React.ReactNode;
@@ -27,9 +28,9 @@ export const ProjectContext = createContext<string>("");
 const queryClient = new QueryClient();
 
 const config = createConfig({
-	chains: [fraxtal],
+	chains: [chain],
 	transports: {
-		[fraxtal.id]: http(),
+		[chain.id]: http(),
 	},
 
 	connectors: [Web3AuthConnector({ web3AuthInstance }), injected(), metaMask()],
