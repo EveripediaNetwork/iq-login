@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.5
+
+### Patch Changes
+
+- 1b0574d: Removes web3auth provider
+
 ## 7.0.4
 
 ### Patch Changes
