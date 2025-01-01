@@ -1,7 +1,16 @@
 import BoringAvatar from "boring-avatars";
-import type { AvatarComponent } from "@rainbow-me/rainbowkit";
+import { useEnsAvatar } from "wagmi";
 
-export const CustomAvatar: AvatarComponent = ({ address, ensImage, size }) => {
+interface CustomAvatarProps {
+	address?: string;
+	size?: number;
+}
+
+export const CustomAvatar = ({ address, size = 40 }: CustomAvatarProps) => {
+	const { data: ensImage } = useEnsAvatar({
+		name: address,
+	});
+
 	return ensImage ? (
 		<img
 			src={ensImage}

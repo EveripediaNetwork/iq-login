@@ -11,7 +11,7 @@ export { SignTokenButton } from "./components/sign-token-button";
 // ===============
 // Integrations
 // ===============
-export { rainbowWeb3AuthConnector } from "./lib/integrations/web3-auth-connector";
+export { createWeb3AuthInstance } from "./lib/integrations/web3-auth-connector";
 
 // ===============
 // Hooks

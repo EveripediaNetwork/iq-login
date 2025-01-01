@@ -1,5 +1,5 @@
-import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
 import {
@@ -7,19 +7,13 @@ import {
 	cookieToInitialState,
 	createStorage,
 	WagmiProvider,
+	createConfig,
+	http,
 } from "wagmi";
 import type { Chain } from "wagmi/chains";
-import { iqWikiTheme } from "../lib/data/rainbow-kit-theme";
-import {
-	createWeb3AuthInstance,
-	rainbowWeb3AuthConnector,
-} from "../lib/integrations/web3-auth-connector";
+import { createWeb3AuthInstance } from "../lib/integrations/web3-auth-connector";
 import { Web3AuthProvider } from "./web3-auth-provider";
-import {
-	coinbaseWallet,
-	metaMaskWallet,
-	rainbowWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { injected } from "wagmi/connectors";
 import { createContext } from "react";
 
 interface IqLoginProviderProps {
@@ -37,36 +31,22 @@ export function IqLoginProvider({
 	children,
 	cookie,
 	chain,
-	walletConnectProjectId,
 	web3AuthProjectId,
 	projectName,
 }: IqLoginProviderProps) {
 	const queryClient = getQueryClient();
 	const web3AuthInstance = createWeb3AuthInstance(chain, web3AuthProjectId);
 
-	const config = getDefaultConfig({
-		appName: projectName,
-		projectId: walletConnectProjectId,
+	const config = createConfig({
 		chains: [chain],
-		wallets: [
-			{
-				groupName: "Login with Social",
-				wallets: [
-					() => rainbowWeb3AuthConnector({ web3AuthInstance }),
-					metaMaskWallet,
-				],
-			},
-			{
-				groupName: "Popular",
-				wallets: [coinbaseWallet, rainbowWallet],
-			},
-		],
-		multiInjectedProviderDiscovery: false,
+		transports: {
+			[chain.id]: http(),
+		},
+		connectors: [Web3AuthConnector({ web3AuthInstance }), injected()],
 		storage: createStorage({
 			key: `wagmi-store-${projectName}`,
 			storage: cookieStorage,
 		}),
-		ssr: true,
 	});
 
 	const initialStates = cookieToInitialState(config, cookie);
@@ -75,11 +55,9 @@ export function IqLoginProvider({
 		<ProjectContext.Provider value={projectName}>
 			<QueryClientProvider client={queryClient}>
 				<WagmiProvider config={config} initialState={initialStates}>
-					<RainbowKitProvider theme={iqWikiTheme}>
-						<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
-							{children}
-						</Web3AuthProvider>
-					</RainbowKitProvider>
+					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
+						{children}
+					</Web3AuthProvider>
 				</WagmiProvider>
 			</QueryClientProvider>
 		</ProjectContext.Provider>
