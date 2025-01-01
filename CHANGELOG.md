@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.4
+
+### Patch Changes
+
+- ffa08fb: Removes ssr
+
 ## 7.0.3
 
 ### Patch Changes
