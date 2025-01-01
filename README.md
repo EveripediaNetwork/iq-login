@@ -2,20 +2,19 @@
 
 ## 🌟 Introduction
 
-@everipedia/iq-login is a package that provides easy integration of IQ.wiki login functionality into your Next.js applications. It allows users to authenticate using their crypto wallet and web3auth with rainbow kit seamlessly.
+@everipedia/iq-login is a package that provides easy integration of IQ.wiki login functionality into your Next.js applications. It allows users to authenticate using their crypto wallet and web3auth with Wagmi seamlessly.
 
 ## 📦 Installation
 
-To install the package, run:
-
 ```bash
-pnpm install @everipedia/iq-login wagmi@2.12.4 viem@2.x @rainbow-me/rainbowkit@2.1.4
+pnpm install @everipedia/iq-login wagmi@2.x viem@2.x @web3auth/modal @web3auth/ethereum-provider @web3auth/web3auth-wagmi-connector
 ```
 
 ## 🛠️ Setup
 
 1. Add the package to your Tailwind CSS configuration:
-```tsx
+
+```ts
 // tailwind.config.ts
 
 import type { Config } from "tailwindcss";
@@ -29,14 +28,14 @@ const config: Config = {
 };
 
 export default config;
-
+```
 
 2. Wrap your application with the IqLoginProvider in your layout file:
 
 ```tsx
 // app/layout.tsx
 
-import { RainbowKitClientProvider } from "@everipedia/iq-login";
+import { IqLoginProvider } from "@everipedia/iq-login";
 import { polygon } from 'wagmi/chains';
 import { headers } from "next/headers";
 
@@ -45,13 +44,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookie = (await headers()).get("cookie") || "";
+  const cookie = headers().get("cookie") || "";
   return (
     <html lang="en">
       <body>
         <IqLoginProvider 
           chain={polygon} // Required: Specify the chain to use
           web3AuthProjectId="YOUR_PROJECT_ID" // Required: Web3Auth Project ID
+          projectName="YOUR_PROJECT_NAME" // Required: Project name for storage
           cookie={cookie}
         >
           {children}
@@ -62,12 +62,12 @@ export default function RootLayout({
 }
 ```
 
-3. Add login page to your application. Note: You need to import rainbowkit styles in your application.
+3. Add login page to your application:
+
 ```tsx
 // app/login/page.tsx
 
 import { Login } from '@everipedia/iq-login';
-import "@rainbow-me/rainbowkit/styles.css"; // NOTE: For pages router this should be in _app.tsx
 
 const LoginPage = () => {
   return (
@@ -80,14 +80,9 @@ const LoginPage = () => {
 export default LoginPage;
 ```
 
-
 ## 🔒 Use Auth Hook
 
-The package provides a custom hook called useAuth that can be used to get the current user's information.
-It can be used to re-sign token, get the current token, and check if the user is authenticated.
-
-> Note: This hook automatically calls signToken on mount. it prompts the user to sign the token if the token is not signed and the user is connected.
-
+The package provides a custom hook called useAuth for managing authentication state:
 
 ```tsx
 // components/my-component.tsx
@@ -95,7 +90,7 @@ It can be used to re-sign token, get the current token, and check if the user is
 import { useAuth } from '@everipedia/iq-login';
 
 function MyComponent() {
-  const { token, loading, reSignToken, error, logout } = useAuth();
+  const { token, loading, reSignToken, error, logout, web3AuthUser } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -105,25 +100,26 @@ function MyComponent() {
     return <div>Error: {error}</div>;
   }
 
-  if (token) {
-    return <div>Authenticated! Token: {token}</div>;
-  }
-
   return (
     <div>
-      <button onClick={reSignToken}>Re-Sign Token</button>
-      {token && <button onClick={logout}>Logout</button>}
+      {token ? (
+        <>
+          <p>Authenticated!</p>
+          <button onClick={logout}>Logout</button>
+        </>
+      ) : (
+        <button onClick={reSignToken}>Sign Token</button>
+      )}
     </div>
   );
 }
 ```
 
-
 ## 🔑 Authentication Helper
 
-The package includes a `getAuth` function that can be used to retrieve the authentication token and address. Here's how you can use it:
+Use the getAuth utility function to verify authentication status:
 
-```tsx
+```ts
 import { getAuth } from '@everipedia/iq-login';
 
 const { token, address } = await getAuth();
@@ -135,23 +131,17 @@ if (token && address) {
 } else {
   console.log('User is not authenticated');
 }
-
-
-This function retrieves the authentication token from cookies and verifies it. If the token is valid, it returns both the token and the associated address.
 ```
 
 ## 🎨 Styling
 
-The package is designed to work with Tailwind CSS and Shad-cn Theme. Make sure to add the shad-cn theme to your project.
-You can learn more about it here: https://ui.shadcn.com/themes
+The package uses Tailwind CSS and Shadcn UI Theme. Visit https://ui.shadcn.com/themes for theme customization.
 
-## 📝 Usage on Pages router
+## 📝 Usage on Pages Router
 
-1. Add the package in transpilePackages in your next.config.js file.
+1. Add the package to transpilePackages in next.config.js:
 
-```tsx
-// next.config.js
-
+```ts
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -159,11 +149,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
-``` 
-2. Add the rainbowkit styles in your _app.tsx file.
-
-```tsx
-// _app.tsx
-
-import "@rainbow-me/rainbowkit/styles.css";
 ```
