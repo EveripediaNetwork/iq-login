@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.6
+
+### Patch Changes
+
+- e956741: Re-enable web3auth
+
 ## 7.0.5
 
 ### Patch Changes
