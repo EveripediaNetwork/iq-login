@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import type React from "react";
 import {
-	cookieStorage,
+	// cookieStorage,
 	cookieToInitialState,
-	createStorage,
+	// createStorage,
 	WagmiProvider,
 	createConfig,
 	http,
@@ -30,7 +30,7 @@ const queryClient = new QueryClient();
 
 export function IqLoginProvider({
 	children,
-	cookie,
+	// cookie,
 	chain,
 	web3AuthProjectId,
 	projectName,
@@ -48,19 +48,20 @@ export function IqLoginProvider({
 			injected(),
 			metaMask(),
 		],
-		storage: createStorage({
-			key: `wagmi-store-${projectName}`,
-			storage: cookieStorage,
-		}),
-		ssr: true,
+		// storage: createStorage({
+		// 	key: `wagmi-store-${projectName}`,
+		// 	storage: cookieStorage,
+		// }),
+		// ssr: true,
 		multiInjectedProviderDiscovery: false,
 	});
 
-	const initialStates = cookieToInitialState(config, cookie);
+	// const initialStates = cookieToInitialState(config, cookie);
 
 	return (
 		<ProjectContext.Provider value={projectName}>
-			<WagmiProvider config={config} initialState={initialStates}>
+			{/* <WagmiProvider config={config} initialState={initialStates}> */}
+			<WagmiProvider config={config}>
 				<QueryClientProvider client={queryClient}>
 					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
 						{children}
