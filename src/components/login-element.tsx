@@ -45,6 +45,7 @@ export const Login = ({
 								</div>
 								<button
 									type="button"
+									suppressHydrationWarning
 									onClick={() => disconnect()}
 									className="w-full px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 transition-colors"
 								>
