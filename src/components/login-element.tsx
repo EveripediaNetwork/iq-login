@@ -1,4 +1,4 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { SignTokenButton } from "./sign-token-button";
 
 interface LoginProps {
@@ -16,6 +16,10 @@ export const Login = ({
 	signTokenText = "Step 2: Authenticate your wallet",
 	handleRedirect,
 }: LoginProps) => {
+	const { connect, connectors, isPending } = useConnect();
+	const { address, isConnected } = useAccount();
+	const { disconnect } = useDisconnect();
+
 	return (
 		<div className="max-w-xl w-full text-center">
 			<h1 className="mb-2 md:mb-4 text-2xl md:text-3xl xl:text-4xl font-semibold xl:font-bold">
@@ -25,12 +29,41 @@ export const Login = ({
 			<div className="mt-4 md:mt-8 rounded-md border bg-card text-card-foreground">
 				<div className="flex flex-col items-center p-2 md:p-4">
 					<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{connectText}</h2>
-					<ConnectButton showBalance />
+					<div className="flex flex-col gap-2 w-full max-w-xs">
+						{isConnected ? (
+							<div className="flex flex-col gap-2">
+								<p className="text-sm text-muted-foreground">
+									Connected: {address}
+								</p>
+								<button
+									type="button"
+									onClick={() => disconnect()}
+									className="w-full px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90"
+								>
+									Disconnect
+								</button>
+							</div>
+						) : (
+							connectors.map((connector) => (
+								<button
+									type="button"
+									key={connector.uid}
+									onClick={() => connect({ connector })}
+									className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+									disabled={!connector.ready || isPending}
+								>
+									Connect with {connector.name}
+								</button>
+							))
+						)}
+					</div>
 				</div>
-				<div className="flex flex-col items-center border-t p-2 md:p-4">
-					<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{signTokenText}</h2>
-					<SignTokenButton handleRedirect={() => handleRedirect?.()} />
-				</div>
+				{isConnected && (
+					<div className="flex flex-col items-center border-t p-2 md:p-4">
+						<h2 className="mb-2 md:mb-4 text-lg md:text-xl">{signTokenText}</h2>
+						<SignTokenButton handleRedirect={handleRedirect ?? (() => {})} />
+					</div>
+				)}
 			</div>
 		</div>
 	);
