@@ -1,5 +1,13 @@
 # @everipedia/iq-login
 
+## 7.0.1
+
+### Patch Changes
+
+- 3dc5789: removes unused variables
+- 1791717: adds supress hydration warning on disconnect button
+- 1feb5dc: Adds metamask connector
+
 ## 7.0.0
 
 ### Major Changes
