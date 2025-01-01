@@ -51,6 +51,8 @@ export function IqLoginProvider({
 			key: `wagmi-store-${projectName}`,
 			storage: cookieStorage,
 		}),
+		ssr: true,
+		multiInjectedProviderDiscovery: false,
 	});
 
 	const initialStates = cookieToInitialState(config, cookie);
