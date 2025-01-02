@@ -4,7 +4,7 @@ import type React from "react";
 import { createContext } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 import {
-	wagmiConfig,
+	getWagmiConfig,
 	web3AuthInstance,
 } from "../lib/integrations/wagmi.config";
 import { Web3AuthProvider } from "./web3-auth-provider";
@@ -22,6 +22,7 @@ export function IqLoginProvider({
 	cookie,
 	projectName,
 }: IqLoginProviderProps) {
+	const wagmiConfig = getWagmiConfig();
 	const initialStates = cookieToInitialState(wagmiConfig, cookie);
 	const queryClient = getQueryClient();
 

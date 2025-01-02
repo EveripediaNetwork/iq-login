@@ -63,15 +63,21 @@ export const web3AuthInstance = new Web3AuthModal.Web3Auth({
 	web3AuthNetwork: Web3AuthBase.WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 });
 
-export const wagmiConfig: Config = createConfig({
-	chains: [chain],
-	transports: {
-		[chain.id]: http(),
-	},
-	connectors: [Web3AuthConnector({ web3AuthInstance }), injected(), metaMask()],
-	storage: createStorage({
-		storage: cookieStorage,
-	}),
-	ssr: true,
-	multiInjectedProviderDiscovery: false,
-});
+export function getWagmiConfig(): Config {
+	return createConfig({
+		chains: [chain],
+		transports: {
+			[chain.id]: http(),
+		},
+		connectors: [
+			Web3AuthConnector({ web3AuthInstance }),
+			injected(),
+			metaMask(),
+		],
+		storage: createStorage({
+			storage: cookieStorage,
+		}),
+		ssr: true,
+		multiInjectedProviderDiscovery: false,
+	});
+}
