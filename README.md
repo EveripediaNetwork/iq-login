@@ -12,7 +12,20 @@ pnpm install @everipedia/iq-login wagmi@2.x viem@2.x @web3auth/modal @web3auth/e
 
 ## 🛠️ Setup
 
-1. Add the package to your Tailwind CSS configuration:
+1. Add environment variables:
+```bash
+## .env.local
+NEXT_PUBLIC_CHAIN_ID=your_chain_id 
+NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID=your_web3auth_client_id
+```
+
+Currently supported chains:
+- Ethereum Mainnet (1)
+- Polygon Mainnet (137)
+- Fraxtal Mainnet (252)
+- IQ Testnet (313_377)
+
+2. Add the package to your Tailwind CSS configuration:
 
 ```ts
 // tailwind.config.ts
@@ -30,29 +43,32 @@ const config: Config = {
 export default config;
 ```
 
-2. Wrap your application with the IqLoginProvider in your layout file:
+3. Wrap your application with the IqLoginProvider in your layout file:
 
 ```tsx
 // app/layout.tsx
 
-import { IqLoginProvider } from "@everipedia/iq-login";
-import { polygon } from 'wagmi/chains';
+import { IqLoginProvider } from "@everipedia/iq-login/client";
+import { getWagmiConfig } from "@everipedia/iq-login";
 import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookie = headers().get("cookie") || "";
+  const initialStates = cookieToInitialState(
+    getWagmiConfig(), 
+    (await headers()).get("cookie")
+  );
+
   return (
     <html lang="en">
       <body>
         <IqLoginProvider 
-          chain={polygon} // Required: Specify the chain to use
-          web3AuthProjectId="YOUR_PROJECT_ID" // Required: Web3Auth Project ID
           projectName="YOUR_PROJECT_NAME" // Required: Project name for storage
-          cookie={cookie}
+          initialStates={initialStates}
         >
           {children}
         </IqLoginProvider>
@@ -62,7 +78,7 @@ export default function RootLayout({
 }
 ```
 
-3. Add login page to your application:
+4. Add login page to your application:
 
 ```tsx
 // app/login/page.tsx
