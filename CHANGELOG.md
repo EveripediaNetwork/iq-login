@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.8
+
+### Patch Changes
+
+- cd94800: Adds better ux copies and button styles in login element
+
 ## 7.0.7
 
 ### Patch Changes
