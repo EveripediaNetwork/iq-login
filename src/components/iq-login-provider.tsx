@@ -1,7 +1,9 @@
+"use client";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 import {
 	getWagmiConfig,
@@ -22,9 +24,20 @@ export function IqLoginProvider({
 	cookie,
 	projectName,
 }: IqLoginProviderProps) {
-	const wagmiConfig = getWagmiConfig();
+	const [wagmiConfig] = useState(() => getWagmiConfig());
+	const [queryClient] = useState(
+		() =>
+			new QueryClient({
+				defaultOptions: {
+					queries: {
+						staleTime: 60 * 1000,
+						structuralSharing,
+					},
+				},
+			}),
+	);
+
 	const initialStates = cookieToInitialState(wagmiConfig, cookie);
-	const queryClient = getQueryClient();
 
 	return (
 		<ProjectContext.Provider value={projectName}>
@@ -37,25 +50,4 @@ export function IqLoginProvider({
 			</WagmiProvider>
 		</ProjectContext.Provider>
 	);
-}
-
-function makeQueryClient() {
-	return new QueryClient({
-		defaultOptions: {
-			queries: {
-				staleTime: 60 * 1000,
-				structuralSharing,
-			},
-		},
-	});
-}
-
-let browserQueryClient: QueryClient | undefined = undefined;
-
-function getQueryClient() {
-	if (typeof window === "undefined") {
-		return makeQueryClient();
-	}
-	if (!browserQueryClient) browserQueryClient = makeQueryClient();
-	return browserQueryClient;
 }
