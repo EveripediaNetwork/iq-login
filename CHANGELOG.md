@@ -1,5 +1,12 @@
 # @everipedia/iq-login
 
+## 7.0.10
+
+### Patch Changes
+
+- 6b635d4: make wagmi config export as function instead of variable
+- b87ae11: make use of useEffect for getWagmiConfig and query client
+
 ## 7.0.9
 
 ### Patch Changes
