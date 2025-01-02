@@ -49,26 +49,21 @@ export default config;
 // app/layout.tsx
 
 import { IqLoginProvider } from "@everipedia/iq-login/client";
-import { getWagmiConfig } from "@everipedia/iq-login";
 import { headers } from "next/headers";
-import { cookieToInitialState } from "wagmi";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialStates = cookieToInitialState(
-    getWagmiConfig(), 
-    (await headers()).get("cookie")
-  );
+  const cookie = (await headers()).get("cookie")
 
   return (
     <html lang="en">
       <body>
         <IqLoginProvider 
           projectName="YOUR_PROJECT_NAME" // Required: Project name for storage
-          initialStates={initialStates}
+          cookie={cookie}
         >
           {children}
         </IqLoginProvider>
