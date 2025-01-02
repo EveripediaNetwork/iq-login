@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.13
+
+### Patch Changes
+
+- 7896a99: Removes getWagmiConfig export
+
 ## 7.0.12
 
 ### Patch Changes
