@@ -1,6 +1,6 @@
 {
 	"name": "@everipedia/iq-login",
-	"version": "7.0.12",
+	"version": "7.0.13",
 	"description": "Auth library for IQ apps",
 	"exports": {
 		".": {
