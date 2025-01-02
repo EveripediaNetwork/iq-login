@@ -1,5 +1,12 @@
 # @everipedia/iq-login
 
+## 7.0.12
+
+### Patch Changes
+
+- 945a5ba: Removes metamask connector
+- 9e04ae7: update api back to passing cookie to provider
+
 ## 7.0.11
 
 ### Patch Changes
