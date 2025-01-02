@@ -10,7 +10,7 @@ import {
 	createStorage,
 	http,
 } from "wagmi";
-import { injected, metaMask } from "wagmi/connectors";
+import { injected } from "wagmi/connectors";
 import { iqTestnet } from "../data/iq-testnet";
 
 const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) as number;
@@ -69,11 +69,7 @@ export function getWagmiConfig(): Config {
 		transports: {
 			[chain.id]: http(),
 		},
-		connectors: [
-			Web3AuthConnector({ web3AuthInstance }),
-			injected(),
-			metaMask(),
-		],
+		connectors: [Web3AuthConnector({ web3AuthInstance }), injected()],
 		storage: createStorage({
 			storage: cookieStorage,
 		}),
