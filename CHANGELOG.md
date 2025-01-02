@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.11
+
+### Patch Changes
+
+- f409256: Made cookieToInitialState to be passed from server component
+
 ## 7.0.10
 
 ### Patch Changes
