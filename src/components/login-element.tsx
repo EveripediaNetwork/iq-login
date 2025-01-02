@@ -11,9 +11,9 @@ interface LoginProps {
 
 export const Login = ({
 	title = "Sign In / Connect",
-	description = "Connect your wallet to access your account",
-	connectText = "Step 1: Connect your wallet",
-	signTokenText = "Step 2: Authenticate your wallet",
+	description = "Get started with your preferred login method",
+	connectText = "Choose your login method",
+	signTokenText = "Verify your wallet",
 	handleRedirect,
 }: LoginProps) => {
 	const { connect, connectors } = useConnect();
@@ -59,9 +59,9 @@ export const Login = ({
 									key={connector.uid}
 									suppressHydrationWarning
 									onClick={() => connect({ connector })}
-									className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 transition-colors"
+									className="w-full px-4 py-2 border border-primary text-primary hover:bg-primary/10 rounded-md transition-colors"
 								>
-									Connect with {connector.name}
+									{getConnectorLabel(connector.name)}
 								</button>
 							))
 						)}
@@ -81,4 +81,17 @@ export const Login = ({
 			</div>
 		</div>
 	);
+};
+
+const getConnectorLabel = (connectorName: string) => {
+	switch (connectorName) {
+		case "Web3Auth":
+			return "Login with Email / Socials";
+		case "Injected":
+			return "Login with Browser Wallet";
+		case "MetaMask":
+			return "Login with MetaMask";
+		default:
+			return `Login with ${connectorName}`;
+	}
 };
