@@ -11,7 +11,7 @@ export { SignTokenButton } from "./components/sign-token-button";
 // ===============
 // Integrations
 // ===============
-export { web3AuthInstance } from "./lib/integrations/web3-auth-connector";
+export { web3AuthInstance } from "./lib/integrations/wagmi.config";
 
 // ===============
 // Hooks

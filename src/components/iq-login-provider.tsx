@@ -1,21 +1,13 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
-import {
-	cookieStorage,
-	cookieToInitialState,
-	createStorage,
-	WagmiProvider,
-	createConfig,
-	http,
-} from "wagmi";
-import { Web3AuthProvider } from "./web3-auth-provider";
-import { injected, metaMask } from "wagmi/connectors";
 import { createContext } from "react";
-import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { cookieToInitialState, WagmiProvider } from "wagmi";
 import {
-	chain,
+	wagmiConfig,
 	web3AuthInstance,
-} from "../lib/integrations/web3-auth-connector";
+} from "../lib/integrations/wagmi.config";
+import { Web3AuthProvider } from "./web3-auth-provider";
 
 interface IqLoginProviderProps {
 	children: React.ReactNode;
@@ -25,32 +17,17 @@ interface IqLoginProviderProps {
 
 export const ProjectContext = createContext<string>("");
 
-const queryClient = new QueryClient();
-
-const config = createConfig({
-	chains: [chain],
-	transports: {
-		[chain.id]: http(),
-	},
-
-	connectors: [Web3AuthConnector({ web3AuthInstance }), injected(), metaMask()],
-	storage: createStorage({
-		storage: cookieStorage,
-	}),
-	ssr: true,
-	multiInjectedProviderDiscovery: false,
-});
-
 export function IqLoginProvider({
 	children,
 	cookie,
 	projectName,
 }: IqLoginProviderProps) {
-	const initialStates = cookieToInitialState(config, cookie);
+	const initialStates = cookieToInitialState(wagmiConfig, cookie);
+	const queryClient = getQueryClient();
 
 	return (
 		<ProjectContext.Provider value={projectName}>
-			<WagmiProvider config={config} initialState={initialStates}>
+			<WagmiProvider config={wagmiConfig} initialState={initialStates}>
 				<QueryClientProvider client={queryClient}>
 					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
 						{children}
@@ -59,4 +36,25 @@ export function IqLoginProvider({
 			</WagmiProvider>
 		</ProjectContext.Provider>
 	);
+}
+
+function makeQueryClient() {
+	return new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: 60 * 1000,
+				structuralSharing,
+			},
+		},
+	});
+}
+
+let browserQueryClient: QueryClient | undefined = undefined;
+
+function getQueryClient() {
+	if (typeof window === "undefined") {
+		return makeQueryClient();
+	}
+	if (!browserQueryClient) browserQueryClient = makeQueryClient();
+	return browserQueryClient;
 }
