@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.0.9
+
+### Patch Changes
+
+- eba3637: query client and wagmi config refactoring
+
 ## 7.0.8
 
 ### Patch Changes
