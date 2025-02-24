@@ -87,21 +87,33 @@ const ConnectorButton = ({
 }: {
 	name: string;
 	onClick: () => void;
-}) => (
-	<button
-		type="button"
-		onClick={onClick}
-		className="group relative flex items-center justify-between rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent"
-	>
-		<div>
-			<p className="font-medium text-sm">{getConnectorLabel(name)}</p>
-			<p className="text-xs text-muted-foreground">
-				Connect using your {name} wallet
-			</p>
-		</div>
-		<ArrowRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-	</button>
-);
+}) => {
+	const { isPending, error } = useConnect();
+
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			disabled={isPending}
+			className="group relative flex items-center justify-between rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent disabled:opacity-50"
+		>
+			<div>
+				<p className="font-medium text-sm">{getConnectorLabel(name)}</p>
+				<p className="text-xs text-muted-foreground">
+					{isPending ? "Connecting..." : `Connect using your ${name} wallet`}
+				</p>
+				{error && (
+					<p className="text-xs text-destructive mt-1">{error.message}</p>
+				)}
+			</div>
+			{isPending ? (
+				<Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+			) : (
+				<ArrowRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+			)}
+		</button>
+	);
+};
 
 const ConnectedWalletView = ({
 	signTokenText,

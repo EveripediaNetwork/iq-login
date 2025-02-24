@@ -12,7 +12,6 @@ import {
 import { Web3AuthProvider } from "./web3-auth-provider";
 
 interface IqLoginProviderProps {
-	children: React.ReactNode;
 	projectName: string;
 	cookie?: string | null;
 }
@@ -23,7 +22,7 @@ export function IqLoginProvider({
 	children,
 	cookie,
 	projectName,
-}: IqLoginProviderProps) {
+}: React.PropsWithChildren<IqLoginProviderProps>) {
 	const [wagmiConfig] = useState(() => getWagmiConfig());
 	const [queryClient] = useState(
 		() =>
