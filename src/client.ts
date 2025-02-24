@@ -6,7 +6,6 @@
 export { CustomAvatar } from "./components/custom-avatar";
 export { IqLoginProvider } from "./components/iq-login-provider";
 export { Login } from "./components/login-element";
-export { SignTokenButton } from "./components/sign-token-button";
 
 // ===============
 // Integrations
