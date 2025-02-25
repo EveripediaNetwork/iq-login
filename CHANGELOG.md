@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.1.3
+
+### Patch Changes
+
+- e9d45c0: Fixes redirect not happening on disabled state
+
 ## 7.1.2
 
 ### Patch Changes
