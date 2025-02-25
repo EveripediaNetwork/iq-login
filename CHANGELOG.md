@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.1.1
+
+### Patch Changes
+
+- 0b8b0a1: Fixes clip-path in svg to clipPath to respect react rules
+
 ## 7.1.0
 
 ### Minor Changes
