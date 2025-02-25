@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { useAuth } from "../client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Social } from "../lib/icons/social";
 import { Injected } from "../lib/icons/injected";
 import { WalletConnect } from "../lib/icons/wallet-connect";
@@ -241,14 +241,30 @@ export const SignTokenButton = ({
 	const { isConnected } = useAccount();
 	const { token, signToken, loading, error } = useAuth();
 
+	const hasRedirected = useRef(false);
+
 	useEffect(() => {
 		const handleEffect = async () => {
-			if (token && isConnected) {
-				await handleTokenPass?.(token);
-				handleRedirect();
+			if (token && isConnected && !hasRedirected.current) {
+				hasRedirected.current = true;
+
+				try {
+					if (handleTokenPass) {
+						await handleTokenPass(token);
+					}
+					handleRedirect();
+				} catch (err) {
+					hasRedirected.current = false;
+					console.error("Error during authentication flow:", err);
+				}
 			}
 		};
+
 		handleEffect();
+
+		return () => {
+			hasRedirected.current = false;
+		};
 	}, [handleRedirect, handleTokenPass, isConnected, token]);
 
 	const StatusDisplay = () => {
