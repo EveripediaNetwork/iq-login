@@ -78,11 +78,11 @@ export function getWagmiConfig(): Config {
 			[chain.id]: http(),
 		},
 		connectors: [
-			Web3AuthConnector({ web3AuthInstance }),
 			injected(),
 			walletConnect({
 				projectId: walletConnectProjectId,
 			}),
+			Web3AuthConnector({ web3AuthInstance }),
 		],
 		storage: createStorage({
 			storage: cookieStorage,
