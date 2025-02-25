@@ -10,11 +10,19 @@ import {
 	createStorage,
 	http,
 } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { injected, walletConnect } from "wagmi/connectors";
 import { iqTestnet } from "../data/iq-testnet";
 
 const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID) as number;
 const web3AuthClientId = process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID as string;
+const walletConnectProjectId = process.env
+	.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string;
+
+if (!walletConnectProjectId) {
+	throw new Error(
+		"NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID environment variable is required",
+	);
+}
 
 if (!chainId) {
 	throw new Error("NEXT_PUBLIC_CHAIN_ID environment variable is required");
@@ -69,7 +77,13 @@ export function getWagmiConfig(): Config {
 		transports: {
 			[chain.id]: http(),
 		},
-		connectors: [Web3AuthConnector({ web3AuthInstance }), injected()],
+		connectors: [
+			injected(),
+			walletConnect({
+				projectId: walletConnectProjectId,
+			}),
+			Web3AuthConnector({ web3AuthInstance }),
+		],
 		storage: createStorage({
 			storage: cookieStorage,
 		}),

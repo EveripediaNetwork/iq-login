@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
 import { createContext, useState } from "react";
-import { cookieToInitialState, type State, WagmiProvider } from "wagmi";
+import { cookieToInitialState, WagmiProvider } from "wagmi";
 import {
 	getWagmiConfig,
 	web3AuthInstance,
@@ -12,7 +12,6 @@ import {
 import { Web3AuthProvider } from "./web3-auth-provider";
 
 interface IqLoginProviderProps {
-	children: React.ReactNode;
 	projectName: string;
 	cookie?: string | null;
 }
@@ -23,7 +22,7 @@ export function IqLoginProvider({
 	children,
 	cookie,
 	projectName,
-}: IqLoginProviderProps) {
+}: React.PropsWithChildren<IqLoginProviderProps>) {
 	const [wagmiConfig] = useState(() => getWagmiConfig());
 	const [queryClient] = useState(
 		() =>
