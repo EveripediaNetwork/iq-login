@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.1.2
+
+### Patch Changes
+
+- f7450eb: Attempts to trigger redirect only once
+
 ## 7.1.1
 
 ### Patch Changes
