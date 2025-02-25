@@ -7,11 +7,11 @@ import {
 	Wallet,
 	XCircle,
 } from "lucide-react";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useEffect } from "react";
+import { useAccount, useConnect } from "wagmi";
 import { useAuth } from "../client";
-import { useEffect, useRef } from "react";
-import { Social } from "../lib/icons/social";
 import { Injected } from "../lib/icons/injected";
+import { Social } from "../lib/icons/social";
 import { WalletConnect } from "../lib/icons/wallet-connect";
 
 export const Login = ({
@@ -155,6 +155,13 @@ const ConnectedWalletView = ({
 	const { address } = useAccount();
 	const { logout } = useAuth();
 
+	// Add useEffect to trigger handleRedirect when disableAuth is true
+	useEffect(() => {
+		if (disableAuth && handleRedirect) {
+			handleRedirect();
+		}
+	}, [disableAuth, handleRedirect]);
+
 	return (
 		<div className="p-4">
 			<div className="flex items-center justify-between mb-4">
@@ -241,30 +248,20 @@ export const SignTokenButton = ({
 	const { isConnected } = useAccount();
 	const { token, signToken, loading, error } = useAuth();
 
-	const hasRedirected = useRef(false);
-
 	useEffect(() => {
 		const handleEffect = async () => {
-			if (token && isConnected && !hasRedirected.current) {
-				hasRedirected.current = true;
-
+			if (token && isConnected) {
 				try {
 					if (handleTokenPass) {
 						await handleTokenPass(token);
 					}
 					handleRedirect();
 				} catch (err) {
-					hasRedirected.current = false;
 					console.error("Error during authentication flow:", err);
 				}
 			}
 		};
-
 		handleEffect();
-
-		return () => {
-			hasRedirected.current = false;
-		};
 	}, [handleRedirect, handleTokenPass, isConnected, token]);
 
 	const StatusDisplay = () => {
