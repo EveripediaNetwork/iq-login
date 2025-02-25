@@ -10,6 +10,9 @@ import {
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { useAuth } from "../client";
 import { useEffect } from "react";
+import { Social } from "../lib/icons/social";
+import { Injected } from "../lib/icons/injected";
+import { WalletConnect } from "../lib/icons/wallet-connect";
 
 export const Login = ({
 	title = "Welcome Back",
@@ -90,6 +93,28 @@ const ConnectorButton = ({
 }) => {
 	const { isPending, error } = useConnect();
 
+	const connectorConfig = {
+		Web3Auth: {
+			label: "Social Login",
+			icon: Social,
+		},
+		Injected: {
+			label: "Browser Wallet",
+			icon: Injected,
+		},
+		WalletConnect: {
+			label: "Wallet Connect",
+			icon: WalletConnect,
+		},
+	};
+
+	const config = connectorConfig[name as keyof typeof connectorConfig] || {
+		label: name,
+		icon: Wallet,
+	};
+
+	const ConnectorIcon = config.icon;
+
 	return (
 		<button
 			type="button"
@@ -97,14 +122,17 @@ const ConnectorButton = ({
 			disabled={isPending}
 			className="group relative flex items-center justify-between rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent disabled:opacity-50"
 		>
-			<div>
-				<p className="font-medium text-sm">{getConnectorLabel(name)}</p>
-				<p className="text-xs text-muted-foreground">
-					{isPending ? "Connecting..." : `Connect using your ${name} wallet`}
-				</p>
-				{error && (
-					<p className="text-xs text-destructive mt-1">{error.message}</p>
-				)}
+			<div className="flex items-center gap-3">
+				<ConnectorIcon className="size-8 text-primary" />
+				<div>
+					<p className="font-medium text-sm">{config.label}</p>
+					<p className="text-xs text-muted-foreground">
+						{isPending ? "Connecting..." : `Connect using your ${name} wallet`}
+					</p>
+					{error && (
+						<p className="text-xs text-destructive mt-1">{error.message}</p>
+					)}
+				</div>
 			</div>
 			{isPending ? (
 				<Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
@@ -267,17 +295,4 @@ export const SignTokenButton = ({
 			Sign Token
 		</button>
 	);
-};
-
-const getConnectorLabel = (connectorName: string) => {
-	switch (connectorName) {
-		case "Web3Auth":
-			return "Social Login";
-		case "Injected":
-			return "Browser Wallet";
-		case "WalletConnect":
-			return "Wallet Connect";
-		default:
-			return connectorName;
-	}
 };

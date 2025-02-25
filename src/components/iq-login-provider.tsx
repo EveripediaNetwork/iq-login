@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
 import { createContext, useState } from "react";
-import { cookieToInitialState, type State, WagmiProvider } from "wagmi";
+import { cookieToInitialState, WagmiProvider } from "wagmi";
 import {
 	getWagmiConfig,
 	web3AuthInstance,
