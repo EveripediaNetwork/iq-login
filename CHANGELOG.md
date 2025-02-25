@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.1.0
+
+### Minor Changes
+
+- aa471d9: Adds wallet connect back and improves login element ui
+
 ## 7.0.13
 
 ### Patch Changes
