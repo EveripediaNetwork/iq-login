@@ -1,5 +1,11 @@
 # @everipedia/iq-login
 
+## 7.1.4
+
+### Patch Changes
+
+- da10baa: Mades disable auth on iq login provider and uses it to avoid use auth to trigger wallet sign
+
 ## 7.1.3
 
 ### Patch Changes
