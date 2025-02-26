@@ -7,12 +7,13 @@ import {
 	Wallet,
 	XCircle,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useAccount, useConnect } from "wagmi";
 import { useAuth } from "../client";
 import { Injected } from "../lib/icons/injected";
 import { Social } from "../lib/icons/social";
 import { WalletConnect } from "../lib/icons/wallet-connect";
+import { ProjectContext } from "./iq-login-provider";
 
 export const Login = ({
 	title = "Welcome Back",
@@ -20,16 +21,15 @@ export const Login = ({
 	connectText = "Connect Wallet",
 	signTokenText = "Verify Identity",
 	handleRedirect,
-	disableAuth = false,
 }: {
 	title?: string;
 	description?: string;
 	connectText?: string;
 	signTokenText?: string;
 	handleRedirect?: () => void;
-	disableAuth?: boolean;
 }) => {
 	const { isConnected } = useAccount();
+	const { disableAuth } = useContext(ProjectContext);
 
 	return (
 		<div className="min-h-[60vh] w-full flex items-center justify-center px-4 py-8">

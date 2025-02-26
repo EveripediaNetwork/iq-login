@@ -16,13 +16,17 @@ interface IqLoginProviderProps {
 	cookie?: string | null;
 }
 
-export const ProjectContext = createContext<string>("");
+export const ProjectContext = createContext<{
+	projectName: string;
+	disableAuth: boolean;
+}>({ projectName: "", disableAuth: false });
 
 export function IqLoginProvider({
 	children,
 	cookie,
 	projectName,
-}: React.PropsWithChildren<IqLoginProviderProps>) {
+	disableAuth = false,
+}: React.PropsWithChildren<IqLoginProviderProps & { disableAuth?: boolean }>) {
 	const [wagmiConfig] = useState(() => getWagmiConfig());
 	const [queryClient] = useState(
 		() =>
@@ -39,7 +43,7 @@ export function IqLoginProvider({
 	const initialState = cookieToInitialState(wagmiConfig, cookie);
 
 	return (
-		<ProjectContext.Provider value={projectName}>
+		<ProjectContext.Provider value={{ projectName, disableAuth }}>
 			<WagmiProvider config={wagmiConfig} initialState={initialState}>
 				<QueryClientProvider client={queryClient}>
 					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
