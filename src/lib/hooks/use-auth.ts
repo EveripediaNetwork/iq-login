@@ -22,7 +22,7 @@ export const useAuth = () => {
 	const { token, setToken } = useTokenStore((state) => state);
 	const { data: walletClient } = useWalletClient();
 	const { user: web3AuthUser } = useWeb3Auth();
-	const projectName = useContext(ProjectContext);
+	const { projectName, disableAuth } = useContext(ProjectContext);
 
 	const disconnectMutation = useDisconnect({
 		mutation: {
@@ -50,10 +50,10 @@ export const useAuth = () => {
 	});
 
 	useEffect(() => {
-		if (!token) {
+		if (!token && !disableAuth) {
 			signTokenMutation.mutate();
 		}
-	}, [token, signTokenMutation.mutate]);
+	}, [token, signTokenMutation.mutate, disableAuth]);
 
 	return {
 		token,
@@ -69,6 +69,7 @@ export const useAuth = () => {
 		signToken: () => signTokenMutation.mutate(),
 		reSignToken: () => reSignTokenMutation.mutate(),
 		logout: () => disconnectMutation.disconnect(),
+		disableAuth,
 	};
 };
 
