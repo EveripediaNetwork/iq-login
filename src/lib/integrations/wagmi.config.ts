@@ -59,11 +59,9 @@ export function getWagmiConfig(
 		chains.map((chain) => [chain.id, http()]),
 	);
 
-	// Get the default chain (first in the array)
-	const defaultChain = chains[0];
-
-	// Create Web3Auth instance for the default chain
-	const web3AuthInstance = createWeb3AuthInstance(defaultChain);
+	// TODO: checkout https://web3auth.io/community/t/how-to-switchchain-using-wagmi-connectors/6488
+	// to implement proper chain switching to web3auth
+	const web3AuthInstance = createWeb3AuthInstance(chains[0]);
 
 	return createConfig({
 		chains,
