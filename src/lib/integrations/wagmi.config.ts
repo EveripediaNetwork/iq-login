@@ -12,17 +12,18 @@ import {
 } from "wagmi";
 import { injected, walletConnect } from "wagmi/connectors";
 
-const web3AuthClientId = process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID as string;
-const walletConnectProjectId = process.env
+const WEB_3_AUTH_CLIENT_ID = process.env
+	.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID as string;
+const WALLET_CONNECT_PROJECT_ID = process.env
 	.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string;
 
-if (!walletConnectProjectId) {
+if (!WALLET_CONNECT_PROJECT_ID) {
 	throw new Error(
 		"NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID environment variable is required",
 	);
 }
 
-if (!web3AuthClientId) {
+if (!WEB_3_AUTH_CLIENT_ID) {
 	throw new Error(
 		"NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID environment variable is required",
 	);
@@ -40,7 +41,7 @@ export const createWeb3AuthInstance = (chain: Chain) => {
 	};
 
 	return new Web3AuthModal.Web3Auth({
-		clientId: web3AuthClientId,
+		clientId: WEB_3_AUTH_CLIENT_ID,
 		privateKeyProvider: new Web3AuthEthereumProvider.EthereumPrivateKeyProvider(
 			{
 				config: { chainConfig },
@@ -67,7 +68,7 @@ export function getWagmiConfig(
 		connectors: [
 			injected(),
 			walletConnect({
-				projectId: walletConnectProjectId,
+				projectId: WALLET_CONNECT_PROJECT_ID,
 				metadata: {
 					name: "IQ Login",
 					description: "IQ Login with Web3Auth and WalletConnect",
