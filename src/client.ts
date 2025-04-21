@@ -19,3 +19,4 @@ export {
 	getWagmiConfig,
 	createWeb3AuthInstance,
 } from "./lib/integrations/wagmi.config";
+export { iqTestnet } from "./lib/data/iq-testnet";
