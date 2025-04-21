@@ -28,7 +28,6 @@ if (!web3AuthClientId) {
 	);
 }
 
-// Create Web3Auth instance for a specific chain
 export const createWeb3AuthInstance = (chain: Chain) => {
 	const chainConfig = {
 		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
@@ -51,7 +50,6 @@ export const createWeb3AuthInstance = (chain: Chain) => {
 	});
 };
 
-// Get Wagmi config with support for multiple chains
 export function getWagmiConfig(
 	chains: [Chain, ...Chain[]] = [mainnet],
 ): Config {
