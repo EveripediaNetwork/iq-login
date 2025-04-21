@@ -62,10 +62,10 @@
 	"peerDependencies": {
 		"@tanstack/react-query": "^5.53.1",
 		"next": "15.0.0",
-		"react": "19.0.0-rc-65a56d0e-20241020",
-		"react-dom": "19.0.0-rc-65a56d0e-20241020",
+		"react": "19.1.0",
+		"react-dom": "19.1.0",
 		"viem": "2.x",
-		"wagmi": "^2.12.4"
+		"wagmi": "^2.14.16"
 	},
 	"files": [
 		"dist",
