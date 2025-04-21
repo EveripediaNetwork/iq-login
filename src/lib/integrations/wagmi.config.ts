@@ -4,11 +4,11 @@ import * as Web3AuthModal from "@web3auth/modal";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { type Chain, mainnet } from "viem/chains";
 import {
+	http,
 	type Config,
 	cookieStorage,
 	createConfig,
 	createStorage,
-	http,
 } from "wagmi";
 import { injected, walletConnect } from "wagmi/connectors";
 
@@ -55,10 +55,9 @@ export const createWeb3AuthInstance = (chain: Chain) => {
 export function getWagmiConfig(
 	chains: [Chain, ...Chain[]] = [mainnet],
 ): Config {
-	const transports: Record<number, ReturnType<typeof http>> = {};
-	for (const chain of chains) {
-		transports[chain.id] = http();
-	}
+	const transports = Object.fromEntries(
+		chains.map((chain) => [chain.id, http()]),
+	);
 
 	// Get the default chain (first in the array)
 	const defaultChain = chains[0];
