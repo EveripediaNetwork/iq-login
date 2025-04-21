@@ -4,18 +4,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
 import { createContext, useMemo } from "react";
-import { type Chain, mainnet } from "viem/chains";
-import { cookieToInitialState, WagmiProvider } from "wagmi";
-import {
-	createWeb3AuthInstance,
-	getWagmiConfig,
-} from "../lib/integrations/wagmi.config";
+import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { createWeb3AuthInstance } from "../lib/integrations/wagmi.config";
 import { Web3AuthProvider } from "./web3-auth-provider";
 
 interface IqLoginProviderProps {
 	projectName: string;
 	cookie?: string | null;
-	chains?: [Chain, ...Chain[]];
+	wagmiConfig: Config;
 	disableAuth?: boolean;
 }
 
@@ -29,14 +25,12 @@ export function IqLoginProvider({
 	cookie,
 	projectName,
 	disableAuth = false,
-	chains = [mainnet],
+	wagmiConfig,
 }: React.PropsWithChildren<IqLoginProviderProps>) {
-	const web3AuthInstance = useMemo(
-		() => createWeb3AuthInstance(chains[0]),
-		[chains],
-	);
-
-	const wagmiConfig = useMemo(() => getWagmiConfig(chains), [chains]);
+	const web3AuthInstance = useMemo(() => {
+		const primaryChain = Object.values(wagmiConfig.chains)[0];
+		return createWeb3AuthInstance(primaryChain);
+	}, [wagmiConfig]);
 
 	const queryClient = useMemo(
 		() =>
