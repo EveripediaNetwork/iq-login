@@ -42,6 +42,11 @@ export default config;
 // app/layout.tsx
 import { IqLoginProvider } from "@everipedia/iq-login/client";
 import { headers } from "next/headers";
+import { getWagmiConfig } from "@everipedia/iq-login";
+import { fraxtal } from "viem/chains";
+
+// Get the Wagmi config. It is important that this is outside the component
+const wagmiConfig = getWagmiConfig([fraxtal])
 
 export default async function RootLayout({
   children,
@@ -56,6 +61,7 @@ export default async function RootLayout({
         <IqLoginProvider 
           projectName="YOUR_PROJECT_NAME"
           cookie={cookie}
+          wagmiConfig={wagmiConfig}
           // Optional props:
           // chains={[mainnet]} // Default: mainnet
           // disableAuth={false} // Default: false
