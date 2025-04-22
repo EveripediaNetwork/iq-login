@@ -15,21 +15,14 @@ pnpm install @everipedia/iq-login wagmi@2.x viem@2.x @web3auth/modal @web3auth/e
 1. Add environment variables:
 ```bash
 ## .env.local
-NEXT_PUBLIC_CHAIN_ID=your_chain_id 
 NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID=your_web3auth_client_id
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_wallet_connect_project_id
 ```
-
-Currently supported chains:
-- Ethereum Mainnet (1)
-- Polygon Mainnet (137)
-- Fraxtal Mainnet (252)
-- IQ Testnet (313_377)
 
 2. Add the package to your Tailwind CSS configuration:
 
 ```ts
 // tailwind.config.ts
-
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -47,7 +40,6 @@ export default config;
 
 ```tsx
 // app/layout.tsx
-
 import { IqLoginProvider } from "@everipedia/iq-login/client";
 import { headers } from "next/headers";
 
@@ -62,8 +54,11 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <IqLoginProvider 
-          projectName="YOUR_PROJECT_NAME" // Required: Project name for storage
+          projectName="YOUR_PROJECT_NAME"
           cookie={cookie}
+          // Optional props:
+          // chains={[mainnet]} // Default: mainnet
+          // disableAuth={false} // Default: false
         >
           {children}
         </IqLoginProvider>
@@ -73,11 +68,12 @@ export default async function RootLayout({
 }
 ```
 
+You can use any chain supported by viem. Import your desired chain from 'viem/chains' and pass it to the IqLoginProvider:
+
 4. Add login page to your application:
 
 ```tsx
 // app/login/page.tsx
-
 import { Login } from '@everipedia/iq-login';
 
 const LoginPage = () => {
@@ -93,23 +89,15 @@ export default LoginPage;
 
 ## 🔒 Use Auth Hook
 
-The package provides a custom hook called useAuth for managing authentication state:
-
 ```tsx
 // components/my-component.tsx
-
 import { useAuth } from '@everipedia/iq-login';
 
 function MyComponent() {
   const { token, loading, reSignToken, error, logout, web3AuthUser } = useAuth();
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
@@ -127,8 +115,6 @@ function MyComponent() {
 ```
 
 ## 🔑 Authentication Helper
-
-Use the getAuth utility function to verify authentication status:
 
 ```ts
 import { getAuth } from '@everipedia/iq-login';
@@ -149,8 +135,6 @@ if (token && address) {
 The package uses Tailwind CSS and Shadcn UI Theme. Visit https://ui.shadcn.com/themes for theme customization.
 
 ## 📝 Usage on Pages Router
-
-1. Add the package to transpilePackages in next.config.js:
 
 ```ts
 /** @type {import('next').NextConfig} */
