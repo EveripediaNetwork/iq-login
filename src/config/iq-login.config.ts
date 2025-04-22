@@ -29,7 +29,12 @@ if (!WEB_3_AUTH_CLIENT_ID) {
 	);
 }
 
-export const createWeb3AuthInstance = (chain: Chain) => {
+export interface IqLoginConfig {
+	wagmiConfig: Config;
+	web3AuthInstance: Web3AuthModal.Web3Auth;
+}
+
+const createWeb3AuthInstance = (chain: Chain) => {
 	const chainConfig = {
 		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
 		chainId: `0x${chain.id.toString(16)}`,
@@ -51,18 +56,16 @@ export const createWeb3AuthInstance = (chain: Chain) => {
 	});
 };
 
-export function getWagmiConfig(
+export function createIqLoginConfig(
 	chains: [Chain, ...Chain[]] = [mainnet],
-): Config {
+): IqLoginConfig {
 	const transports = Object.fromEntries(
 		chains.map((chain) => [chain.id, http()]),
 	);
 
-	// TODO: checkout https://web3auth.io/community/t/how-to-switchchain-using-wagmi-connectors/6488
-	// to implement proper chain switching to web3auth
 	const web3AuthInstance = createWeb3AuthInstance(chains[0]);
 
-	return createConfig({
+	const wagmiConfig = createConfig({
 		chains,
 		transports,
 		connectors: [
@@ -84,4 +87,9 @@ export function getWagmiConfig(
 		ssr: true,
 		multiInjectedProviderDiscovery: false,
 	});
+
+	return {
+		wagmiConfig,
+		web3AuthInstance,
+	};
 }

@@ -7,13 +7,13 @@ import {
 	Wallet,
 	XCircle,
 } from "lucide-react";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useAccount, useConnect } from "wagmi";
 import { useAuth } from "../client";
-import { Injected } from "../lib/icons/injected";
-import { Social } from "../lib/icons/social";
-import { WalletConnect } from "../lib/icons/wallet-connect";
-import { ProjectContext } from "./iq-login-provider";
+import { useProject } from "../hooks/use-project";
+import { Injected } from "../icons/injected";
+import { Social } from "../icons/social";
+import { WalletConnect } from "../icons/wallet-connect";
 
 export const Login = ({
 	title = "Welcome Back",
@@ -29,7 +29,7 @@ export const Login = ({
 	handleRedirect?: () => void;
 }) => {
 	const { isConnected } = useAccount();
-	const { disableAuth } = useContext(ProjectContext);
+	const { disableAuth } = useProject();
 
 	return (
 		<div className="min-h-[60vh] w-full flex items-center justify-center px-4 py-8">

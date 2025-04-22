@@ -3,35 +3,26 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import type React from "react";
-import { createContext, useMemo } from "react";
-import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
-import { createWeb3AuthInstance } from "../lib/integrations/wagmi.config";
-import { Web3AuthProvider } from "./web3-auth-provider";
+import { useMemo } from "react";
+import { cookieToInitialState, WagmiProvider } from "wagmi";
+import type { IqLoginConfig } from "../config/iq-login.config";
+import { ProjectContext } from "../hooks/use-project";
+import { Web3AuthProvider } from "../hooks/use-web-3-auth";
 
 interface IqLoginProviderProps {
 	projectName: string;
 	cookie?: string | null;
-	wagmiConfig: Config;
+	config: IqLoginConfig;
 	disableAuth?: boolean;
 }
-
-export const ProjectContext = createContext<{
-	projectName: string;
-	disableAuth: boolean;
-}>({ projectName: "", disableAuth: false });
 
 export function IqLoginProvider({
 	children,
 	cookie,
 	projectName,
 	disableAuth = false,
-	wagmiConfig,
+	config,
 }: React.PropsWithChildren<IqLoginProviderProps>) {
-	const web3AuthInstance = useMemo(() => {
-		const primaryChain = Object.values(wagmiConfig.chains)[0];
-		return createWeb3AuthInstance(primaryChain);
-	}, [wagmiConfig]);
-
 	const queryClient = useMemo(
 		() =>
 			new QueryClient({
@@ -45,13 +36,13 @@ export function IqLoginProvider({
 		[],
 	);
 
-	const initialState = cookieToInitialState(wagmiConfig, cookie);
+	const initialState = cookieToInitialState(config.wagmiConfig, cookie);
 
 	return (
 		<ProjectContext.Provider value={{ projectName, disableAuth }}>
-			<WagmiProvider config={wagmiConfig} initialState={initialState}>
+			<WagmiProvider config={config.wagmiConfig} initialState={initialState}>
 				<QueryClientProvider client={queryClient}>
-					<Web3AuthProvider web3AuthInstance={web3AuthInstance}>
+					<Web3AuthProvider web3AuthInstance={config.web3AuthInstance}>
 						{children}
 					</Web3AuthProvider>
 				</QueryClientProvider>

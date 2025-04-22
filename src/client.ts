@@ -10,13 +10,13 @@ export { Login } from "./components/login-element";
 // ===============
 // Hooks
 // ===============
-export { useAuth } from "./lib/hooks/use-auth";
+export { useAuth } from "./hooks/use-auth";
 
 // ===============
 // Config
 // ===============
 export {
-	getWagmiConfig,
-	createWeb3AuthInstance,
-} from "./lib/integrations/wagmi.config";
-export { iqTestnet } from "./lib/data/iq-testnet";
+	createIqLoginConfig,
+	type IqLoginConfig,
+} from "./config/iq-login.config";
+export { iqTestnet } from "./chains/iq-testnet";

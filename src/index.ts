@@ -1,14 +1,14 @@
 // ===============
 // Helpers
 // ===============
-export { getAuth } from "./lib/getAuth";
+export { getAuth } from "./server/getAuth";
 
 // ===============
 // Data
 // ===============
-export { iqTestnet } from "./lib/data/iq-testnet";
+export { iqTestnet } from "./chains/iq-testnet";
 
 // ===============
 // Constants
 // ===============
-export { AUTH_TOKEN_KEY } from "./lib/constants";
+export { AUTH_TOKEN_KEY } from "./server/constants";

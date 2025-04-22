@@ -1,14 +1,14 @@
-import { useDisconnect, useWalletClient } from "wagmi";
 import { sign, verify } from "@everipedia/web3-signer";
-import { create } from "zustand";
-import { getCookie, deleteCookie, setCookie } from "cookies-next";
-import { useWeb3Auth } from "../../components/web3-auth-provider";
-import type { UserInfo } from "@web3auth/base";
 import { useMutation } from "@tanstack/react-query";
 import type { GetWalletClientReturnType } from "@wagmi/core";
-import { useContext, useEffect } from "react";
-import { AUTH_TOKEN_KEY } from "../constants";
-import { ProjectContext } from "../../components/iq-login-provider";
+import type { UserInfo } from "@web3auth/base";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { useEffect } from "react";
+import { useDisconnect, useWalletClient } from "wagmi";
+import { create } from "zustand";
+import { useWeb3Auth } from "./use-web-3-auth";
+import { AUTH_TOKEN_KEY } from "../server/constants";
+import { useProject } from "./use-project";
 
 export const useTokenStore = create<{
 	token: string | null;
@@ -22,7 +22,7 @@ export const useAuth = () => {
 	const { token, setToken } = useTokenStore((state) => state);
 	const { data: walletClient } = useWalletClient();
 	const { user: web3AuthUser } = useWeb3Auth();
-	const { projectName, disableAuth } = useContext(ProjectContext);
+	const { disableAuth, projectName } = useProject();
 
 	const disconnectMutation = useDisconnect({
 		mutation: {
