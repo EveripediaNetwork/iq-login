@@ -32,6 +32,7 @@ if (!WEB_3_AUTH_CLIENT_ID) {
 export interface IqLoginConfig {
 	wagmiConfig: Config;
 	web3AuthInstance: Web3AuthModal.Web3Auth;
+	chains: [Chain, ...Chain[]];
 }
 
 export function createIqLoginConfig(
@@ -41,7 +42,7 @@ export function createIqLoginConfig(
 		chains.map((chain) => [chain.id, http()]),
 	);
 
-	const web3AuthInstance = createWeb3AuthInstance(chains);
+	const web3AuthInstance = createWeb3AuthInstance(chains[0]);
 
 	const wagmiConfig = createConfig({
 		chains,
@@ -69,12 +70,11 @@ export function createIqLoginConfig(
 	return {
 		wagmiConfig,
 		web3AuthInstance,
+		chains,
 	};
 }
 
-function createWeb3AuthInstance(chains: [Chain, ...Chain[]]) {
-	const defaultChain = chains[0];
-
+function createWeb3AuthInstance(defaultChain: Chain) {
 	// Create the default chain config
 	const chainConfig = {
 		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
@@ -86,8 +86,8 @@ function createWeb3AuthInstance(chains: [Chain, ...Chain[]]) {
 		blockExplorerUrl: defaultChain.blockExplorers?.default.url[0] as string,
 	};
 
-	// Initialize Web3Auth with the default chain
-	const web3AuthInstance = new Web3AuthModal.Web3Auth({
+	// Initialize Web3Auth with only the default chain
+	return new Web3AuthModal.Web3Auth({
 		clientId: WEB_3_AUTH_CLIENT_ID,
 		privateKeyProvider: new Web3AuthEthereumProvider.EthereumPrivateKeyProvider(
 			{
@@ -96,25 +96,4 @@ function createWeb3AuthInstance(chains: [Chain, ...Chain[]]) {
 		),
 		web3AuthNetwork: Web3AuthBase.WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 	});
-
-	// Add additional chains to the Web3Auth instance
-	// We start from index 1 since the default chain is already configured
-	for (let i = 1; i < chains.length; i++) {
-		const chain = chains[i];
-		const additionalChainConfig = {
-			chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
-			chainId: `0x${chain.id.toString(16)}`,
-			rpcTarget: chain.rpcUrls.default.http[0],
-			displayName: chain.name,
-			tickerName: chain.nativeCurrency?.name,
-			ticker: chain.nativeCurrency?.symbol,
-			blockExplorerUrl: chain.blockExplorers?.default.url[0] as string,
-		};
-
-		// The Web3Auth instance will have these chains available for switching
-		// This will be used by the wagmi connector
-		web3AuthInstance.addChain(additionalChainConfig);
-	}
-
-	return web3AuthInstance;
 }

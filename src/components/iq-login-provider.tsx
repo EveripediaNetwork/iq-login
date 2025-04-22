@@ -42,7 +42,10 @@ export function IqLoginProvider({
 		<ProjectContext.Provider value={{ projectName, disableAuth }}>
 			<WagmiProvider config={config.wagmiConfig} initialState={initialState}>
 				<QueryClientProvider client={queryClient}>
-					<Web3AuthProvider web3AuthInstance={config.web3AuthInstance}>
+					<Web3AuthProvider
+						web3AuthInstance={config.web3AuthInstance}
+						chains={config.chains}
+					>
 						{children}
 					</Web3AuthProvider>
 				</QueryClientProvider>
