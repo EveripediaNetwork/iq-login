@@ -19,4 +19,4 @@ export {
 	createIqLoginConfig,
 	type IqLoginConfig,
 } from "./config/iq-login.config";
-export { iqTestnet } from "./chains/iq-testnet";
+export { iqTestnet } from "./config/iq-testnet.config";

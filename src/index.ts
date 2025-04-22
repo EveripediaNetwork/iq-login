@@ -1,12 +1,12 @@
 // ===============
 // Helpers
 // ===============
-export { getAuth } from "./server/getAuth";
+export { getAuth } from "./server/get-auth";
 
 // ===============
 // Data
 // ===============
-export { iqTestnet } from "./chains/iq-testnet";
+export { iqTestnet } from "./config/iq-testnet.config";
 
 // ===============
 // Constants

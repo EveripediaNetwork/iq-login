@@ -1,5 +1,5 @@
 import { type Chain, fraxtal, mainnet } from "viem/chains";
-import { iqTestnet } from "./iq-testnet";
+import { iqTestnet } from "../config/iq-testnet.config";
 
 export const getChainConfig = (chainId: number): Chain => {
 	switch (chainId) {
