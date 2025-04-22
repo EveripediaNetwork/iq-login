@@ -2,10 +2,15 @@ import type { UserInfo } from "@web3auth/base";
 import type { Web3Auth } from "@web3auth/modal";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const Web3AuthContext = createContext<{
+export interface Web3AuthContextType {
 	web3Auth: Web3Auth | null;
 	user: Partial<UserInfo> | null;
-}>({ web3Auth: null, user: null });
+}
+
+const Web3AuthContext = createContext<Web3AuthContextType>({
+	web3Auth: null,
+	user: null,
+});
 
 export function Web3AuthProvider({
 	children,
