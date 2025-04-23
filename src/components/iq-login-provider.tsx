@@ -1,8 +1,7 @@
 "use client";
-
+import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
-import type React from "react";
 import { useMemo } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 import type { IqLoginConfig } from "../config/iq-login.config";

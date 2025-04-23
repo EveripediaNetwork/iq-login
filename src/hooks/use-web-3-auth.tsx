@@ -1,3 +1,4 @@
+import React from "react";
 import type { UserInfo } from "@web3auth/base";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import type { Web3Auth } from "@web3auth/modal";
