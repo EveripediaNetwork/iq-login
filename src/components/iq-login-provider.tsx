@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { type PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { structuralSharing } from "@wagmi/core/query";
 import { useMemo } from "react";
@@ -21,7 +21,7 @@ export function IqLoginProvider({
 	projectName,
 	disableAuth = false,
 	config,
-}: React.PropsWithChildren<IqLoginProviderProps>) {
+}: PropsWithChildren<IqLoginProviderProps>) {
 	const queryClient = useMemo(
 		() =>
 			new QueryClient({

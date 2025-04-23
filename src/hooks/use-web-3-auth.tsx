@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import type { UserInfo } from "@web3auth/base";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import type { Web3Auth } from "@web3auth/modal";
@@ -22,7 +22,7 @@ export function Web3AuthProvider({
 	web3AuthInstance,
 	chains,
 }: {
-	children: React.ReactNode;
+	children: ReactNode;
 	web3AuthInstance: Web3Auth;
 	chains: Chain[];
 }) {

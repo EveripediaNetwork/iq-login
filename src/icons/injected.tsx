@@ -1,7 +1,7 @@
-import React from "react";
+import React, { type FC } from "react";
 import { Icon, type IconProps } from "./index";
 
-export const Injected: React.FC<IconProps> = (props) => {
+export const Injected: FC<IconProps> = (props) => {
 	return (
 		<Icon {...props}>
 			<circle opacity="0.2" cx="16" cy="16" r="16" fill="#FFCCE4" />
