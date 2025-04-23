@@ -1,5 +1,15 @@
 # @everipedia/iq-login
 
+## 8.0.0
+
+### Major Changes
+
+- cb151b3: Adds multichain support
+
+### Patch Changes
+
+- 28292ae: Implements multichain support for web3auth
+
 ## 7.1.4
 
 ### Patch Changes
