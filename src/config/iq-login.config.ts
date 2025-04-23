@@ -29,40 +29,22 @@ if (!WEB_3_AUTH_CLIENT_ID) {
 	);
 }
 
-export const createWeb3AuthInstance = (chain: Chain) => {
-	const chainConfig = {
-		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
-		chainId: `0x${chain.id.toString(16)}`,
-		rpcTarget: chain.rpcUrls.default.http[0],
-		displayName: chain.name,
-		tickerName: chain.nativeCurrency?.name,
-		ticker: chain.nativeCurrency?.symbol,
-		blockExplorerUrl: chain.blockExplorers?.default.url[0] as string,
-	};
+export interface IqLoginConfig {
+	wagmiConfig: Config;
+	web3AuthInstance: Web3AuthModal.Web3Auth;
+	chains: [Chain, ...Chain[]];
+}
 
-	return new Web3AuthModal.Web3Auth({
-		clientId: WEB_3_AUTH_CLIENT_ID,
-		privateKeyProvider: new Web3AuthEthereumProvider.EthereumPrivateKeyProvider(
-			{
-				config: { chainConfig },
-			},
-		),
-		web3AuthNetwork: Web3AuthBase.WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-	});
-};
-
-export function getWagmiConfig(
+export function createIqLoginConfig(
 	chains: [Chain, ...Chain[]] = [mainnet],
-): Config {
+): IqLoginConfig {
 	const transports = Object.fromEntries(
 		chains.map((chain) => [chain.id, http()]),
 	);
 
-	// TODO: checkout https://web3auth.io/community/t/how-to-switchchain-using-wagmi-connectors/6488
-	// to implement proper chain switching to web3auth
 	const web3AuthInstance = createWeb3AuthInstance(chains[0]);
 
-	return createConfig({
+	const wagmiConfig = createConfig({
 		chains,
 		transports,
 		connectors: [
@@ -83,5 +65,35 @@ export function getWagmiConfig(
 		}),
 		ssr: true,
 		multiInjectedProviderDiscovery: false,
+	});
+
+	return {
+		wagmiConfig,
+		web3AuthInstance,
+		chains,
+	};
+}
+
+function createWeb3AuthInstance(defaultChain: Chain) {
+	// Create the default chain config
+	const chainConfig = {
+		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
+		chainId: `0x${defaultChain.id.toString(16)}`,
+		rpcTarget: defaultChain.rpcUrls.default.http[0],
+		displayName: defaultChain.name,
+		tickerName: defaultChain.nativeCurrency?.name,
+		ticker: defaultChain.nativeCurrency?.symbol,
+		blockExplorerUrl: defaultChain.blockExplorers?.default.url[0] as string,
+	};
+
+	// Initialize Web3Auth with only the default chain
+	return new Web3AuthModal.Web3Auth({
+		clientId: WEB_3_AUTH_CLIENT_ID,
+		privateKeyProvider: new Web3AuthEthereumProvider.EthereumPrivateKeyProvider(
+			{
+				config: { chainConfig },
+			},
+		),
+		web3AuthNetwork: Web3AuthBase.WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
 	});
 }
