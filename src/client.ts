@@ -11,6 +11,7 @@ export { Login } from "./components/login-element";
 // Hooks
 // ===============
 export { useAuth } from "./hooks/use-auth";
+export { useWeb3Auth } from "./hooks/use-web-3-auth";
 
 // ===============
 // Config
