@@ -31,7 +31,7 @@ if (!WEB_3_AUTH_CLIENT_ID) {
 
 export interface IqLoginConfig {
 	wagmiConfig: Config;
-	web3AuthInstance: Web3AuthModal.Web3Auth;
+	web3AuthInstance: Web3AuthModal.Web3Auth | null;
 	chains: [Chain, ...Chain[]];
 }
 
@@ -42,10 +42,11 @@ export function createIqLoginConfig(
 		chains.map((chain) => [chain.id, http()]),
 	);
 
-	const web3AuthInstance = createWeb3AuthInstance(chains[0]);
+	const web3AuthInstance =
+		typeof window !== "undefined" ? createWeb3AuthInstance(chains[0]) : null;
 
 	const connectors =
-		typeof window !== "undefined"
+		web3AuthInstance && typeof window !== "undefined"
 			? [
 					injected(),
 					walletConnect({

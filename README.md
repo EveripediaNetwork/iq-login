@@ -21,6 +21,8 @@ NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_wallet_connect_project_id
 
 2. Add the package to your Tailwind CSS configuration:
 
+For Tailwind CSS v3:
+
 ```ts
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
@@ -34,6 +36,14 @@ const config: Config = {
 };
 
 export default config;
+```
+
+For Tailwind CSS v4:
+
+Add this line to your CSS entry point (e.g., `app/globals.css`):
+
+```css
+@source "../node_modules/@everipedia/iq-login";
 ```
 
 3. Wrap your application with the IqLoginProvider in your layout file:
