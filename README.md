@@ -50,13 +50,12 @@ Add this line to your CSS entry point (e.g., `app/globals.css`):
 
 ```tsx
 // app/layout.tsx
-import { IqLoginProvider } from "@everipedia/iq-login/client";
+import { IqLoginProvider, createIqLoginConfig } from "@everipedia/iq-login/client";
 import { headers } from "next/headers";
-import { getWagmiConfig } from "@everipedia/iq-login";
 import { fraxtal } from "viem/chains";
 
-// Get the Wagmi config. It is important that this is outside the component
-const wagmiConfig = getWagmiConfig([fraxtal])
+// Create the config. It is important that this is outside the component
+const config = createIqLoginConfig([fraxtal])
 
 export default async function RootLayout({
   children,
@@ -71,9 +70,8 @@ export default async function RootLayout({
         <IqLoginProvider 
           projectName="YOUR_PROJECT_NAME"
           cookie={cookie}
-          wagmiConfig={wagmiConfig}
+          config={config}
           // Optional props:
-          // chains={[mainnet]} // Default: mainnet
           // disableAuth={false} // Default: false
         >
           {children}
@@ -84,7 +82,7 @@ export default async function RootLayout({
 }
 ```
 
-You can use any chain supported by viem. Import your desired chain from 'viem/chains' and pass it to the IqLoginProvider:
+You can use any chain supported by viem. Import your desired chain from 'viem/chains' and pass it to the `createIqLoginConfig` function.
 
 4. Add login page to your application:
 
