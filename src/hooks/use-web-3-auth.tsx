@@ -22,13 +22,17 @@ export function Web3AuthProvider({
 	chains,
 }: {
 	children: React.ReactNode;
-	web3AuthInstance: Web3Auth;
+	web3AuthInstance: Web3Auth | null;
 	chains: Chain[];
 }) {
 	const [user, setUser] = useState<Partial<UserInfo> | null>(null);
 	const [chainsAdded, setChainsAdded] = useState(false);
 
 	useEffect(() => {
+		if (!web3AuthInstance) {
+			return;
+		}
+
 		web3AuthInstance.on("connected", async () => {
 			setUser(await web3AuthInstance.getUserInfo());
 
