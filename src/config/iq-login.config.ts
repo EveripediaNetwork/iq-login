@@ -44,22 +44,27 @@ export function createIqLoginConfig(
 
 	const web3AuthInstance = createWeb3AuthInstance(chains[0]);
 
+	const connectors =
+		typeof window !== "undefined"
+			? [
+					injected(),
+					walletConnect({
+						projectId: WALLET_CONNECT_PROJECT_ID,
+						metadata: {
+							name: "IQ Login",
+							description: "IQ Login with Web3Auth and WalletConnect",
+							url: "https://iq.wiki",
+							icons: ["https://iq.wiki/favicon.ico"],
+						},
+					}),
+					Web3AuthConnector({ web3AuthInstance }),
+				]
+			: [];
+
 	const wagmiConfig = createConfig({
 		chains,
 		transports,
-		connectors: [
-			injected(),
-			walletConnect({
-				projectId: WALLET_CONNECT_PROJECT_ID,
-				metadata: {
-					name: "IQ Login",
-					description: "IQ Login with Web3Auth and WalletConnect",
-					url: "https://iq.wiki",
-					icons: ["https://iq.wiki/favicon.ico"],
-				},
-			}),
-			Web3AuthConnector({ web3AuthInstance }),
-		],
+		connectors,
 		storage: createStorage({
 			storage: cookieStorage,
 		}),
