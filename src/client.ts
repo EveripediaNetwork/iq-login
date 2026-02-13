@@ -12,6 +12,12 @@ export { Login } from "./components/login-element";
 // ===============
 export { useAuth } from "./hooks/use-auth";
 export { useWeb3Auth } from "./hooks/use-web-3-auth";
+export {
+	useEnsureCorrectChain,
+	type ChainStatus,
+	type UseEnsureCorrectChainOptions,
+	type UseEnsureCorrectChainReturn,
+} from "./hooks/use-ensure-correct-chain";
 
 // ===============
 // Config

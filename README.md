@@ -144,6 +144,82 @@ if (token && address) {
 }
 ```
 
+## 🔗 Chain Enforcement Hook
+
+Use `useEnsureCorrectChain` to ensure the connected wallet is on the correct network. It exposes a single `status` flow instead of multiple booleans:
+
+```
+idle → wrong-network → switching → correct
+```
+
+| Status | Meaning |
+|---|---|
+| `"idle"` | Wallet not connected or state dismissed |
+| `"wrong-network"` | Connected to an unsupported chain |
+| `"switching"` | Chain switch in progress |
+| `"correct"` | On the required chain |
+
+### Basic Usage
+
+```tsx
+import { useEnsureCorrectChain } from '@everipedia/iq-login/client';
+
+function MyComponent() {
+  const { status, switchToCorrectChain, targetChain, dismiss } = useEnsureCorrectChain({
+    requiredChainId: 252, // e.g. Fraxtal
+  });
+
+  if (status === "wrong-network") {
+    return (
+      <div>
+        <p>Please switch to {targetChain?.name}</p>
+        <button onClick={switchToCorrectChain}>Switch Network</button>
+        <button onClick={dismiss}>Dismiss</button>
+      </div>
+    );
+  }
+
+  if (status === "switching") {
+    return <p>Switching network...</p>;
+  }
+
+  return <p>Connected to the correct network!</p>;
+}
+```
+
+### With Status Callback
+
+Use `onStatusChange` to react to transitions — e.g. to open/close a modal:
+
+```tsx
+const { status, switchToCorrectChain } = useEnsureCorrectChain({
+  requiredChainId: 252,
+  onStatusChange: (status, chainName) => {
+    if (status === "wrong-network") openSwitchModal();
+    if (status === "correct") closeSwitchModal();
+  },
+});
+```
+
+### API Reference
+
+**Options:**
+
+| Prop | Type | Description |
+|---|---|---|
+| `requiredChainId` | `number` | The chain ID your app requires |
+| `onStatusChange` | `(status, chainName?) => void` | Optional callback on every status transition |
+
+**Returns:**
+
+| Field | Type | Description |
+|---|---|---|
+| `status` | `ChainStatus` | Current status (`"idle"`, `"wrong-network"`, `"switching"`, `"correct"`) |
+| `switchToCorrectChain` | `() => Promise<void>` | Trigger a chain switch |
+| `dismiss` | `() => void` | Dismiss the wrong-network state |
+| `targetChain` | `Chain \| undefined` | Target chain object from wagmi config |
+| `isConnected` | `boolean` | Whether the wallet is connected |
+
 ## 🎨 Styling
 
 The package uses Tailwind CSS and Shadcn UI Theme. Visit https://ui.shadcn.com/themes for theme customization.
