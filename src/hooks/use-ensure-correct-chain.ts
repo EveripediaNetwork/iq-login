@@ -52,35 +52,38 @@ export const useEnsureCorrectChain = ({
 		transition(chainId === requiredChainId ? "correct" : "wrong-network");
 	}, [chainId, isConnected, requiredChainId, transition]);
 
-	const switchToCorrectChain = async () => {
-		if (!chainId) {
-			throw new Error(
-				"Wallet is not connected. Please connect your wallet first.",
-			);
+	const switchToCorrectChain = useCallback(async () => {
+		if (!isConnected) {
+			console.error("Cannot switch chain, wallet not connected.");
+			return;
 		}
 
 		if (chainId === requiredChainId) return;
 
 		if (!targetChain) {
-			throw new Error(
-				`Chain ID ${requiredChainId} is not configured in your wallet.`,
+			console.error(
+				`Cannot switch chain, target chain with ID ${requiredChainId} is not configured.`,
 			);
+			return;
 		}
 
 		try {
 			transition("switching");
 			await switchChainAsync({ chainId: requiredChainId });
-			transition("correct");
 		} catch (error) {
 			console.error("Failed to switch network:", error);
 			transition("wrong-network");
-			throw new Error(
-				"Network switch failed. Please switch manually in your wallet.",
-			);
 		}
-	};
+	}, [
+		isConnected,
+		chainId,
+		requiredChainId,
+		targetChain,
+		switchChainAsync,
+		transition,
+	]);
 
-	const dismiss = () => setStatus("idle");
+	const dismiss = useCallback(() => transition("idle"), [transition]);
 
 	return {
 		status,
