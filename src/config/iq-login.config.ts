@@ -35,6 +35,11 @@ export interface IqLoginConfig {
 	chains: [Chain, ...Chain[]];
 }
 
+export const WEB3AUTH_RPC_TARGETS: Record<number, string> = {
+	1: "https://ethereum-rpc.publicnode.com",
+	137: "https://polygon-bor-rpc.publicnode.com",
+};
+
 export function createIqLoginConfig(
 	chains: [Chain, ...Chain[]] = [mainnet],
 ): IqLoginConfig {
@@ -85,16 +90,19 @@ function createWeb3AuthInstance(defaultChain: Chain) {
 	const chainConfig = {
 		chainNamespace: Web3AuthBase.CHAIN_NAMESPACES.EIP155,
 		chainId: `0x${defaultChain.id.toString(16)}`,
-		rpcTarget: defaultChain.rpcUrls.default.http[0],
+		rpcTarget:
+			WEB3AUTH_RPC_TARGETS[defaultChain.id] ??
+			defaultChain.rpcUrls.default.http[0],
 		displayName: defaultChain.name,
 		tickerName: defaultChain.nativeCurrency?.name,
 		ticker: defaultChain.nativeCurrency?.symbol,
-		blockExplorerUrl: defaultChain.blockExplorers?.default.url[0] as string,
+		blockExplorerUrl: defaultChain.blockExplorers?.default.url,
 	};
 
-	// Initialize Web3Auth with only the default chain
+	// Initialize Web3Auth with the default chain
 	return new Web3AuthModal.Web3Auth({
 		clientId: WEB_3_AUTH_CLIENT_ID,
+		chainConfig,
 		privateKeyProvider: new Web3AuthEthereumProvider.EthereumPrivateKeyProvider(
 			{
 				config: { chainConfig },
