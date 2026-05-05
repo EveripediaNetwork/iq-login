@@ -3,6 +3,7 @@ import { CHAIN_NAMESPACES } from "@web3auth/base";
 import type { Web3Auth } from "@web3auth/modal";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { Chain } from "viem/chains";
+import { WEB3AUTH_RPC_TARGETS } from "../config/iq-login.config";
 
 export interface Web3AuthContextType {
 	web3Auth: Web3Auth | null;
@@ -45,11 +46,12 @@ export function Web3AuthProvider({
 						const chainConfig = {
 							chainNamespace: CHAIN_NAMESPACES.EIP155,
 							chainId: `0x${chain.id.toString(16)}`,
-							rpcTarget: chain.rpcUrls.default.http[0],
+							rpcTarget:
+								WEB3AUTH_RPC_TARGETS[chain.id] ?? chain.rpcUrls.default.http[0],
 							displayName: chain.name,
 							tickerName: chain.nativeCurrency?.name,
 							ticker: chain.nativeCurrency?.symbol,
-							blockExplorerUrl: chain.blockExplorers?.default.url[0] as string,
+							blockExplorerUrl: chain.blockExplorers?.default.url as string,
 						};
 
 						await web3AuthInstance.addChain(chainConfig);
