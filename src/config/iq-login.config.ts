@@ -101,7 +101,7 @@ function createWeb3AuthInstance(defaultChain: Chain) {
 		displayName: defaultChain.name,
 		tickerName: defaultChain.nativeCurrency?.name,
 		ticker: defaultChain.nativeCurrency?.symbol,
-		blockExplorerUrl: defaultChain.blockExplorers?.default.url as string,
+		blockExplorerUrl: defaultChain.blockExplorers?.default.url,
 	};
 
 	// Initialize Web3Auth with the default chain

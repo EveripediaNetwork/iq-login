@@ -51,7 +51,7 @@ export function Web3AuthProvider({
 							displayName: chain.name,
 							tickerName: chain.nativeCurrency?.name,
 							ticker: chain.nativeCurrency?.symbol,
-							blockExplorerUrl: chain.blockExplorers?.default.url as string,
+							blockExplorerUrl: chain.blockExplorers?.default.url,
 						};
 
 						await web3AuthInstance.addChain(chainConfig);
