@@ -35,14 +35,9 @@ export interface IqLoginConfig {
 	chains: [Chain, ...Chain[]];
 }
 
-// Reliable public RPCs for Web3Auth's provider setup.
-// Viem's default RPCs can be unreliable for eth_getBlockByNumber which
-// Web3Auth's TransactionFormatter.getEIP1559Compatibility calls during
-// provider setup after OAuth. e.g. eth.merkle.io times out on this call,
-// polygon-rpc.com returns no result. PublicNode handles these reliably.
 export const WEB3AUTH_RPC_TARGETS: Record<number, string> = {
-	1: "https://ethereum-rpc.publicnode.com", // Ethereum Mainnet
-	137: "https://polygon-bor-rpc.publicnode.com", // Polygon
+	1: "https://ethereum-rpc.publicnode.com",
+	137: "https://polygon-bor-rpc.publicnode.com",
 };
 
 export function createIqLoginConfig(
