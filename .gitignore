@@ -23,6 +23,8 @@ coverage
 # API keys and secrets
 .env
 
+*.test.ts
+
 # Dependency directory
 node_modules
 bower_components
