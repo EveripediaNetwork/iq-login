@@ -7,13 +7,46 @@ import {
 	Wallet,
 	XCircle,
 } from "lucide-react";
-import { useEffect } from "react";
-import { useAccount, useConnect } from "wagmi";
+import type React from "react";
+import { Fragment, useEffect } from "react";
+import { type Connector, useAccount, useConnect } from "wagmi";
 import { useAuth } from "../client";
 import { useProject } from "../hooks/use-project";
-import { Injected } from "../icons/injected";
-import { Social } from "../icons/social";
-import { WalletConnect } from "../icons/wallet-connect";
+import { cn } from "../lib/cn";
+import {
+	type ConnectorMeta,
+	type ResolvedConnectorMeta,
+	resolveConnectorMeta,
+} from "./connector-meta";
+import { defaultClassNames, type LoginSlot } from "./login-slots";
+
+export type LoginVariant = "page" | "card";
+
+export interface ConnectorRow {
+	connector: Connector;
+	meta: ResolvedConnectorMeta;
+	connect: () => void;
+	isPending: boolean;
+	error: Error | null;
+}
+
+export interface LoginProps {
+	title?: string;
+	description?: string;
+	connectText?: string;
+	signTokenText?: string;
+	handleRedirect?: () => void;
+	variant?: LoginVariant;
+	classNames?: Partial<Record<LoginSlot, string>>;
+	connectorMeta?: Record<string, ConnectorMeta>;
+	header?: React.ReactNode;
+	footer?: React.ReactNode;
+	renderConnector?: (row: ConnectorRow) => React.ReactNode;
+}
+
+type SlotFn = (name: LoginSlot, extra?: string) => string;
+
+const defaultSlot: SlotFn = (name, extra) => cn(defaultClassNames[name], extra);
 
 export const Login = ({
 	title = "Welcome Back",
@@ -21,123 +54,157 @@ export const Login = ({
 	connectText = "Connect Wallet",
 	signTokenText = "Verify Identity",
 	handleRedirect,
-}: {
-	title?: string;
-	description?: string;
-	connectText?: string;
-	signTokenText?: string;
-	handleRedirect?: () => void;
-}) => {
+	variant = "page",
+	classNames,
+	connectorMeta,
+	header,
+	footer,
+	renderConnector,
+}: LoginProps) => {
 	const { isConnected } = useAccount();
 	const { disableAuth } = useProject();
 
+	const slot: SlotFn = (name, extra) =>
+		cn(defaultClassNames[name], extra, classNames?.[name]);
+
+	const card = (
+		<div className={slot("card")}>
+			{isConnected ? (
+				<ConnectedWalletView
+					signTokenText={signTokenText}
+					handleRedirect={handleRedirect}
+					disableAuth={disableAuth}
+					slot={slot}
+				/>
+			) : (
+				<WalletConnectView
+					connectText={connectText}
+					slot={slot}
+					header={header}
+					footer={footer}
+					connectorMeta={connectorMeta}
+					renderConnector={renderConnector}
+				/>
+			)}
+		</div>
+	);
+
+	if (variant === "card") {
+		return card;
+	}
+
 	return (
-		<div className="min-h-[60vh] w-full flex items-center justify-center px-4 py-8">
-			<div className="relative w-full max-w-md">
+		<div className={slot("root")}>
+			<div className={slot("container")}>
 				<div className="space-y-8 text-center">
 					<div className="space-y-2">
-						<h1 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">
-							{title}
-						</h1>
-						<p className="mx-auto max-w-[500px] text-muted-foreground text-sm md:text-base">
-							{description}
-						</p>
+						<h1 className={slot("title")}>{title}</h1>
+						<p className={slot("description")}>{description}</p>
 					</div>
-					<div className="mx-auto">
-						<div className="overflow-hidden rounded-lg border bg-card shadow">
-							{isConnected ? (
-								<ConnectedWalletView
-									signTokenText={signTokenText}
-									handleRedirect={handleRedirect}
-									disableAuth={disableAuth}
-								/>
-							) : (
-								<WalletConnectView connectText={connectText} />
-							)}
-						</div>
-					</div>
+					<div className="mx-auto">{card}</div>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-const WalletConnectView = ({ connectText }: { connectText: string }) => {
-	const { connect, connectors } = useConnect();
+const WalletConnectView = ({
+	connectText,
+	slot,
+	header,
+	footer,
+	connectorMeta,
+	renderConnector,
+}: {
+	connectText: string;
+	slot: SlotFn;
+	header?: React.ReactNode;
+	footer?: React.ReactNode;
+	connectorMeta?: Record<string, ConnectorMeta>;
+	renderConnector?: (row: ConnectorRow) => React.ReactNode;
+}) => {
+	const { connect, connectors, isPending, error } = useConnect();
 
 	return (
-		<div className="p-4">
-			<div className="flex items-center justify-center w-8 h-8 mx-auto rounded-lg bg-primary/10">
-				<Wallet className="w-4 h-4 text-primary" />
+		<div className={slot("cardBody")}>
+			{header ?? (
+				<div>
+					<div className={slot("headerIcon")}>
+						<Wallet className="w-4 h-4 text-primary" />
+					</div>
+					<h2 className={slot("headerTitle")}>{connectText}</h2>
+				</div>
+			)}
+			<div className={slot("connectorList")}>
+				{connectors.map((connector) => {
+					const meta = resolveConnectorMeta(connector.name, connectorMeta);
+					if (renderConnector) {
+						return (
+							<Fragment key={connector.uid}>
+								{renderConnector({
+									connector,
+									meta,
+									connect: () => connect({ connector }),
+									isPending,
+									error,
+								})}
+							</Fragment>
+						);
+					}
+					return (
+						<ConnectorButton
+							key={connector.uid}
+							meta={meta}
+							onClick={() => connect({ connector })}
+							slot={slot}
+						/>
+					);
+				})}
 			</div>
-			<h2 className="mt-3 mb-3 text-lg font-semibold">{connectText}</h2>
-			<div className="grid gap-3">
-				{connectors.map((connector) => (
-					<ConnectorButton
-						key={connector.uid}
-						name={connector.name}
-						onClick={() => connect({ connector })}
-					/>
-				))}
-			</div>
+			{footer}
 		</div>
 	);
 };
 
 const ConnectorButton = ({
-	name,
+	meta,
 	onClick,
+	slot,
 }: {
-	name: string;
+	meta: ResolvedConnectorMeta;
 	onClick: () => void;
+	slot: SlotFn;
 }) => {
 	const { isPending, error } = useConnect();
 
-	const connectorConfig = {
-		Web3Auth: {
-			label: "Social Login",
-			icon: Social,
-		},
-		Injected: {
-			label: "Browser Wallet",
-			icon: Injected,
-		},
-		WalletConnect: {
-			label: "Wallet Connect",
-			icon: WalletConnect,
-		},
-	};
-
-	const config = connectorConfig[name as keyof typeof connectorConfig] || {
-		label: name,
-		icon: Wallet,
-	};
-
-	const ConnectorIcon = config.icon;
+	const ConnectorIcon = meta.icon;
 
 	return (
 		<button
 			type="button"
 			onClick={onClick}
 			disabled={isPending}
-			className="group relative flex items-center justify-between rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent disabled:opacity-50"
+			className={slot("connectorButton")}
 		>
 			<div className="flex items-center gap-3">
-				<ConnectorIcon className="size-8 text-primary" />
+				<ConnectorIcon className={slot("connectorIcon")} />
 				<div>
-					<p className="font-medium text-sm">{config.label}</p>
-					<p className="text-xs text-muted-foreground">
-						{isPending ? "Connecting..." : `Connect using your ${name} wallet`}
+					<p className={slot("connectorLabel")}>{meta.label}</p>
+					<p className={slot("connectorDescription")}>
+						{isPending ? "Connecting..." : meta.description}
 					</p>
-					{error && (
-						<p className="text-xs text-destructive mt-1">{error.message}</p>
-					)}
+					{error && <p className={slot("connectorError")}>{error.message}</p>}
 				</div>
 			</div>
 			{isPending ? (
-				<Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+				<Loader2 className={slot("connectorArrow", "animate-spin")} />
 			) : (
-				<ArrowRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+				<ArrowRight
+					className={slot(
+						"connectorArrow",
+						"transition-transform group-hover:translate-x-0.5",
+					)}
+				/>
 			)}
 		</button>
 	);
@@ -147,10 +214,12 @@ const ConnectedWalletView = ({
 	signTokenText,
 	handleRedirect,
 	disableAuth,
+	slot,
 }: {
 	signTokenText: string;
 	handleRedirect?: () => void;
 	disableAuth?: boolean;
+	slot: SlotFn;
 }) => {
 	const { address } = useAccount();
 	const { logout } = useAuth();
@@ -163,31 +232,31 @@ const ConnectedWalletView = ({
 	}, [disableAuth, handleRedirect]);
 
 	return (
-		<div className="p-4">
+		<div className={slot("cardBody")}>
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-2">
 					<div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10">
 						<Wallet className="w-3 h-3 text-primary" />
 					</div>
-					<p className="font-medium text-sm">Connected Wallet</p>
+					<p className={slot("connectedTitle")}>Connected Wallet</p>
 				</div>
 				<button
 					type="button"
 					onClick={logout}
-					className="p-1.5 rounded-full hover:bg-destructive/10 text-destructive transition-colors"
+					className={slot("logoutButton")}
 					title="Disconnect wallet"
 				>
 					<LogOut className="w-4 h-4" />
 				</button>
 			</div>
 
-			<div className="rounded-lg bg-muted/50 border p-3 mb-4">
-				<p className="font-mono text-xs break-all">{address}</p>
+			<div className={slot("addressBox")}>
+				<p className={slot("addressText")}>{address}</p>
 			</div>
 
 			{disableAuth ? (
 				<div className="w-full grid place-items-center">
-					<div className="flex items-center gap-2 text-success py-1.5 text-green-500">
+					<div className={`${slot("statusText")} text-success text-green-500`}>
 						<CheckCircle className="h-4 w-4" />
 						<p className="font-medium text-sm">Successfully signed in!</p>
 					</div>
@@ -196,6 +265,7 @@ const ConnectedWalletView = ({
 				<VerificationSection
 					signTokenText={signTokenText}
 					handleRedirect={handleRedirect ?? (() => {})}
+					slot={slot}
 				/>
 			)}
 		</div>
@@ -205,33 +275,35 @@ const ConnectedWalletView = ({
 const VerificationSection = ({
 	signTokenText,
 	handleRedirect,
+	slot,
 }: {
 	signTokenText: string;
 	handleRedirect: () => void;
+	slot: SlotFn;
 }) => (
 	<div className="space-y-3">
-		<div className="relative">
+		<div className={slot("divider")}>
 			<div className="absolute inset-0 flex items-center">
 				<div className="w-full border-t" />
 			</div>
 			<div className="relative flex justify-center text-xs uppercase">
-				<span className="bg-card px-2 text-muted-foreground">Next Step</span>
+				<span className={slot("dividerLabel")}>Next Step</span>
 			</div>
 		</div>
 
-		<div className="rounded-lg border p-4 text-center">
+		<div className={slot("verificationCard")}>
 			<div className="flex flex-col items-center gap-3">
-				<div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
+				<div className={slot("verificationIcon")}>
 					<Shield className="w-4 h-4 text-primary" />
 				</div>
 				<div className="space-y-1">
-					<h3 className="font-medium text-base">{signTokenText}</h3>
-					<p className="text-xs text-muted-foreground">
+					<h3 className={slot("verificationTitle")}>{signTokenText}</h3>
+					<p className={slot("verificationDescription")}>
 						Sign a message to verify your wallet ownership
 					</p>
 				</div>
 				<div className="w-full flex justify-center">
-					<SignTokenButton handleRedirect={handleRedirect} />
+					<SignTokenButton handleRedirect={handleRedirect} slot={slot} />
 				</div>
 			</div>
 		</div>
@@ -241,9 +313,11 @@ const VerificationSection = ({
 export const SignTokenButton = ({
 	handleRedirect,
 	handleTokenPass,
+	slot = defaultSlot,
 }: {
 	handleRedirect: () => void;
 	handleTokenPass?: (token: string) => Promise<void>;
+	slot?: SlotFn;
 }) => {
 	const { isConnected } = useAccount();
 	const { token, signToken, loading, error } = useAuth();
@@ -267,7 +341,7 @@ export const SignTokenButton = ({
 	const StatusDisplay = () => {
 		if (error) {
 			return (
-				<div className="flex items-center gap-2 text-destructive py-1.5">
+				<div className={slot("statusText", "text-destructive")}>
 					<XCircle className="h-4 w-4" />
 					<p className="font-medium text-sm">Failed to sign. Try again</p>
 				</div>
@@ -275,14 +349,14 @@ export const SignTokenButton = ({
 		}
 		if (loading) {
 			return (
-				<div className="flex items-center gap-2 text-primary py-1.5">
+				<div className={slot("statusText", "text-primary")}>
 					<Loader2 className="h-4 w-4 animate-spin" />
 					<p className="font-medium text-sm">Waiting for signature...</p>
 				</div>
 			);
 		}
 		return (
-			<div className="flex items-center gap-2 text-success py-1.5 text-green-500">
+			<div className={`${slot("statusText")} text-success text-green-500`}>
 				<CheckCircle className="h-4 w-4" />
 				<p className="font-medium text-sm">Successfully signed in!</p>
 			</div>
@@ -302,7 +376,7 @@ export const SignTokenButton = ({
 			type="button"
 			onClick={signToken}
 			disabled={!isConnected}
-			className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed"
+			className={slot("signButton")}
 		>
 			<Shield className="h-4 w-4" />
 			Sign Token
