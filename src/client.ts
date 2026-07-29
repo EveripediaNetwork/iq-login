@@ -5,13 +5,29 @@
 // ===============
 export { CustomAvatar } from "./components/custom-avatar";
 export { IqLoginProvider } from "./components/iq-login-provider";
-export { Login } from "./components/login-element";
+export {
+	Login,
+	type ConnectorRow,
+	type LoginProps,
+	type LoginVariant,
+} from "./components/login-element";
+
+export type {
+	ConnectorMeta,
+	ResolvedConnectorMeta,
+} from "./components/connector-meta";
+export type { LoginSlot } from "./components/login-slots";
 
 // ===============
 // Hooks
 // ===============
 export { useAuth } from "./hooks/use-auth";
 export { useWeb3Auth } from "./hooks/use-web-3-auth";
+export {
+	useLoginFlow,
+	type UseLoginFlowOptions,
+	type UseLoginFlowReturn,
+} from "./hooks/use-login-flow";
 export {
 	useEnsureCorrectChain,
 	type ChainStatus,

@@ -224,6 +224,108 @@ const { status, switchToCorrectChain } = useEnsureCorrectChain({
 
 The package uses Tailwind CSS and Shadcn UI Theme. Visit https://ui.shadcn.com/themes for theme customization.
 
+## 🧩 Customizing the UI
+
+All customization props are optional — with none, `Login` renders the default design.
+
+```tsx
+import { Login } from "@everipedia/iq-login/client";
+
+<Login
+	// Render only the card (no page wrapper/title) so you can place it in your own modal
+	variant="card"
+	// Replace the default icon + heading block
+	header={<MyBannerHeader />}
+	// Rendered below the wallet list (connect view only)
+	footer={<a href="/claim">← just claim a handle instead (no wallet)</a>}
+	// Relabel / re-icon the built-in connectors (keys: Injected, WalletConnect, Web3Auth)
+	connectorMeta={{
+		Injected: { label: "METAMASK", description: "browser extension" },
+		WalletConnect: { label: "WALLETCONNECT", description: "scan with any wallet" },
+		Web3Auth: { label: "SOCIAL LOGIN", description: "google, x, discord" },
+	}}
+	// Override classes per named slot (merged over defaults; your classes win conflicts)
+	classNames={{
+		connectorButton: "border-slate-700 bg-slate-950 hover:bg-slate-900",
+		connectorLabel: "font-bold uppercase tracking-wider",
+		connectorDescription: "font-mono",
+	}}
+/>
+```
+
+Available slots: `root`, `container`, `title`, `description`, `card`, `cardBody`, `headerIcon`, `headerTitle`, `connectorList`, `connectorButton`, `connectorIcon`, `connectorLabel`, `connectorDescription`, `connectorError`, `connectorArrow`, `connectedTitle`, `logoutButton`, `addressBox`, `addressText`, `divider`, `dividerLabel`, `verificationCard`, `verificationIcon`, `verificationTitle`, `verificationDescription`, `signButton`, `statusText`.
+
+For full control of a wallet row, pass `renderConnector`:
+
+```tsx
+<Login
+	renderConnector={({ meta, connect, isPending, isConnecting }) => (
+		<button type="button" onClick={connect} disabled={isPending}>
+			<meta.icon className="size-8" />
+			{isConnecting ? "Connecting..." : meta.label}
+		</button>
+	)}
+/>
+```
+
+## 🪝 Fully Custom UI (Headless)
+
+If restyling `Login` isn't enough — you want to own the entire markup — use `useLoginFlow()` and keep none of the built-in UI. The default `Login` component keeps working unchanged for projects that don't customize.
+
+```tsx
+"use client";
+import { useLoginFlow } from "@everipedia/iq-login/client";
+
+function MyLogin() {
+	const {
+		connectors,      // [{ connector, meta: { label, description, icon }, connect, isPending, isConnecting, error }]
+		isConnected,
+		address,
+		token,
+		signToken,       // trigger the sign-in signature
+		signing,         // signature in progress
+		signError,
+		logout,
+		disableAuth,
+	} = useLoginFlow({
+		connectorMeta: {
+			Injected: { label: "MetaMask", description: "browser extension" },
+		},
+	});
+
+	if (!isConnected) {
+		return (
+			<ul>
+				{connectors.map(({ connector, meta, connect, isPending, isConnecting }) => (
+					<li key={connector.uid}>
+						<button type="button" onClick={connect} disabled={isPending}>
+							<meta.icon className="size-8" />
+							{isConnecting ? "Connecting..." : `${meta.label} — ${meta.description}`}
+						</button>
+					</li>
+				))}
+			</ul>
+		);
+	}
+
+	if (!token && !disableAuth) {
+		return (
+			<button type="button" onClick={signToken} disabled={signing}>
+				{signing ? "Waiting for signature..." : signError ? "Retry" : "Verify identity"}
+			</button>
+		);
+	}
+
+	return (
+		<p>
+			Signed in as {address} <button type="button" onClick={logout}>Log out</button>
+		</p>
+	);
+}
+```
+
+Must be rendered inside `IqLoginProvider`.
+
 ## 📝 Usage on Pages Router
 
 ```ts
