@@ -13,6 +13,7 @@ export interface LoginFlowConnector {
 	meta: ResolvedConnectorMeta;
 	connect: () => void;
 	isPending: boolean;
+	isConnecting: boolean;
 	error: Error | null;
 }
 
@@ -42,7 +43,11 @@ export interface UseLoginFlowReturn {
 export function useLoginFlow(
 	options?: UseLoginFlowOptions,
 ): UseLoginFlowReturn {
-	const { connect, connectors, isPending, error } = useConnect();
+	const { connect, connectors, isPending, error, variables } = useConnect();
+	const pendingConnector =
+		isPending && typeof variables?.connector === "object"
+			? variables.connector
+			: undefined;
 	const { address, isConnected } = useAccount();
 	const {
 		token,
@@ -61,6 +66,7 @@ export function useLoginFlow(
 			meta: resolveConnectorMeta(connector.name, options?.connectorMeta),
 			connect: () => connect({ connector }),
 			isPending,
+			isConnecting: pendingConnector?.uid === connector.uid,
 			error: (error as Error | null) ?? null,
 		})),
 		isConnected,

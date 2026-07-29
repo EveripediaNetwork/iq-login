@@ -259,10 +259,10 @@ For full control of a wallet row, pass `renderConnector`:
 
 ```tsx
 <Login
-	renderConnector={({ meta, connect, isPending }) => (
+	renderConnector={({ meta, connect, isPending, isConnecting }) => (
 		<button type="button" onClick={connect} disabled={isPending}>
 			<meta.icon className="size-8" />
-			{meta.label}
+			{isConnecting ? "Connecting..." : meta.label}
 		</button>
 	)}
 />
@@ -278,7 +278,7 @@ import { useLoginFlow } from "@everipedia/iq-login/client";
 
 function MyLogin() {
 	const {
-		connectors,      // [{ connector, meta: { label, description, icon }, connect, isPending, error }]
+		connectors,      // [{ connector, meta: { label, description, icon }, connect, isPending, isConnecting, error }]
 		isConnected,
 		address,
 		token,
@@ -296,11 +296,11 @@ function MyLogin() {
 	if (!isConnected) {
 		return (
 			<ul>
-				{connectors.map(({ connector, meta, connect, isPending }) => (
+				{connectors.map(({ connector, meta, connect, isPending, isConnecting }) => (
 					<li key={connector.uid}>
 						<button type="button" onClick={connect} disabled={isPending}>
 							<meta.icon className="size-8" />
-							{meta.label} — {meta.description}
+							{isConnecting ? "Connecting..." : `${meta.label} — ${meta.description}`}
 						</button>
 					</li>
 				))}
