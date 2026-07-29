@@ -25,7 +25,6 @@ export { useAuth } from "./hooks/use-auth";
 export { useWeb3Auth } from "./hooks/use-web-3-auth";
 export {
 	useLoginFlow,
-	type LoginFlowConnector,
 	type UseLoginFlowOptions,
 	type UseLoginFlowReturn,
 } from "./hooks/use-login-flow";

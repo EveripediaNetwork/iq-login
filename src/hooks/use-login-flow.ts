@@ -1,28 +1,18 @@
 import type { UserInfo } from "@web3auth/base";
-import type { Connector } from "wagmi";
 import { useAccount, useConnect } from "wagmi";
+import type { ConnectorRow } from "../components/login-element";
 import {
 	type ConnectorMeta,
-	type ResolvedConnectorMeta,
 	resolveConnectorMeta,
 } from "../components/connector-meta";
 import { useAuth } from "./use-auth";
-
-export interface LoginFlowConnector {
-	connector: Connector;
-	meta: ResolvedConnectorMeta;
-	connect: () => void;
-	isPending: boolean;
-	isConnecting: boolean;
-	error: Error | null;
-}
 
 export interface UseLoginFlowOptions {
 	connectorMeta?: Record<string, ConnectorMeta>;
 }
 
 export interface UseLoginFlowReturn {
-	connectors: LoginFlowConnector[];
+	connectors: ConnectorRow[];
 	isConnected: boolean;
 	address: `0x${string}` | undefined;
 	token: string | null;
@@ -67,7 +57,7 @@ export function useLoginFlow(
 			connect: () => connect({ connector }),
 			isPending,
 			isConnecting: pendingConnector?.uid === connector.uid,
-			error: (error as Error | null) ?? null,
+			error,
 		})),
 		isConnected,
 		address,
@@ -75,7 +65,7 @@ export function useLoginFlow(
 		signToken,
 		reSignToken,
 		signing: loading,
-		signError: (authError as Error | null) ?? null,
+		signError: authError,
 		logout,
 		disableAuth,
 		web3AuthUser,

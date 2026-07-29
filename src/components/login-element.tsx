@@ -26,7 +26,13 @@ export interface ConnectorRow {
 	connector: Connector;
 	meta: ResolvedConnectorMeta;
 	connect: () => void;
+	/**
+	 * True while ANY connect attempt is in flight (wagmi mutation state) —
+	 * every row reports it, e.g. to disable all buttons during a connect.
+	 * Use `isConnecting` for the row that owns the attempt.
+	 */
 	isPending: boolean;
+	/** True only on the connector the current connect attempt targets. */
 	isConnecting: boolean;
 	error: Error | null;
 }
@@ -270,7 +276,7 @@ const ConnectedWalletView = ({
 
 			{disableAuth ? (
 				<div className="w-full grid place-items-center">
-					<div className={`${slot("statusText")} text-success text-green-500`}>
+					<div className={slot("statusText", "text-green-500")}>
 						<CheckCircle className="h-4 w-4" />
 						<p className="font-medium text-sm">Successfully signed in!</p>
 					</div>
@@ -370,7 +376,7 @@ export const SignTokenButton = ({
 			);
 		}
 		return (
-			<div className={`${slot("statusText")} text-success text-green-500`}>
+			<div className={slot("statusText", "text-green-500")}>
 				<CheckCircle className="h-4 w-4" />
 				<p className="font-medium text-sm">Successfully signed in!</p>
 			</div>
