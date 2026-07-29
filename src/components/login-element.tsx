@@ -157,6 +157,8 @@ const WalletConnectView = ({
 							meta={meta}
 							onClick={() => connect({ connector })}
 							slot={slot}
+							isPending={isPending}
+							error={error}
 						/>
 					);
 				})}
@@ -166,17 +168,19 @@ const WalletConnectView = ({
 	);
 };
 
-const ConnectorButton = ({
+export const ConnectorButton = ({
 	meta,
 	onClick,
 	slot,
+	isPending,
+	error,
 }: {
 	meta: ResolvedConnectorMeta;
 	onClick: () => void;
 	slot: SlotFn;
+	isPending: boolean;
+	error: Error | null;
 }) => {
-	const { isPending, error } = useConnect();
-
 	const ConnectorIcon = meta.icon;
 
 	return (
