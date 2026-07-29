@@ -27,6 +27,7 @@ export interface ConnectorRow {
 	meta: ResolvedConnectorMeta;
 	connect: () => void;
 	isPending: boolean;
+	isConnecting: boolean;
 	error: Error | null;
 }
 
@@ -123,7 +124,11 @@ const WalletConnectView = ({
 	connectorMeta?: Record<string, ConnectorMeta>;
 	renderConnector?: (row: ConnectorRow) => React.ReactNode;
 }) => {
-	const { connect, connectors, isPending, error } = useConnect();
+	const { connect, connectors, isPending, error, variables } = useConnect();
+	const pendingConnector =
+		isPending && typeof variables?.connector === "object"
+			? variables.connector
+			: undefined;
 
 	return (
 		<div className={slot("cardBody")}>
@@ -138,6 +143,7 @@ const WalletConnectView = ({
 			<div className={slot("connectorList")}>
 				{connectors.map((connector) => {
 					const meta = resolveConnectorMeta(connector.name, connectorMeta);
+					const isConnecting = pendingConnector?.uid === connector.uid;
 					if (renderConnector) {
 						return (
 							<Fragment key={connector.uid}>
@@ -146,6 +152,7 @@ const WalletConnectView = ({
 									meta,
 									connect: () => connect({ connector }),
 									isPending,
+									isConnecting,
 									error,
 								})}
 							</Fragment>
@@ -158,6 +165,7 @@ const WalletConnectView = ({
 							onClick={() => connect({ connector })}
 							slot={slot}
 							isPending={isPending}
+							isConnecting={isConnecting}
 							error={error}
 						/>
 					);
@@ -173,12 +181,14 @@ export const ConnectorButton = ({
 	onClick,
 	slot,
 	isPending,
+	isConnecting,
 	error,
 }: {
 	meta: ResolvedConnectorMeta;
 	onClick: () => void;
 	slot: SlotFn;
 	isPending: boolean;
+	isConnecting: boolean;
 	error: Error | null;
 }) => {
 	const ConnectorIcon = meta.icon;
@@ -195,12 +205,12 @@ export const ConnectorButton = ({
 				<div>
 					<p className={slot("connectorLabel")}>{meta.label}</p>
 					<p className={slot("connectorDescription")}>
-						{isPending ? "Connecting..." : meta.description}
+						{isConnecting ? "Connecting..." : meta.description}
 					</p>
 					{error && <p className={slot("connectorError")}>{error.message}</p>}
 				</div>
 			</div>
-			{isPending ? (
+			{isConnecting ? (
 				<Loader2 className={slot("connectorArrow", "animate-spin")} />
 			) : (
 				<ArrowRight
