@@ -27,7 +27,10 @@ function dataUriIcon(
 	uri: string,
 	name: string,
 ): React.ComponentType<{ className?: string }> {
-	let cached = dataUriIconCache.get(uri);
+	// keyed by name too: connectors sharing an icon URI must not share
+	// the first connector's alt text and displayName
+	const key = `${name}-${uri}`;
+	let cached = dataUriIconCache.get(key);
 	if (!cached) {
 		cached = ({ className }: { className?: string }) =>
 			React.createElement("img", {
@@ -36,7 +39,7 @@ function dataUriIcon(
 				className,
 			});
 		cached.displayName = `${name}Icon`;
-		dataUriIconCache.set(uri, cached);
+		dataUriIconCache.set(key, cached);
 	}
 	return cached;
 }

@@ -8,8 +8,9 @@ export function humanizeConnectError(error: Error): string {
 		return "Request declined in the wallet. Try again when you're ready.";
 	}
 
-	// EIP-1193 -32002: a previous request is still open in the extension
-	if (/already pending|already processing|request of type/i.test(raw)) {
+	// JSON-RPC -32002 "Resource unavailable" (EIP-1474): a previous request
+	// is still open in the extension
+	if (/already pending|already processing/i.test(raw)) {
 		return "Your wallet already has a request open — click its extension icon to finish or dismiss it, then retry.";
 	}
 
@@ -24,7 +25,8 @@ export function humanizeConnectError(error: Error): string {
 		return "Couldn't reach the WalletConnect relay — your network may be blocking it. Try another network or DNS, or use a browser wallet.";
 	}
 
-	// viem errors carry a one-line shortMessage above the details dump
+	// viem errors carry a one-line shortMessage above the details dump.
+	// `||` (not `??`): empty strings must fall through to the generic copy.
 	const short = (error as { shortMessage?: string }).shortMessage;
-	return short ?? raw.split("\n")[0] ?? "Connection failed. Please try again.";
+	return short || raw.split("\n")[0] || "Connection failed. Please try again.";
 }
