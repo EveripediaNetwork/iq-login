@@ -238,7 +238,8 @@ import { Login } from "@everipedia/iq-login/client";
 	header={<MyBannerHeader />}
 	// Rendered below the wallet list (connect view only)
 	footer={<a href="/claim">← just claim a handle instead (no wallet)</a>}
-	// Relabel / re-icon the built-in connectors (keys: Injected, WalletConnect, Web3Auth)
+	// Relabel / re-icon connectors, keyed by connector name — the built-ins
+	// (Injected, WalletConnect, Web3Auth) plus any EIP-6963 wallet (MetaMask, Phantom, ...)
 	connectorMeta={{
 		Injected: { label: "METAMASK", description: "browser extension" },
 		WalletConnect: { label: "WALLETCONNECT", description: "scan with any wallet" },
@@ -266,6 +267,18 @@ For full control of a wallet row, pass `renderConnector`:
 		</button>
 	)}
 />
+```
+
+## 👛 Wallet Discovery & Connect Errors
+
+`createIqLoginConfig` enables [EIP-6963](https://eips.ethereum.org/EIPS/eip-6963) discovery: every installed wallet extension announces itself and gets its own connector row, with the wallet's own name and brand icon. This stops MetaMask/Phantom/OKX from fighting over `window.ethereum` — the usual cause of `"wallet must has at least one account"` (4001) failures where no popup ever appears. The generic **Browser Wallet** row only renders when no wallet announces itself.
+
+Connect errors are scoped to the row that attempted the connection: `ConnectorRow.error` is `null` on every other connector. To turn a raw wallet error into an actionable message (the built-in `Login` already does this):
+
+```tsx
+import { humanizeConnectError } from "@everipedia/iq-login/client";
+
+{row.error && <p role="alert">{humanizeConnectError(row.error)}</p>}
 ```
 
 ## 🪝 Fully Custom UI (Headless)
