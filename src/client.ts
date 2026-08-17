@@ -17,6 +17,7 @@ export type {
 	ResolvedConnectorMeta,
 } from "./components/connector-meta";
 export type { LoginSlot } from "./components/login-slots";
+export { humanizeConnectError } from "./lib/humanize-connect-error";
 
 // ===============
 // Hooks
