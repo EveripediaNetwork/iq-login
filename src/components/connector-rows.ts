@@ -14,7 +14,7 @@ export interface ConnectorRow {
 	error: Error | null;
 }
 
-const GENERIC_INJECTED_ID = "injected";
+export const GENERIC_INJECTED_ID = "injected";
 
 function isDiscoveredInjected(connector: Connector): boolean {
 	return connector.type === "injected" && connector.id !== GENERIC_INJECTED_ID;
@@ -45,16 +45,34 @@ export function buildConnectorRows({
 
 	const hasDiscovered = connectors.some(isDiscoveredInjected);
 
-	return connectors
-		.filter(
-			(connector) => !(hasDiscovered && connector.id === GENERIC_INJECTED_ID),
-		)
-		.map((connector) => ({
+	const ordered = hasDiscovered
+		? [
+				...connectors.filter((c) => c.id !== GENERIC_INJECTED_ID),
+				...connectors.filter((c) => c.id === GENERIC_INJECTED_ID),
+			]
+		: connectors;
+
+	return ordered.map((connector) => {
+		const meta = resolveConnectorMeta(
+			connector.name,
+			connectorMeta,
+			connector.icon,
+		);
+		if (
+			hasDiscovered &&
+			connector.id === GENERIC_INJECTED_ID &&
+			!connectorMeta?.[connector.name]
+		) {
+			meta.label = "Other Browser Wallet";
+			meta.description = "For wallet extensions that don't announce themselves";
+		}
+		return {
 			connector,
-			meta: resolveConnectorMeta(connector.name, connectorMeta, connector.icon),
+			meta,
 			connect: () => connect({ connector }),
 			isPending,
 			isConnecting: isPending && attempted?.uid === connector.uid,
 			error: attempted?.uid === connector.uid ? error : null,
-		}));
+		};
+	});
 }

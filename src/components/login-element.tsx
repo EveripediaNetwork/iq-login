@@ -9,13 +9,14 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { Fragment, useEffect } from "react";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 import { useAuth } from "../client";
 import { useProject } from "../hooks/use-project";
 import { cn } from "../lib/cn";
 import { humanizeConnectError } from "../lib/humanize-connect-error";
 import type { ConnectorMeta, ResolvedConnectorMeta } from "./connector-meta";
-import { buildConnectorRows, type ConnectorRow } from "./connector-rows";
+import { useConnectorRows } from "../hooks/use-connector-rows";
+import type { ConnectorRow } from "./connector-rows";
 import { defaultClassNames, type LoginSlot } from "./login-slots";
 
 export type LoginVariant = "page" | "card";
@@ -115,15 +116,7 @@ const WalletConnectView = ({
 	connectorMeta?: Record<string, ConnectorMeta>;
 	renderConnector?: (row: ConnectorRow) => React.ReactNode;
 }) => {
-	const { connect, connectors, isPending, error, variables } = useConnect();
-	const rows = buildConnectorRows({
-		connectors,
-		connect,
-		isPending,
-		error,
-		variables,
-		connectorMeta,
-	});
+	const rows = useConnectorRows(connectorMeta);
 
 	return (
 		<div className={slot("cardBody")}>

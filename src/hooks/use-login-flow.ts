@@ -1,11 +1,9 @@
 import type { UserInfo } from "@web3auth/base";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 import type { ConnectorMeta } from "../components/connector-meta";
-import {
-	buildConnectorRows,
-	type ConnectorRow,
-} from "../components/connector-rows";
+import type { ConnectorRow } from "../components/connector-rows";
 import { useAuth } from "./use-auth";
+import { useConnectorRows } from "./use-connector-rows";
 
 export interface UseLoginFlowOptions {
 	connectorMeta?: Record<string, ConnectorMeta>;
@@ -33,7 +31,7 @@ export interface UseLoginFlowReturn {
 export function useLoginFlow(
 	options?: UseLoginFlowOptions,
 ): UseLoginFlowReturn {
-	const { connect, connectors, isPending, error, variables } = useConnect();
+	const connectorRows = useConnectorRows(options?.connectorMeta);
 	const { address, isConnected } = useAccount();
 	const {
 		token,
@@ -47,14 +45,7 @@ export function useLoginFlow(
 	} = useAuth();
 
 	return {
-		connectors: buildConnectorRows({
-			connectors,
-			connect,
-			isPending,
-			error,
-			variables,
-			connectorMeta: options?.connectorMeta,
-		}),
+		connectors: connectorRows,
 		isConnected,
 		address,
 		token,

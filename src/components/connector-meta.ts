@@ -35,8 +35,10 @@ function dataUriIcon(
 		cached = ({ className }: { className?: string }) =>
 			React.createElement("img", {
 				src: uri,
-				alt: `${name} logo`,
-				className,
+				// decorative: the row's visible label already names the wallet
+				alt: "",
+				// announced logos aren't always square; don't let size-8 squash them
+				className: className ? `${className} object-contain` : "object-contain",
 			});
 		cached.displayName = `${name}Icon`;
 		dataUriIconCache.set(key, cached);
@@ -60,7 +62,9 @@ export function resolveConnectorMeta(
 			`Connect using your ${name} wallet`,
 		icon:
 			override?.icon ??
-			(connectorIcon ? dataUriIcon(connectorIcon, name) : undefined) ??
+			(connectorIcon?.startsWith("data:image/")
+				? dataUriIcon(connectorIcon, name)
+				: undefined) ??
 			base?.icon ??
 			Wallet,
 	};

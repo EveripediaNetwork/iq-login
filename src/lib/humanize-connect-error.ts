@@ -1,4 +1,5 @@
 export function humanizeConnectError(error: Error): string {
+	if (!error) return "Connection failed. Please try again.";
 	const raw = `${error.message ?? ""}`;
 	if (/must has at least one account/i.test(raw)) {
 		return "Your wallet didn't provide an account. Unlock the extension, and if you run several wallet extensions, disable the extras or set a default.";
