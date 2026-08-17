@@ -10,7 +10,11 @@ export function humanizeConnectError(error: Error): string {
 
 	// JSON-RPC -32002 "Resource unavailable" (EIP-1474): a previous request
 	// is still open in the extension
-	if (/already pending|already processing/i.test(raw)) {
+	if (
+		/(?:already pending|already processing|\brequest\b.*\b(?:pending|processing)\b|\b(?:pending|processing)\b.*\brequest\b)/i.test(
+			raw,
+		)
+	) {
 		return "Your wallet already has a request open — click its extension icon to finish or dismiss it, then retry.";
 	}
 
@@ -26,7 +30,15 @@ export function humanizeConnectError(error: Error): string {
 	}
 
 	// viem errors carry a one-line shortMessage above the details dump.
-	// `||` (not `??`): empty strings must fall through to the generic copy.
+	// Blank candidates must fall through to the generic copy.
 	const short = (error as { shortMessage?: string }).shortMessage;
-	return short || raw.split("\n")[0] || "Connection failed. Please try again.";
+	const shortTrim = typeof short === "string" ? short.trim() : "";
+	const rawTrim = raw.trim();
+	if (shortTrim.length > 0) return shortTrim;
+	if (rawTrim.length > 0) {
+		const firstLine =
+			rawTrim.split("\n").find((l) => l.trim().length > 0) ?? "";
+		if (firstLine.length > 0) return firstLine.trim();
+	}
+	return "Connection failed. Please try again.";
 }
