@@ -75,7 +75,11 @@ export function createIqLoginConfig(
 			storage: cookieStorage,
 		}),
 		ssr: true,
-		multiInjectedProviderDiscovery: false,
+		// EIP-6963: every installed wallet announces itself and gets its own
+		// connector, so MetaMask/Phantom/OKX stop fighting over window.ethereum.
+		// The UI hides the generic injected() row whenever announced wallets
+		// exist (see buildConnectorRows).
+		multiInjectedProviderDiscovery: true,
 	});
 
 	return {

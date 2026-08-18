@@ -9,33 +9,19 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { Fragment, useEffect } from "react";
-import { type Connector, useAccount, useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 import { useAuth } from "../client";
 import { useProject } from "../hooks/use-project";
 import { cn } from "../lib/cn";
-import {
-	type ConnectorMeta,
-	type ResolvedConnectorMeta,
-	resolveConnectorMeta,
-} from "./connector-meta";
+import { humanizeConnectError } from "../lib/humanize-connect-error";
+import type { ConnectorMeta, ResolvedConnectorMeta } from "./connector-meta";
+import { useConnectorRows } from "../hooks/use-connector-rows";
+import type { ConnectorRow } from "./connector-rows";
 import { defaultClassNames, type LoginSlot } from "./login-slots";
 
 export type LoginVariant = "page" | "card";
 
-export interface ConnectorRow {
-	connector: Connector;
-	meta: ResolvedConnectorMeta;
-	connect: () => void;
-	/**
-	 * True while ANY connect attempt is in flight (wagmi mutation state) —
-	 * every row reports it, e.g. to disable all buttons during a connect.
-	 * Use `isConnecting` for the row that owns the attempt.
-	 */
-	isPending: boolean;
-	/** True only on the connector the current connect attempt targets. */
-	isConnecting: boolean;
-	error: Error | null;
-}
+export type { ConnectorRow };
 
 export interface LoginProps {
 	title?: string;
@@ -130,11 +116,7 @@ const WalletConnectView = ({
 	connectorMeta?: Record<string, ConnectorMeta>;
 	renderConnector?: (row: ConnectorRow) => React.ReactNode;
 }) => {
-	const { connect, connectors, isPending, error, variables } = useConnect();
-	const pendingConnector =
-		isPending && typeof variables?.connector === "object"
-			? variables.connector
-			: undefined;
+	const rows = useConnectorRows(connectorMeta);
 
 	return (
 		<div className={slot("cardBody")}>
@@ -147,32 +129,23 @@ const WalletConnectView = ({
 				</div>
 			)}
 			<div className={slot("connectorList")}>
-				{connectors.map((connector) => {
-					const meta = resolveConnectorMeta(connector.name, connectorMeta);
-					const isConnecting = pendingConnector?.uid === connector.uid;
+				{rows.map((row) => {
 					if (renderConnector) {
 						return (
-							<Fragment key={connector.uid}>
-								{renderConnector({
-									connector,
-									meta,
-									connect: () => connect({ connector }),
-									isPending,
-									isConnecting,
-									error,
-								})}
+							<Fragment key={row.connector.uid}>
+								{renderConnector(row)}
 							</Fragment>
 						);
 					}
 					return (
 						<ConnectorButton
-							key={connector.uid}
-							meta={meta}
-							onClick={() => connect({ connector })}
+							key={row.connector.uid}
+							meta={row.meta}
+							onClick={row.connect}
 							slot={slot}
-							isPending={isPending}
-							isConnecting={isConnecting}
-							error={error}
+							isPending={row.isPending}
+							isConnecting={row.isConnecting}
+							error={row.error}
 						/>
 					);
 				})}
@@ -213,7 +186,11 @@ export const ConnectorButton = ({
 					<p className={slot("connectorDescription")}>
 						{isConnecting ? "Connecting..." : meta.description}
 					</p>
-					{error && <p className={slot("connectorError")}>{error.message}</p>}
+					{error && (
+						<p className={slot("connectorError")}>
+							{humanizeConnectError(error)}
+						</p>
+					)}
 				</div>
 			</div>
 			{isConnecting ? (

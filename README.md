@@ -238,9 +238,11 @@ import { Login } from "@everipedia/iq-login/client";
 	header={<MyBannerHeader />}
 	// Rendered below the wallet list (connect view only)
 	footer={<a href="/claim">← just claim a handle instead (no wallet)</a>}
-	// Relabel / re-icon the built-in connectors (keys: Injected, WalletConnect, Web3Auth)
+	// Relabel / re-icon connectors, keyed by connector name. Discovered
+	// EIP-6963 wallets use their own name ("MetaMask", "Phantom", ...);
+	// "Injected" only styles the generic fallback row.
 	connectorMeta={{
-		Injected: { label: "METAMASK", description: "browser extension" },
+		MetaMask: { label: "METAMASK", description: "browser extension" },
 		WalletConnect: { label: "WALLETCONNECT", description: "scan with any wallet" },
 		Web3Auth: { label: "SOCIAL LOGIN", description: "google, x, discord" },
 	}}
@@ -268,6 +270,18 @@ For full control of a wallet row, pass `renderConnector`:
 />
 ```
 
+## 👛 Wallet Discovery & Connect Errors
+
+`createIqLoginConfig` enables [EIP-6963](https://eips.ethereum.org/EIPS/eip-6963) discovery: every installed wallet extension announces itself and gets its own connector row, with the wallet's own name and brand icon. This stops MetaMask/Phantom/OKX from fighting over `window.ethereum` — the usual cause of `"wallet must has at least one account"` failures where no popup ever appears. When wallets announce, the generic **Browser Wallet** row is relabeled **Other Browser Wallet** and listed last, as the escape hatch for extensions that inject without announcing; when nothing announces it renders unchanged. Discovered connectors only arrive after client hydration, so the generic row is withheld until mount — first paint never shows the ambiguous generic row.
+
+Connect errors are scoped to the row that attempted the connection: `ConnectorRow.error` is `null` on every other connector. To turn a raw wallet error into an actionable message (the built-in `Login` already does this):
+
+```tsx
+import { humanizeConnectError } from "@everipedia/iq-login/client";
+
+{row.error && <p role="alert">{humanizeConnectError(row.error)}</p>}
+```
+
 ## 🪝 Fully Custom UI (Headless)
 
 If restyling `Login` isn't enough — you want to own the entire markup — use `useLoginFlow()` and keep none of the built-in UI. The default `Login` component keeps working unchanged for projects that don't customize.
@@ -289,7 +303,7 @@ function MyLogin() {
 		disableAuth,
 	} = useLoginFlow({
 		connectorMeta: {
-			Injected: { label: "MetaMask", description: "browser extension" },
+			MetaMask: { description: "browser extension" },
 		},
 	});
 
