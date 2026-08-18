@@ -1,17 +1,35 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useConnect } from "wagmi";
-import type { ConnectorMeta } from "../components/connector-meta";
+import {
+	type ConnectorMeta,
+	connectorMetaEquals,
+} from "../components/connector-meta";
 import {
 	buildConnectorRows,
 	type ConnectorRow,
 	GENERIC_INJECTED_ID,
 } from "../components/connector-rows";
 
+/**
+ * connectorMeta is documented as an inline object literal, so its identity
+ * changes every render — key the memo on its contents instead.
+ */
+function useStableConnectorMeta(
+	meta?: Record<string, ConnectorMeta>,
+): Record<string, ConnectorMeta> | undefined {
+	const ref = useRef(meta);
+	if (!connectorMetaEquals(ref.current, meta)) {
+		ref.current = meta;
+	}
+	return ref.current;
+}
+
 export function useConnectorRows(
-	connectorMeta?: Record<string, ConnectorMeta>,
+	meta?: Record<string, ConnectorMeta>,
 ): ConnectorRow[] {
+	const connectorMeta = useStableConnectorMeta(meta);
 	const { connect, connectors, isPending, error, variables } = useConnect();
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => {

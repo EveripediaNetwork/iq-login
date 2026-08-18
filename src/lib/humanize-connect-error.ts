@@ -1,20 +1,42 @@
+/** EIP-1193 4001: the user (or a broken wallet) rejected the request. */
+const USER_REJECTED_CODE = 4001;
+/** JSON-RPC -32002 "Resource unavailable" (EIP-1474): request already open. */
+const RESOURCE_UNAVAILABLE_CODE = -32002;
+
+/**
+ * Walk the error and its `cause` chain for a numeric provider/RPC code.
+ * Codes are locale- and wording-independent, so they're checked before any
+ * message pattern.
+ */
+function rpcErrorCode(error: unknown): number | undefined {
+	let current: unknown = error;
+	for (let depth = 0; current && depth < 5; depth++) {
+		const code = (current as { code?: unknown }).code;
+		if (typeof code === "number") return code;
+		current = (current as { cause?: unknown }).cause;
+	}
+	return undefined;
+}
+
 export function humanizeConnectError(error: Error): string {
+	// public /client export: JS consumers with looser types may pass null
 	if (!error) return "Connection failed. Please try again.";
 	const raw = `${error.message ?? ""}`;
+	const code = rpcErrorCode(error);
+
+	// MetaMask emits this as a 4001, so it must be recognized before the
+	// generic rejected-request branch below.
 	if (/must has at least one account/i.test(raw)) {
 		return "Your wallet didn't provide an account. Unlock the extension, and if you run several wallet extensions, disable the extras or set a default.";
 	}
 
-	if (/user rejected|user denied/i.test(raw)) {
+	if (code === USER_REJECTED_CODE || /user rejected|user denied/i.test(raw)) {
 		return "Request declined in the wallet. Try again when you're ready.";
 	}
 
-	// JSON-RPC -32002 "Resource unavailable" (EIP-1474): a previous request
-	// is still open in the extension
 	if (
-		/(?:already pending|already processing|\brequest\b.*\b(?:pending|processing)\b|\b(?:pending|processing)\b.*\brequest\b)/i.test(
-			raw,
-		)
+		code === RESOURCE_UNAVAILABLE_CODE ||
+		/already pending|already processing/i.test(raw)
 	) {
 		return "Your wallet already has a request open — click its extension icon to finish or dismiss it, then retry.";
 	}

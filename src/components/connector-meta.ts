@@ -46,6 +46,31 @@ function dataUriIcon(
 	return cached;
 }
 
+/**
+ * Field-level equality for connectorMeta overrides. Consumers typically pass
+ * the whole map as an inline object literal, so identity changes every
+ * render; comparing contents lets hooks keep memoized rows stable anyway.
+ */
+export function connectorMetaEquals(
+	a: Record<string, ConnectorMeta> | undefined,
+	b: Record<string, ConnectorMeta> | undefined,
+): boolean {
+	if (a === b) return true;
+	if (!a || !b) return false;
+	const aKeys = Object.keys(a);
+	if (aKeys.length !== Object.keys(b).length) return false;
+	return aKeys.every((key) => {
+		const x = a[key];
+		const y = b[key];
+		return (
+			!!y &&
+			x.label === y.label &&
+			x.description === y.description &&
+			x.icon === y.icon
+		);
+	});
+}
+
 export function resolveConnectorMeta(
 	name: string,
 	overrides?: Record<string, ConnectorMeta>,
